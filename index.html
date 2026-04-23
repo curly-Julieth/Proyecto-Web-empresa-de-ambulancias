@@ -1,15 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Configuración basica -->
     <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto web ambulancias</title>
-
+    <meta name="description" content="ClientesApp: Crear Clientes (HTML, CSS, JavaScript) con formulario, validación y seguridad básica." />
     <link rel="stylesheet" href="src/css/styles.css">
 </head>
 <body>
-     <h1>Sistema de Ambulancias 🚑</h1>
+    <!-- ACCESIBILIDAD -->
+    <!-- Permite a los usuarios saltas director al contenido principal -->
+    <a class="skip-link" href="#main" data-tooltip="Accesibilidad: saltar al contenido principal">Saltar al contenido principal</a>
 
+    <!-- CONTENEDOR PRINCIPAL -->
+    <!-- Contenedor de toda la app que indica que se tiene un modo oscuro -->
+    <div class="app" data-theme="dark">
+      
+      <!-- BARRA SUPERIOR -->
+      <header class="topbar">
+        <!-- BOTON MENU -->
+        <!-- Boton para abrir y cerrar el menu lateral -->
+        <button
+          class="icon-button"
+          type="button"
+          id="sidebarToggle"
+          aria-controls="sidebar"
+          aria-expanded="true"
+          aria-label="Menú"
+        >
+        <!-- Es el icono del menu -->
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
+        <!-- TITULO -->
+        <div class="topbar__title">
+          <span class="brand">ClientesApp</span>
+          <span class="version" id="appVersionBadge">v--</span>
+        </div>
+
+        <!-- ACCIONES -->
+         <!-- Es la zona derecha del header -->
+        <div class="topbar__actions">
+          <button class="pill" type="button" disabled>UI</button>
+        </div>
+      </header>
+
+      
+      <!-- MENU DINAMICO -->
+       <!-- NOTA: Aqui JS inserta el menu automaticamente -->
+      <div id="menuPrincipalMount"></div> 
+
+      <!-- OVERLAY -->
+      <div class="overlay" id="overlay" hidden></div>
+
+      <!-- CONTENIDO -->
+      <main class="main" id="main" tabindex="-1">
+        <!-- Aqui va el contenido principal -->
+      </main>
+    </div>
+
+
+    <!-- NOTIFICACION -->
+     <!-- Muestra mensajes -->
+    <div class="toast" id="toast" hidden></div>
+
+    <!-- VENTANA MODAL -->
+     <!-- Indica el modo oscuro -->
+    <div class="modalOverlay" id="logoutModal" hidden>
+
+     <!-- Contenedor del mensaje -->
+      <div class="modalDialog">
+        <h2 id="logoutTitle">Cerrar Sesion de Usuario</h2>
+        <p id="logoutText">¿Está seguro de cerrar Sesión?</p>
+
+        <div class="modalDialog__actions">
+          <button class="button button--danger" id="logoutYes">Si</button>
+          <button class="button" id="logoutNo">No</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aqui van los scripts -->
+    <!-- <script src="./js/ENV.js" defer></script>
+    <script src="./js/librerias.js" defer></script>
+    <script src="./js/menuPrincipal.js" defer></script>
+    <script src="./js/crearClientes.js" defer></script>
+    <script src="./js/listarClientes.js" defer></script> -->
     <script src="src/js/app.js"></script>
     
 </body>
