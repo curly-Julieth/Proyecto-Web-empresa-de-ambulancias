@@ -10,86 +10,123 @@
     <link rel="stylesheet" href="src/css/styles.css">
 </head>
 <body>
-    <!-- ACCESIBILIDAD -->
-    <!-- Permite a los usuarios saltas director al contenido principal -->
-    <a class="skip-link" href="#main" data-tooltip="Accesibilidad: saltar al contenido principal">Saltar al contenido principal</a>
+    <!-- ACCESO RAPIDO AL CONTENIDO -->
+    <a class="skip-link" href="#main">Saltar al contenido</a>
 
     <!-- CONTENEDOR PRINCIPAL -->
-    <!-- Contenedor de toda la app que indica que se tiene un modo oscuro -->
-    <div class="app" data-theme="dark">
-      
-      <!-- BARRA SUPERIOR -->
+     <div class="app" data-theme="dark">
+
+      <!-- BARAA SUPERIOR -->
       <header class="topbar">
-        <!-- BOTON MENU -->
-        <!-- Boton para abrir y cerrar el menu lateral -->
-        <button
-          class="icon-button"
-          type="button"
-          id="sidebarToggle"
-          aria-controls="sidebar"
-          aria-expanded="true"
-          aria-label="Menú"
-        >
-        <!-- Es el icono del menu -->
+        
+        <!-- BOTON PARA ABRIR Y CERRAR MENU -->
+        <button id="sidebarToggle" class="icon-button">
           <svg class="icon" viewBox="0 0 24 24">
             <path d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
 
-        <!-- TITULO -->
+        <!-- NOMBRE DE LA APP -->
         <div class="topbar__title">
           <span class="brand">ClientesApp</span>
-          <span class="version" id="appVersionBadge">v--</span>
+          <span class="version">v1.0</span>
         </div>
 
-        <!-- ACCIONES -->
-         <!-- Es la zona derecha del header -->
+        <!-- ACCIONES (decorativo) -->
         <div class="topbar__actions">
-          <button class="pill" type="button" disabled>UI</button>
+          <button class="pill" disabled>UI</button>
         </div>
       </header>
 
-      
-      <!-- MENU DINAMICO -->
-       <!-- NOTA: Aqui JS inserta el menu automaticamente -->
-      <div id="menuPrincipalMount"></div> 
+      <!-- SIDEBAR (menú lateral) -->
+      <aside class="sidebar" id="sidebar">
+        
+        <!-- TITULO DEL MENU -->
+        <div class="sidebar__header">
+          <h2>Menú</h2>
+        </div>
 
-      <!-- OVERLAY -->
+
+        <!-- NAV -->
+        <nav class="nav">
+          <!-- Grupo desplegable -->
+          <details open>
+            <summary class="nav__item">
+              <!-- Icono -->
+              <svg class="icon" viewBox="0 0 24 24">
+                <path d="M16 11a4 4 0 1 0-8 0a4 4 0 0 0 8 0ZM4 20a8 8 0 0 1 16 0" />
+              </svg>
+              <span>Clientes</span>
+            </summary>
+
+            <!-- Opciones -->
+            <ul class="nav__sublist">
+              <li><button>Crear Cliente</button></li>
+              <li><button>Editar Cliente</button></li>
+              <li><button>Eliminar Cliente</button></li>
+              <li><button>Ordenar Clientes</button></li>
+              <li><button>Listar Cliente</button></li>
+            </ul>
+          </details>
+        </nav>
+
+        <!-- Separador -->
+        <div class="sidebar__divider"></div>
+
+        <!-- Perfil -->
+        <section class="profile">
+          
+          <!-- Título -->
+          <h3>Clientes App v1.0</h3>
+
+          <!-- Logo -->
+          <div class="profile__row">
+            <img src="./assets/logo CIAF-1.png" alt="Logo" />
+          </div>
+
+          <!-- Usuario -->
+          <div class="profile__row">
+            <img src="./assets/logo CIAF-1.png" alt="Usuario" />
+            <p>Usuario:</p>
+          </div>
+
+          <!-- Modo oscuro -->
+          <div class="profile__row">
+            <span>Modo oscuro</span>
+            <input type="checkbox" checked />
+          </div>
+
+          <!-- Cerrar sesión -->
+          <div class="profile__row">
+            <button class="button button--danger">Cerrar sesión</button>
+          </div>
+
+        </section>
+      </aside>
+
+      <!-- Fondo al abrir menú -->
       <div class="overlay" id="overlay" hidden></div>
 
-      <!-- CONTENIDO -->
-      <main class="main" id="main" tabindex="-1">
-        <!-- Aqui va el contenido principal -->
+      <!-- CONTENIDO PRINCIPAL -->
+      <main id="main">
+
+        <!--  PROPUESTA: Dentro de sidebar estan los botones o links de las funcionalidades (crearm editar, etc), si se le da clic, JS se encarga de cargar la vista (carpetas views con los html de cada funcionalidad, es decir, crear.html, editar.html, etc) dentro del contenido principal. Es decir, no se redirige, solo se muestra el contenido de las vistas -->
+
       </main>
     </div>
 
-
-    <!-- NOTIFICACION -->
-     <!-- Muestra mensajes -->
-    <div class="toast" id="toast" hidden></div>
-
-    <!-- VENTANA MODAL -->
-     <!-- Indica el modo oscuro -->
-    <div class="modalOverlay" id="logoutModal" hidden>
-
-     <!-- Contenedor del mensaje -->
-      <div class="modalDialog">
-        <h2 id="logoutTitle">Cerrar Sesion de Usuario</h2>
-        <p id="logoutText">¿Está seguro de cerrar Sesión?</p>
-
-        <div class="modalDialog__actions">
-          <button class="button button--danger" id="logoutYes">Si</button>
-          <button class="button" id="logoutNo">No</button>
-        </div>
+    <!-- VENTANA MODAL PARA CERRAR SESION -->
+    <div id="logoutModal" hidden>
+      <div>
+        <h2>Cerrar Sesión</h2>
+        <p>¿Seguro que deseas salir?</p>
+        <button id="logoutYes">Si</button>
+        <button id="logoutNo">No</button>
       </div>
     </div>
 
-    <!-- Aqui van los scripts -->
-    <!-- <script src="./js/ENV.js" defer></script>
-    <script src="./js/librerias.js" defer></script>
-    <script src="./js/menuPrincipal.js" defer></script>
-    <script src="./js/crearClientes.js" defer></script>
-    <script src="./js/listarClientes.js" defer></script> -->
+    <!-- JS principal -->
+    <script src="./js/app.js" defer></script>
     <script src="src/js/app.js"></script>
     
 </body>
