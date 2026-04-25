@@ -5,129 +5,39 @@
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto web ambulancias</title>
-    <meta name="description" content="ClientesApp: Crear Clientes (HTML, CSS, JavaScript) con formulario, validación y seguridad básica." />
+    <title>Sistema Ambulancias</title>
     <link rel="stylesheet" href="src/css/styles.css">
 </head>
 <body>
-    <!-- ACCESO RAPIDO AL CONTENIDO -->
-    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <!-- NOTAS: Este index no contiene HTML en cada modulo, solo cuenta con los contenedores vacios debido a que el HTML se va a generar dinamicamente en cada funcionalidad-->
 
-    <!-- CONTENEDOR PRINCIPAL -->
-     <div class="app" data-theme="dark">
+    <!-- Barra superior -->
+    <header class="topbar">
+        <h1>Sistema de Ambulancias</h1>
+    </header>
 
-      <!-- BARAA SUPERIOR -->
-      <header class="topbar">
-        
-        <!-- BOTON PARA ABRIR Y CERRAR MENU -->
-        <button id="sidebarToggle" class="icon-button">
-          <svg class="icon" viewBox="0 0 24 24">
-            <path d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
+    <!-- Contenedor para el menu lateral -->
+    <!-- Recibe el nombre Mount porque es un punto de montaje -->
+    <div class="menuPrincipalMount"></div>
 
-        <!-- NOMBRE DE LA APP -->
-        <div class="topbar__title">
-          <span class="brand">ClientesApp</span>
-          <span class="version">v1.0</span>
-        </div>
+    <!-- Contenedor principal donde se van a montar las vistas de cada funcionalidad -->
+    <main id="main" tabindex="1" aria-label="Contenido principal"></main>
 
-        <!-- ACCIONES (decorativo) -->
-        <div class="topbar__actions">
-          <button class="pill" disabled>UI</button>
-        </div>
-      </header>
+    <!-- Toast para mensajes temporales -->
+    <!-- Toast es un patron de interfaz que indica un mensaje temporal que aparece en la pantalla para confirmar acciones como "cliente guardado con exito" -->
+    <div id="toast" class="toast" hidden></div>
 
-      <!-- SIDEBAR (menú lateral) -->
-      <aside class="sidebar" id="sidebar">
-        
-        <!-- TITULO DEL MENU -->
-        <div class="sidebar__header">
-          <h2>Menú</h2>
-        </div>
+    <!-- Ventana modal de cierre de sesión -->
+    <idv id="logoutModal" class="modelOverlay" hidden></idv>
 
-
-        <!-- NAV -->
-        <nav class="nav">
-          <!-- Grupo desplegable -->
-          <details open>
-            <summary class="nav__item">
-              <!-- Icono -->
-              <svg class="icon" viewBox="0 0 24 24">
-                <path d="M16 11a4 4 0 1 0-8 0a4 4 0 0 0 8 0ZM4 20a8 8 0 0 1 16 0" />
-              </svg>
-              <span>Clientes</span>
-            </summary>
-
-            <!-- Opciones -->
-            <ul class="nav__sublist">
-              <li><button>Crear Cliente</button></li>
-              <li><button>Editar Cliente</button></li>
-              <li><button>Eliminar Cliente</button></li>
-              <li><button>Ordenar Clientes</button></li>
-              <li><button>Listar Cliente</button></li>
-            </ul>
-          </details>
-        </nav>
-
-        <!-- Separador -->
-        <div class="sidebar__divider"></div>
-
-        <!-- Perfil -->
-        <section class="profile">
-          
-          <!-- Título -->
-          <h3>Clientes App v1.0</h3>
-
-          <!-- Logo -->
-          <div class="profile__row">
-            <img src="./assets/logo CIAF-1.png" alt="Logo" />
-          </div>
-
-          <!-- Usuario -->
-          <div class="profile__row">
-            <img src="./assets/logo CIAF-1.png" alt="Usuario" />
-            <p>Usuario:</p>
-          </div>
-
-          <!-- Modo oscuro -->
-          <div class="profile__row">
-            <span>Modo oscuro</span>
-            <input type="checkbox" checked />
-          </div>
-
-          <!-- Cerrar sesión -->
-          <div class="profile__row">
-            <button class="button button--danger">Cerrar sesión</button>
-          </div>
-
-        </section>
-      </aside>
-
-      <!-- Fondo al abrir menú -->
-      <div class="overlay" id="overlay" hidden></div>
-
-      <!-- CONTENIDO PRINCIPAL -->
-      <main id="main">
-
-        <!--  PROPUESTA: Dentro de sidebar estan los botones o links de las funcionalidades (crearm editar, etc), si se le da clic, JS se encarga de cargar la vista (carpetas views con los html de cada funcionalidad, es decir, crear.html, editar.html, etc) dentro del contenido principal. Es decir, no se redirige, solo se muestra el contenido de las vistas -->
-
-      </main>
-    </div>
-
-    <!-- VENTANA MODAL PARA CERRAR SESION -->
-    <div id="logoutModal" hidden>
-      <div>
-        <h2>Cerrar Sesión</h2>
-        <p>¿Seguro que deseas salir?</p>
-        <button id="logoutYes">Si</button>
-        <button id="logoutNo">No</button>
-      </div>
-    </div>
-
-    <!-- JS principal -->
-    <script src="./js/app.js" defer></script>
-    <script src="src/js/app.js"></script>
-    
+    <!-- Scripts -->
+    <script src="./src/js/env.js" type="module"></script>
+    <script src="./src/js/app.js" type="module"></script>
+    <script src="./src/js/menuPrincipal.js" type="module"></script>
+    <script src="./src/js/clientes.js" type="module"></script>
+    <script src="./src/js/vehiculos.js" type="module"></script>
+    <script src="./src/js/conductores.js" type="module"></script>
+    <script src="./src/js/traslados.js" type="module"></script>
+    <script src="./src/js/pagos.js" type="module"></script>
 </body>
 </html>
