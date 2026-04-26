@@ -1,20 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Configuración basica -->
     <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto web ambulancias</title>
-
+    <title>Sistema Ambulancias</title>
     <link rel="stylesheet" href="src/css/styles.css">
 </head>
 <body>
-     <h1>Sistema de Ambulancias 🚑</h1>
-     
-     <main id="main"></main>
+    <!-- NOTAS: Este index no contiene HTML en cada modulo, solo cuenta con los contenedores vacios debido a que el HTML se va a generar dinamicamente en cada funcionalidad-->
 
-     <div id="toast" class="toast"></div>
+    <!-- Contenedor principal -->
+    <div id="app" data-theme="light">
+      <!-- Barra superior -->
+      <header id="topbar">
+          <h1>🚑Ambulancias</h1>
+          <p>Versión 1.1</p>
+      </header>
 
-    <script type="module" src="src/js/app.js"></script>
-    
+      <!-- Contenedor para el menu lateral -->
+      <!-- Recibe el nombre Mount porque es un punto de montaje -->
+      <div id="menuPrincipalMount"></div>
+
+      <!-- Contenedor principal donde se van a montar las vistas de cada funcionalidad -->
+      <main id="main" tabindex="1" aria-label="Contenido principal"></main>
+
+      <!-- Toast para mensajes temporales -->
+      <!-- Toast es un patron de interfaz que indica un mensaje temporal que aparece en la pantalla para confirmar acciones como "cliente guardado con exito" -->
+      <div id="toast" class="toast" hidden></div>
+
+      <!-- Ventana modal de cierre de sesión -->
+      <div id="logoutModal" class="modelOverlay" hidden></idv>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./src/js/env.js" type="module"></script>
+    <script src="./src/js/app.js" type="module"></script>
+    <script src="./src/js/menuPrincipal.js" type="module"></script>
+    <script src="./src/js/clientes.js" type="module"></script>
+    <script src="./src/js/vehiculos.js" type="module"></script>
+    <script src="./src/js/conductores.js" type="module"></script>
+    <script src="./src/js/traslados.js" type="module"></script>
+    <script src="./src/js/pagos.js" type="module"></script>
 </body>
 </html>
