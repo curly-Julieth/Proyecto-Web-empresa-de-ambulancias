@@ -1,0 +1,126 @@
+
+/* --------- Variables globales*/
+:root {
+  --altura-barra-superior: 56px;
+  --ancho-barra-lateral: 280px;
+  --radio-borde: 12px;
+  --espacio-1: 8px;
+  --espacio-2: 12px;
+  --espacio-3: 16px;
+  --espacio-4: 24px;
+  --transicion-rapida: 160ms;
+  --fuente: system-ui;
+}
+
+
+/* ----------- Definición de las paletas de colores segun data-theme */
+/* Tema claro */
+#app[data-theme="light"] {
+  --fondo: #f9fbfd;
+  --superficie: #eef4ff;
+  --superficie-2: #fff;
+  --texto: #0c1424;
+  --texto-suave: rgba(12, 20, 36, 0.68);
+  --color-principal: #d32f2f;   
+  --color-secundario: #1565c0; 
+  --color-peligro: #ef5350;
+  --hover: rgba(12, 20, 36, 0.07);
+  --borde: rgba(0, 0, 0, 0.1); 
+}
+
+
+/* Tema oscuro */
+#app[data-theme="dark"] {
+  --fondo: #0a0f1a;
+  --superficie: #121a2b;
+  --superficie-2: #0d1a3b;
+  --texto: #ffffff;
+  --texto-suave: rgba(255, 255, 255, 0.82);
+  --color-principal: #ef5350;   
+  --color-secundario: #42a5f5; 
+  --color-peligro: #ff1744;
+  --hover: rgba(255, 255, 255, 0.08);
+  --borde: rgba(255, 255, 255, 0.1);
+}
+
+
+/*-------------- Estilos para los elementos del HTML */
+/* ------------- Estilo para el contenedor .app */
+/* Aqui los atributos se encargan de activar un layout en grid de manera que el header queda arriba, el menuPrincipalMount queda con sidebar a la izquierda y el main toma el contenido principal */
+#app {
+  display: grid;
+  grid-template-rows: var(--altura-barra-superior) 1fr;
+  grid-template-columns: var(--ancho-barra-lateral) 1fr;
+  grid-template-areas:
+    "barra-superior barra-superior"
+    "barra-lateral principal";
+  min-height: 100vh;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--fuente);
+  gap: var(--espacio-2);
+}
+
+
+/* ------------ Estilos para el header */
+#topbar {
+  grid-area: barra-superior;
+  background: var(--superficie);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--espacio-3);
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: var(--radio-borde);
+  display: flex;
+}
+
+
+
+/* ----------- Estilos para el menuprincipal o sidebar */
+#menuPrincipalMount {
+  grid-area: barra-lateral;
+  background: var(--superficie-2);
+  border-right: 1px solid var(--borde);
+  padding: var(--espacio-3);
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radio-borde);
+}
+
+/* Estilo para el contenido del sidebar creado finamicamente en menuPrincipal.js*/
+#menuPrincipalMount .titleNav {
+  font-size: 20px;
+  text-align: center;
+}
+
+#menuPrincipalMount .sidebarNav {
+  display: flex;
+  flex-direction: column;
+}
+
+#menuPrincipalMount .sidebarNav .navItem {
+  margin: var(--espacio-1);
+  padding: var(--espacio-1);
+  text-decoration: none;
+  color: var(--texto);
+  font-size: 18px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-borde);
+  text-align: center;
+}
+
+#menuPrincipalMount .sidebarNav .navItem:hover {
+  background-color: var(--hover);
+}
+
+
+
+/* ------------- Estilos para el main */
+#main {
+  grid-area: principal;
+  background: var(--superficie);
+  padding: var(--espacio-4);
+  border-radius: var(--radio-borde);
+}
