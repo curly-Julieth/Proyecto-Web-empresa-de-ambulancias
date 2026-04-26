@@ -607,68 +607,7 @@ export let recibosCaja = [
 
 // Traslados
 
-export let traslados = [
-  {
-    idTraslado: 1,
-    idContrato: 1,
-    idCliente: 1,
-    idBeneficiario: 1,
-    fechaTraslado: "2026-04-20",
-    horaTraslado: "08:30",
-    direccionInicial: "Casa",
-    direccionFinal: "Hospital San Jorge",
-    idConductor: 1,
-    idVehiculo: 1
-  },
-  {
-    idTraslado: 2,
-    idContrato: 2,
-    idCliente: 2,
-    idBeneficiario: null,
-    fechaTraslado: "2026-04-21",
-    horaTraslado: "10:00",
-    direccionInicial: "Oficina",
-    direccionFinal: "Clínica Comfamiliar",
-    idConductor: 1,
-    idVehiculo: 1
-  },
-  {
-    idTraslado: 3,
-    idContrato: 4,
-    idCliente: 4,
-    idBeneficiario: 5,
-    fechaTraslado: "2026-04-22",
-    horaTraslado: "14:15",
-    direccionInicial: "Casa",
-    direccionFinal: "Hospital Santa Mónica",
-    idConductor: 1,
-    idVehiculo: 1
-  },
-  {
-    idTraslado: 4,
-    idContrato: 8,
-    idCliente: 8,
-    idBeneficiario: 10,
-    fechaTraslado: "2026-04-23",
-    horaTraslado: "09:45",
-    direccionInicial: "Empresa",
-    direccionFinal: "Clínica Los Rosales",
-    idConductor: 1,
-    idVehiculo: 1
-  },
-  {
-    idTraslado: 5,
-    idContrato: 9,
-    idCliente: 9,
-    idBeneficiario: 12,
-    fechaTraslado: "2026-04-23",
-    horaTraslado: "18:00",
-    direccionInicial: "Evento",
-    direccionFinal: "Hospital Universitario",
-    idConductor: 1,
-    idVehiculo: 1
-  }
-];
+export let traslados = [];
 
 
 /*
