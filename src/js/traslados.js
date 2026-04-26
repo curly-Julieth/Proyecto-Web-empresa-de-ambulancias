@@ -266,7 +266,7 @@ const nuevoTraslado = {
   renderTraslados();
 
   form.reset();
-  mostrarToast("Traslado registrado correctamente");
+  mostrarToast("Traslado registrado correctamente.");
 });
 
 
