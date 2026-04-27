@@ -97,7 +97,10 @@ function activarFormulario() {
       hayError = true;
     }
 
-    if (hayError) return;
+    if (hayError) {
+      mostrarToast("⚠️ Ingresa todos los datos antes de guardar");
+      return;
+    }
 
     const nuevoCliente = {
       idCliente: clientes.length + 1,
@@ -111,5 +114,20 @@ function activarFormulario() {
     renderClientes();
 
     form.reset();
+    mostrarToast("Cliente registrado con éxito ✅");
   });
 }
+
+// Funcion para mostrar los mensajes
+function mostrarToast(mensaje) {
+  const toast = document.getElementById("toast");
+  toast.textContent = mensaje;
+  toast.classList.add("show");
+  toast.removeAttribute("hidden");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+    toast.setAttribute("hidden", "");
+  }, 2000);
+}
+

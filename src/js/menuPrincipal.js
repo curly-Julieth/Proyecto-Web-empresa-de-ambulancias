@@ -16,30 +16,27 @@ document.getElementById("menuPrincipalMount").innerHTML = `
         <a href="#" class="navItem">Traslados</a>
         <a href="#" class="navItem">Pagos</a>
     </nav>
+    <div class="sideBarActions">
+      <button id="btnTheme">Cambiar tema</button>
+      <button id="btnLogout">Cerrar sesión</button>
+    </div>
 `
 
-// document.getElementById("btnClientes")
-//   .addEventListener("click", (e) => {
-//     e.preventDefault();
-//     cargarClientes();
-// });
 
-
-// ← NUEVA FUNCIÓN CENTRALIZADA ④
+// Funcion centralizada de navegación
 function navegar(vistaFn, btnId) {
   // Remover active de TODOS los botones
   document.querySelectorAll(".navItem").forEach(btn => {
     btn.classList.remove("active");
   });
-  
-  // Poner active SOLO en el botón actual
+
   document.getElementById(btnId).classList.add("active");
-  
-  // Cargar la vista
   vistaFn();
 }
 
-// ← NUEVOS EVENT LISTENERS ⑤
+
+
+// Events listeners de navegación 
 document.getElementById("btnResumen").addEventListener("click", (e) => {
   e.preventDefault();
   navegar(cargarResumen, "btnResumen");
@@ -49,3 +46,13 @@ document.getElementById("btnClientes").addEventListener("click", (e) => {
   e.preventDefault();
   navegar(cargarClientes, "btnClientes");
 });
+
+
+
+// Cambiar tema (claro/oscuro)
+document.getElementById("btnTheme").addEventListener("click", () => {
+  const app = document.getElementById("app");
+  const currentTheme = app.getAttribute("data-theme");
+  app.setAttribute("data-theme", currentTheme === "light" ? "dark" : "light");
+});
+
