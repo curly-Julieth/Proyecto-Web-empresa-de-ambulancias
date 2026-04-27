@@ -124,3 +124,134 @@
   padding: var(--espacio-4);
   border-radius: var(--radio-borde);
 }
+
+
+
+
+/* ------------- Estilos para el div de notificacion tipo toast */
+.toast {
+  position: fixed;
+  top: var(--espacio-4);
+  right: var(--espacio-4);
+  background: var(--color-principal);
+  color: var(--superficie-2);
+  padding: var(--espacio-2) var(--espacio-3);
+  border-radius: var(--radio-borde);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  z-index: 10000;
+  transform: translateX(400px);
+  transition: all var(--transicion-rapida) cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  max-width: 350px;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: var(--fuente);
+}
+
+.toast.show {
+  transform: translateX(0);
+}
+
+.toast.error {
+  background: var(--color-peligro);
+}
+
+.toast.warning {
+  background: var(--color-secundario);
+  color: var(--texto);
+}
+
+
+
+
+
+/* ------------- Estilos para la ventana modal de cerrar sesión
+.modelOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transicion-rapida) ease;
+}
+
+.modelOverlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modalContent {
+  background: var(--superficie-2);
+  padding: var(--espacio-4);
+  border-radius: var(--radio-borde);
+  max-width: 450px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  border: 1px solid var(--borde);
+  transform: scale(0.7) translateY(-50px);
+  transition: all var(--transicion-rapida) ease;
+  font-family: var(--fuente);
+}
+
+.modelOverlay.show .modalContent {
+  transform: scale(1) translateY(0);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--espacio-3);
+  border-bottom: 2px solid var(--borde);
+  padding-bottom: var(--espacio-2);
+}
+
+.modalTitle {
+  margin: 0;
+  font-size: 24px;
+  color: var(--texto);
+  font-weight: bold;
+}
+
+.btnClose {
+  background: var(--hover);
+  border: 1px solid var(--borde);
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--texto-suave);
+  padding: var(--espacio-1);
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radio-borde);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transicion-rapida) ease;
+}
+
+.btnClose:hover {
+  background: var(--color-principal);
+  color: var(--superficie-2);
+  border-color: var(--color-principal);
+}
+
+.modalBody {
+  margin-bottom: var(--espacio-4);
+  line-height: 1.6;
+  color: var(--texto);
+  font-size: 16px;
+}
+
+.modalFooter {
+  display: flex;
+  gap: var(--espacio-2);
+  justify-content: flex-end;
+} */
