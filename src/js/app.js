@@ -1,3 +1,5 @@
-import { cargarClientes } from "./clientes.js";
+import { cargarResumen } from "./resumen.js"; 
 
-cargarClientes();
+
+// Cargar vista de RESUMEN por defecto al iniciar la app
+cargarResumen();
