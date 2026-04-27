@@ -1,1 +1,3 @@
-import "./traslados.js";
+import { cargarClientes } from "./clientes.js";
+
+cargarClientes();
