@@ -256,6 +256,45 @@
 }
 
 
+/* Botones Editar y Eliminar de la tabla */
+.btnEditar, .btnEliminar {
+  padding: var(--espacio-1) var(--espacio-2);
+  margin: 2px;
+  border: none;
+  border-radius: var(--radio-borde);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all var(--transicion-rapida);
+  min-width: 70px;
+}
+
+.btnEditar {
+  background: var(--color-secundario);
+  color: #fff;
+}
+
+.btnEditar:hover {
+  background: #1976d2;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.btnEliminar {
+  background: var(--color-peligro);
+  color: #fff;
+}
+
+.btnEliminar:hover {
+  background: var(--color-principal);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.4);
+}
+
+
+
+
+
+
 
 /* ----------- Estilos para hacer los mensajes tipo toast */
 /* Toast messages */
@@ -276,86 +315,6 @@
 .toast.show {
   opacity: 1;
 }
-
-
-
-
-/* ----------- Estilos para mostrar la ventana modal de cerrar sesion */
-/* Fondo oscuro del modal */
-/*.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-}
-
-/* Caja del modal */
-/* .modalContenido {
-  background: var(--superficie);
-  padding: var(--espacio-4);
-  border-radius: var(--radio-borde);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-}
-
-.modalContenido h2 {
-  margin-bottom: var(--espacio-2);
-  color: var(--color-secundario);
-}
-
-.modalContenido p {
-  margin-bottom: var(--espacio-3);
-  color: var(--texto);
-} */
-
-/* Botones dentro del modal */
-/* .modalActions {
-  display: flex;
-  justify-content: center;
-  gap: var(--espacio-2);
-}
-
-.modalActions button {
-  padding: var(--espacio-2) var(--espacio-3);
-  border: none;
-  border-radius: var(--radio-borde);
-  cursor: pointer;
-  transition: background var(--transicion-rapida);
-}
-
-#btnConfirm {
-  background: var(--color-peligro);
-  color: #fff;
-}
-
-#btnConfirm:hover {
-  background: #b71c1c;
-}
-
-#btnCancel {
-  background: var(--color-secundario);
-  color: #fff;
-}
-
-#btnCancel:hover {
-  background: var(--color-principal);
-} */
-
-
-
-
-
-
-
-
 
 
 
