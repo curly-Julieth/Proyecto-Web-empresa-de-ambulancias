@@ -53,6 +53,6 @@ document.getElementById("btnClientes").addEventListener("click", (e) => {
 document.getElementById("btnTheme").addEventListener("click", () => {
   const app = document.getElementById("app");
   const currentTheme = app.getAttribute("data-theme");
-  app.setAttribute("data-theme", currentTheme === "light" ? "dark" : "light");
+  app.setAttribute("data-theme", currentTheme === "dark" ? "light" : "dark");
 });
 
