@@ -47,7 +47,7 @@ const vistaClientes =  `
 let clienteEditable = null;
 
 export function cargarClientes() {
-  const main = document.getElementById("main");
+  const main = document.getElementById("main");  //se inserta html dentro del main
   main.innerHTML = vistaClientes;
 
   renderClientes();
@@ -60,7 +60,7 @@ export function cargarClientes() {
 // uso de event delegation
 function renderClientes() {
   const tabla = document.getElementById("tablaClientes");
-  tabla.innerHTML = "";
+  tabla.innerHTML = "";  // Limpia la tabla 
 
   clientes.forEach((c, index) => {
     const fila = document.createElement("tr");
@@ -76,7 +76,8 @@ function renderClientes() {
         <button class="btnEliminar" data-index="${index}">Eliminar</button>
       </td>
     `;
-    tabla.appendChild(fila);
+
+    tabla.appendChild(fila);   // la agrega al DOM
   });
 
   // Uso de event delegation
@@ -108,16 +109,20 @@ function cargarEnFormulario(cliente, indice){
 
 
 
+// Formulario
 function activarFormulario() {
   const form = document.getElementById("formCliente");
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", (e) => {  // se usa para detectar cuando se envía el formulario
     e.preventDefault(); //evita que se recargue la página y se pierda información
 
+    // se capturan los valores de los inputs
     const nombre = document.getElementById("nombre").value.trim();
     const apellido = document.getElementById("apellido").value.trim();
     const identificacion = document.getElementById("identificacion").value.trim();
     const email = document.getElementById("email").value.trim();
+
+
 
     let hayError = false;
 
@@ -169,7 +174,7 @@ function activarFormulario() {
 
       mostrarToast("Cliente actualizado con exito✅");
       clienteEditable = null;
-      renderClientes();
+
     } else {
       const nuevoCliente = {
         idCliente: clientes.length + 1,
@@ -178,12 +183,13 @@ function activarFormulario() {
         identificacion,
         email
       };
-
+  
       clientes.push(nuevoCliente);
-      renderClientes();
+
       mostrarToast("Cliente registrado con éxito ✅");
     }
 
+    renderClientes();  //se ejecuta para actualizar la tabla en pantalla
     form.reset();
     document.getElementById("btnGuardar").textContent = "Guardar";
   });
@@ -222,9 +228,6 @@ function limpiarErrores() {
     document.getElementById(id).textContent = "";
   });
 }
-
-
-
 // Funcion para mostrar los mensajes
 function mostrarToast(mensaje) {
   const toast = document.getElementById("toast");
