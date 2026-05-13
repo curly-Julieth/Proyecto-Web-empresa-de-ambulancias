@@ -1,3 +1,4 @@
+//importa los clientes desde env.js para usarlos en esta sección, es decir, para mostrar los clientes registrados y para agregar nuevos clientes al array de clientes.
 import { clientes } from "./env.js";
 
 const vistaClientes =  `
@@ -43,7 +44,7 @@ const vistaClientes =  `
 </section>
 `;
 
-
+// Variable para controlar si se está editando un cliente (null = nuevo cliente)  
 let clienteEditable = null;
 
 export function cargarClientes() {
@@ -56,12 +57,11 @@ export function cargarClientes() {
 
 
 
-//Esta función carga los datos en la tabla 
-// uso de event delegation
+//Esta función carga los datos en la tabla de clientes cada vez que se agrega, edita o elimina un cliente. Primero limpia el contenido actual de la tabla y luego recorre el array de clientes para crear una fila por cada cliente registrado, mostrando su información y agregando botones para editar o eliminar cada cliente. Además, se utiliza event delegation para manejar los eventos de los botones de editar y eliminar, lo que permite que funcionen incluso después de actualizar la tabla.
 function renderClientes() {
   const tabla = document.getElementById("tablaClientes");
   tabla.innerHTML = "";  // Limpia la tabla 
-
+//utilizamos forEach para recorrer el array de clientes y crear una fila por cada cliente registrado, mostrando su información y agregando botones para editar o eliminar cada cliente.
   clientes.forEach((c, index) => {
     const fila = document.createElement("tr");
 
@@ -80,8 +80,12 @@ function renderClientes() {
     tabla.appendChild(fila);   // la agrega al DOM
   });
 
-  // Uso de event delegation
-  // Colocar que es y explicar
+  // Uso de event delegation para manejar los eventos de los botones de editar y eliminar,
+  //  lo que permite que funcionen incluso después de actualizar la tabla. 
+  // Se agrega un solo event listener al elemento padre (la tabla) 
+  // y se verifica si el elemento clickeado es un botón de editar o eliminar,
+  //  obteniendo el índice del cliente correspondiente a través del atributo data-index.
+  // c
   tabla.addEventListener("click", function(e){
     if (e.target.classList.contains("btnEditar")){
         const indice = parseInt(e.target.getAttribute("data-index"));
@@ -93,7 +97,7 @@ function renderClientes() {
   })
 }
 
-
+// Carga los datos del cliente seleccionado en el formulario para su edición.
 function cargarEnFormulario(cliente, indice){
   document.getElementById("nombre").value = cliente.nombres;
   document.getElementById("apellido").value = cliente.apellido;
@@ -109,7 +113,12 @@ function cargarEnFormulario(cliente, indice){
 
 
 
-// Formulario
+// Formulario para agregar o editar clientes. Se agrega un event listener al formulario para detectar
+//  cuando se envía el formulario, evitando que se recargue la página.
+//  Luego, se capturan los valores de los inputs
+//  y se realizan validaciones para asegurarse de que los datos ingresados sean correctos.
+//  Si hay errores, se muestran mensajes de error debajo de cada campo correspondiente.
+// 
 function activarFormulario() {
   const form = document.getElementById("formCliente");
 
@@ -123,13 +132,18 @@ function activarFormulario() {
     const email = document.getElementById("email").value.trim();
 
 
+ // Se realizan validaciones para asegurarse de que los datos ingresados sean correctos.
 
     let hayError = false;
 
     limpiarErrores();
 
 
-    // Validaciones
+    // validar cada campo utilizando funciones de validación específicas para cada tipo de dato 
+    // (nombre, apellido, identificación y email). 
+    // Si algún campo no cumple con los criterios de validación,
+    //  se muestra un mensaje de error debajo del campo correspondiente
+    //  y se marca que hay un error para evitar que se guarden los datos hasta que se corrijan.
     if (!nombre || !validarNombre(nombre)) {
       document.getElementById("errorNombre").textContent = "Nombre inválido (solo letras, 4-50 caracteres)";
       hayError = true;
@@ -151,7 +165,8 @@ function activarFormulario() {
     }
 
 
-    // Verificar duplicaciones
+    // verificar que la identificación sea única, es decir,
+    //  que no exista otro cliente registrado con la misma identificación.
     if (!hayError && clienteEditable === null) {
       const existe = clientes.some(c => c.identificacion === identificacion);
       if (existe) {
@@ -164,8 +179,10 @@ function activarFormulario() {
       mostrarToast("⚠️ Corrige los errores antes de guardar");
       return;
     }
-
-    // Guardar y editar 
+ 
+    // guardar o actualizar cliente. Si clienteEditable es null, se está creando un nuevo cliente,
+    //  por lo que se crea un nuevo objeto cliente con los datos ingresados y se agrega al array de clientes.
+    //  Si clienteEditable no es null, se está editando un cliente existente, por lo que se actualizan los datos del cliente correspondiente en el array de clientes utilizando el índice almacenado en clienteEditable.  
     if (clienteEditable !== null) {
       clientes[clienteEditable].nombres = nombre;
       clientes[clienteEditable].apellido = apellido;
@@ -195,7 +212,12 @@ function activarFormulario() {
   });
 }
 
-// Eliminar cliente
+// eliminar cliente. Se recibe el índice del cliente a eliminar, 
+// se muestra una confirmación al usuario para evitar eliminaciones accidentales, 
+// y si el usuario confirma, se elimina el cliente del array de clientes 
+// utilizando el método splice() y se actualiza la tabla de clientes
+//  en pantalla llamando a renderClientes().
+//  Además, se muestra un mensaje de éxito utilizando la función mostrarToast() para informar al usuario que el cliente ha sido eliminado correctamente.
 function eliminarCliente(indice) {
   const cliente = clientes[indice];
   
@@ -206,7 +228,11 @@ function eliminarCliente(indice) {
   }
 }
 
-// Funciones de validacion
+// Funciones de validación para cada campo del formulario,
+//  utilizando expresiones regulares para asegurarse de que los datos ingresados 
+// cumplan con los criterios establecidos (por ejemplo, que el nombre y apellido solo contengan letras y tengan una longitud entre 4 y 50 caracteres,
+//  que la identificación solo contenga números y tenga una longitud entre 7 y 10 dígitos,
+//  y que el email tenga un formato válido).
 function validarNombre(nombre) {
   return /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{4,50}$/.test(nombre);
 }
@@ -228,7 +254,7 @@ function limpiarErrores() {
     document.getElementById(id).textContent = "";
   });
 }
-// Funcion para mostrar los mensajes
+// Función para mostrar un mensaje de toast (notificación temporal) en la pantalla,
 function mostrarToast(mensaje) {
   const toast = document.getElementById("toast");
   toast.textContent = mensaje;
