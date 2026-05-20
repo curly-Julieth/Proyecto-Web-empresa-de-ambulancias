@@ -2,6 +2,7 @@
 
 import { cargarResumen } from "./resumen.js";
 import { cargarClientes } from "./clientes.js";
+import { cargarConductores } from "./conductores.js";
 
 
 document.getElementById("menuPrincipalMount").innerHTML = `
@@ -11,7 +12,7 @@ document.getElementById("menuPrincipalMount").innerHTML = `
     <nav class="sidebarNav">
         <a href="#" class="navItem" id="btnResumen">Resumen</a>
         <a href="#" class="navItem" id="btnClientes">Clientes</a>
-        <a href="#" class="navItem" >Conductores</a>
+        <a href="#" class="navItem" id="btnConductores">Conductores</a>
         <a href="#" class="navItem">Vehiculos</a>
         <a href="#" class="navItem">Traslados</a>
         <a href="#" class="navItem">Pagos</a>
@@ -47,7 +48,10 @@ document.getElementById("btnClientes").addEventListener("click", (e) => {
   navegar(cargarClientes, "btnClientes");
 });
 
-
+document.getElementById("btnConductores").addEventListener("click", (e) => {
+  e.preventDefault();
+  navegar(cargarConductores, "btnConductores");
+});
 
 // Cambiar tema (claro/oscuro)
 document.getElementById("btnTheme").addEventListener("click", () => {
