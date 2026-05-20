@@ -46,7 +46,6 @@
 
 /*-------------- Estilos para los elementos del HTML */
 /* ------------- Estilo para el contenedor .app */
-/* Aqui los atributos se encargan de activar un layout en grid de manera que el header queda arriba, el menuPrincipalMount queda con sidebar a la izquierda y el main toma el contenido principal */
 #app {
   display: grid;
   grid-template-rows: var(--altura-barra-superior) 1fr;
@@ -89,6 +88,32 @@
   border-radius: var(--radio-borde);
 }
 
+/* Estilos para botones de cerrar sesion y cambiar tema */
+.sideBarActions {
+  margin-top: auto; /* empuja los botones al fondo del sidebar */
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+  margin-bottom: 30px;
+}
+
+.sideBarActions button {
+  padding: var(--espacio-2);
+  border: none;
+  border-radius: var(--radio-borde);
+  cursor: pointer;
+  background: var(--color-secundario);
+  color: #fff;
+  transition: background var(--transicion-rapida);
+}
+
+.sideBarActions button:hover {
+  background: var(--color-principal);
+}
+
+
+
+
 /* Estilo para el contenido del sidebar creado finamicamente en menuPrincipal.js*/
 #menuPrincipalMount .titleNav {
   font-size: 20px;
@@ -124,3 +149,174 @@
   padding: var(--espacio-4);
   border-radius: var(--radio-borde);
 }
+
+
+/* Estilos retutilizables para todas las vistas */
+/* Main */
+#main section {
+  background: var(--superficie-2);
+  padding: var(--espacio-3);
+  border-radius: var(--radio-borde);
+  margin-bottom: var(--espacio-4);
+}
+
+#main section h2,
+#main section h3 {
+  color: var(--color-secundario);
+  margin-bottom: var(--espacio-2);
+  text-align: center;
+}
+
+#main section h3 {
+  margin-top: 70px;
+}
+
+/* Formularios */
+#formCliente {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+  margin-bottom: var(--espacio-4);
+  max-width: 480px;       
+  margin-left: auto;      
+  margin-right: auto;
+}
+
+#formCliente label {
+  font-weight: bold;
+  color: var(--texto);
+}
+
+#formCliente input {
+  padding: var(--espacio-2);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-borde);
+  font-family: var(--fuente);
+  width: 95%;           
+  max-width: 100%;  
+}
+
+#formCliente input:focus {
+  outline: none;
+  border-color: var(--color-secundario);
+  box-shadow: 0 0 4px var(--color-secundario);
+}
+
+#formCliente .error {
+  color: var(--color-peligro);
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Botones */
+#formCliente button {
+  background: var(--color-principal);
+  color: #fff;
+  border: none;
+  padding: var(--espacio-2) var(--espacio-3);
+  border-radius: var(--radio-borde);
+  cursor: pointer;
+  transition: background var(--transicion-rapida);
+  text-align: center;
+  width: 100%;
+}
+
+#formCliente button:hover {
+  background: var(--color-secundario);
+}
+
+
+/* Tablas */
+#main table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: var(--radio-borde);
+  overflow: hidden;
+  margin-top: 30px;
+}
+
+#main table th,
+#main table td {
+  border: 1px solid var(--borde);
+  padding: var(--espacio-2);
+  text-align: left;
+}
+
+#main table th {
+  background: var(--color-secundario);
+  color: #fff;
+}
+
+#main table tr:nth-child(even) {
+  background: var(--superficie);
+}
+
+#main table tr:hover {
+  background: var(--hover);
+}
+
+
+/* Botones Editar y Eliminar de la tabla */
+.btnEditar, .btnEliminar {
+  padding: var(--espacio-1) var(--espacio-2);
+  margin: 2px;
+  border: none;
+  border-radius: var(--radio-borde);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all var(--transicion-rapida);
+  min-width: 70px;
+}
+
+.btnEditar {
+  background: var(--color-secundario);
+  color: #fff;
+}
+
+.btnEditar:hover {
+  background: #1976d2;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.btnEliminar {
+  background: var(--color-peligro);
+  color: #fff;
+}
+
+.btnEliminar:hover {
+  background: var(--color-principal);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.4);
+}
+
+
+
+
+
+
+
+/* ----------- Estilos para hacer los mensajes tipo toast */
+/* Toast messages */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--color-secundario); 
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1000;
+}
+
+/* Estado visible del toast */
+.toast.show {
+  opacity: 1;
+}
+
+
+
+
+

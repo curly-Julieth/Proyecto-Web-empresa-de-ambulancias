@@ -12,7 +12,7 @@
     <!-- NOTAS: Este index no contiene HTML en cada modulo, solo cuenta con los contenedores vacios debido a que el HTML se va a generar dinamicamente en cada funcionalidad-->
 
     <!-- Contenedor principal -->
-    <div id="app" data-theme="light">
+    <div id="app" data-theme="dark">
       <!-- Barra superior -->
       <header id="topbar">
           <h1>🚑Ambulancias</h1>
@@ -31,7 +31,16 @@
       <div id="toast" class="toast" hidden></div>
 
       <!-- Ventana modal de cierre de sesión -->
-      <div id="logoutModal" class="modelOverlay" hidden></div>
+      <div id="logoutModal" class="modelOverlay" hidden>
+        <div class="modalContenido">
+            <h2>¿Cerrar sesión?</h2>
+            <p>¿Estas seguro de que deseas salir?</p>
+            <div class="modalActions">
+                <button id="btnConfirm">Si, cerrar sesión</button>
+                <button id="btnCancel">Cancelar</button>
+            </div>
+        </div>
+      </div>
     </div>
 
     <!-- Scripts -->
