@@ -353,7 +353,7 @@ function validarFormulario() {
 
     // retorna: true si no hay errores, false si hay al menos uno
     return errores.length === 0;
-}}
+}
 
 // FUNCIÓN: MOSTRAR LA VISTA DE VEHÍCULOS
 
