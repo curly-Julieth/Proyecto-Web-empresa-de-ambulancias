@@ -76,9 +76,20 @@ export const barrios = [
   - Se llena al crear clientes.
   - idCliente es consecutivo automático (se calcula en el guardado).
 */
-export const clientes = [
 
-];
+
+
+
+// ----------------------- SE AGREGO EL SIGUIENTE CODIGO PARA HACER USO DEL LOCAL STORAGE EN CLIENTES. CUANDO SE RECARGUE LA PÁGINA LOS CLIENTES VAN A SEGUIR GUARDADOS. 
+export let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+
+
+
+
+
+
+
+
 
 // Array vehículos
 

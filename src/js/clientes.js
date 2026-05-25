@@ -1,7 +1,11 @@
 import { clientes } from "./env.js";
 
+// Vista de clientes
 const vistaClientes =  `
 <section>
+
+  <button id="btnVerJSON" class="btnVerJSON">Ver JSON</button>
+
   <h2>Registrar Cliente</h2>
 
   <form id="formCliente" autocomplete="new-password">
@@ -14,7 +18,6 @@ const vistaClientes =  `
     <input type="text" id="apellido" autocomplete="new-password" placeholder="Ingrese apellido" maxlength="50">
     <p class="error" id="errorApellido"></p>
     
-
     <label>Identificación</label>
     <input type="text" id="identificacion" autocomplete="new-password" placeholder="Ingrese identificación" maxlength="10">
     <p class="error" id="errorId"></p>
@@ -25,6 +28,7 @@ const vistaClientes =  `
 
     <button type="submit" id="btnGuardar">Guardar</button>
   </form>
+
 
   <h3>Clientes registrados</h3>
   <table border="1">
@@ -40,27 +44,46 @@ const vistaClientes =  `
     </thead>
     <tbody id="tablaClientes"></tbody>
   </table>
+
+
+  <div id="modalJSON" class="modal">
+    <div class="modal-contenido">
+      <h3>Base de Datos JSON</h3>
+      <pre id="jsonClientes"></pre>
+      <button id="cerrarModal">Cerrar</button>
+    </div>
+  </div>
+
 </section>
 `;
 
 
+
+// Variable global 
 let clienteEditable = null;
 
+// Funcion para guardar datos en JSON
+function guardarClientesJSON() {
+  localStorage.setItem("clientes", JSON.stringify(clientes));
+}
+
+
+// Funcion para cargar clientes
 export function cargarClientes() {
-  const main = document.getElementById("main");  //se inserta html dentro del main
+  const main = document.getElementById("main");  
   main.innerHTML = vistaClientes;
 
   renderClientes();
   activarFormulario();
+  activarModalJSON();
 }
 
 
 
-//Esta función carga los datos en la tabla 
-// uso de event delegation
+// Funcion para renderizar clientes
 function renderClientes() {
   const tabla = document.getElementById("tablaClientes");
-  tabla.innerHTML = "";  // Limpia la tabla 
+  tabla.innerHTML = "";  
 
   clientes.forEach((c, index) => {
     const fila = document.createElement("tr");
@@ -76,12 +99,10 @@ function renderClientes() {
         <button class="btnEliminar" data-index="${index}">Eliminar</button>
       </td>
     `;
-
-    tabla.appendChild(fila);   // la agrega al DOM
+    tabla.appendChild(fila);   
   });
 
-  // Uso de event delegation
-  // Colocar que es y explicar
+ // Uso de event delegation para diferenciar eliminar de editar
   tabla.addEventListener("click", function(e){
     if (e.target.classList.contains("btnEditar")){
         const indice = parseInt(e.target.getAttribute("data-index"));
@@ -94,6 +115,26 @@ function renderClientes() {
 }
 
 
+
+// Funcion para activar ventana modal donde se ve BD JSON
+function activarModalJSON() {
+    const btnJSON = document.getElementById("btnVerJSON");
+    const modal = document.getElementById("modalJSON");
+    const cerrar = document.getElementById("cerrarModal");
+    const json = document.getElementById("jsonClientes");
+
+    btnJSON.addEventListener("click", () => {
+      json.textContent = JSON.stringify(clientes, null, 2);
+      modal.classList.add("activo");
+    });
+    cerrar.addEventListener("click", () => {
+      modal.classList.remove("activo");
+})};
+
+
+
+
+// Funcion cargar en formulario (editar)
 function cargarEnFormulario(cliente, indice){
   document.getElementById("nombre").value = cliente.nombres;
   document.getElementById("apellido").value = cliente.apellido;
@@ -103,33 +144,29 @@ function cargarEnFormulario(cliente, indice){
   clienteEditable = indice;
 
   document.getElementById("btnGuardar").textContent = "Actualizar";
-  mostrarToast("Editando...");
+  mostrarToast("Editando cliente...");
 }
 
 
 
 
-// Formulario
+// Formulario activar formulario
 function activarFormulario() {
   const form = document.getElementById("formCliente");
 
   form.addEventListener("submit", (e) => {  // se usa para detectar cuando se envía el formulario
     e.preventDefault(); //evita que se recargue la página y se pierda información
 
-    // se capturan los valores de los inputs
+    // Se capturan los valores de los inputs
     const nombre = document.getElementById("nombre").value.trim();
     const apellido = document.getElementById("apellido").value.trim();
     const identificacion = document.getElementById("identificacion").value.trim();
     const email = document.getElementById("email").value.trim();
 
-
-
     let hayError = false;
-
     limpiarErrores();
 
-
-    // Validaciones
+    // Validaciones basicas
     if (!nombre || !validarNombre(nombre)) {
       document.getElementById("errorNombre").textContent = "Nombre inválido (solo letras, 4-50 caracteres)";
       hayError = true;
@@ -160,10 +197,12 @@ function activarFormulario() {
       }
     }
 
+    // Mensaje error antes de guardar
     if (hayError) {
       mostrarToast("⚠️ Corrige los errores antes de guardar");
       return;
     }
+
 
     // Guardar y editar 
     if (clienteEditable !== null) {
@@ -172,9 +211,10 @@ function activarFormulario() {
       clientes[clienteEditable].identificacion = identificacion;
       clientes[clienteEditable].email = email;
 
+      guardarClientesJSON();
+
       mostrarToast("Cliente actualizado con exito✅");
       clienteEditable = null;
-
     } else {
       const nuevoCliente = {
         idCliente: clientes.length + 1,
@@ -185,7 +225,7 @@ function activarFormulario() {
       };
   
       clientes.push(nuevoCliente);
-
+      guardarClientesJSON(); // Se agrego para guardar el registro en BD JSON
       mostrarToast("Cliente registrado con éxito ✅");
     }
 
@@ -195,18 +235,23 @@ function activarFormulario() {
   });
 }
 
-// Eliminar cliente
+
+
+// Funcion eliminar cliente
 function eliminarCliente(indice) {
   const cliente = clientes[indice];
   
   if (confirm(`¿Eliminar "${cliente.nombres} ${cliente.apellido}"?`)) {
-    clientes.splice(indice, 1);  
+    clientes.splice(indice, 1); 
+    guardarClientesJSON(); 
     renderClientes();            
     mostrarToast("Cliente eliminado ✅");
   }
 }
 
-// Funciones de validacion
+
+
+// Funciones de validacion complementarias
 function validarNombre(nombre) {
   return /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{4,50}$/.test(nombre);
 }
@@ -216,18 +261,23 @@ function validarApellido(apellido) {
 }
 
 function validarIdentificacion(identificacion) {
-  return /^\d{7,15}$/.test(identificacion);
+  return /^\d{7,10}$/.test(identificacion);
 }
 
 function validarEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+
+// Funcion limpiar errores
 function limpiarErrores() {
   ['errorNombre', 'errorApellido', 'errorId', 'errorEmail'].forEach(id => {
     document.getElementById(id).textContent = "";
   });
 }
+
+
+
 // Funcion para mostrar los mensajes
 function mostrarToast(mensaje) {
   const toast = document.getElementById("toast");
