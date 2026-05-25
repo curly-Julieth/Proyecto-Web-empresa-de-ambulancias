@@ -1,34 +1,33 @@
-// Importo el array de vehículos desde env.js donde se guardan todos los datos
+// Importo array vehículos: trae datos desde archivo env.js
 import { vehiculos } from "./env.js"
 
-// Obtengo la referencia del contenedor principal donde voy a inyectar todo el HTML dinámicamente
+// main: obtiene elemento HTML donde inyectaremos todo el contenido
 const main = document.getElementById("main")
 
-// Variable para rastrear qué vehículo se está editando
+// vehiculoEditable: guarda indice del vehículo que se está modificando, null si es nuevo
 let vehiculoEditable = null
 
 
 // EXPRESIONES REGULARES PARA VALIDACIONES
 
 
-// Regex para validar placa: debe ser ABC123 (3 letras mayúsculas + 3 números)
+// regexPlaca: valida formato ABC123 con 3 letras mayúsculas y 3 números
 const regexPlaca = /^[A-Z]{3}[0-9]{3}$/; 
 
-// Regex para SOAT: alfanumérico mínimo 8 caracteres
+// regexNumeroSoat: valida alfanuméricos con mínimo 8 caracteres
 const regexNumeroSoat = /^[A-Z0-9]{8,}$/; 
 
-// Regex para capacidad: solo números
+// regexCapacidad: valida solo números enteros
 const regexCapacidad = /^[0-9]+$/; 
 
-// Regex para ID GPS: alfanumérico mínimo 3 caracteres
+// regexIdGPS: valida alfanuméricos con mínimo 3 caracteres
 const regexIdGPS = /^[A-Z0-9]{3,}$/;
 
 
 // TEMPLATE HTML DEL FORMULARIO Y TABLA
 
 
-// Declaro la plantilla HTML con el formulario y la tabla en un string de múltiples líneas
-// Esta estructura se va a inyectar en el DOM cuando se cargue la página
+// vistaVehiculos: contiene todo el HTML del formulario y tabla en un string grande
 const vistaVehiculos = `
   <section>
     <h2>Vehículos</h2>
@@ -118,76 +117,54 @@ const vistaVehiculos = `
 // FUNCIÓN: ACTUALIZAR LA TABLA
 
 
-// Esta función recorre el array vehiculos y crea filas en la tabla dinámicamente
-// También usa event delegation para manejar clicks en botones de editar y eliminar
+// actualizarTabla: función que recorre vehículos, crea filas HTML y maneja clicks en botones
 function actualizarTabla() {
-    // Obtengo el elemento tbody donde voy a insertar las filas
+    // tablaAmbulancias: obtiene elemento tbody donde irán todas las filas
     const tablaAmbulancias = document.getElementById("tablaAmbulancias")
     
-    // Limpio la tabla para evitar duplicados (borro el contenido anterior)
-    tablaAmbulancias.innerHTML = "" // innerHTML = "" elimina todo el contenido HTML anterior
+    // limpia tabla: borra contenido anterior para evitar duplicados
+    tablaAmbulancias.innerHTML = ""
     
-    // Recorro cada ambulancia en el array vehiculos
-    // forEach itera sobre cada elemento del array
-    // (ambulancia, index) = ambulancia es el objeto actual, index es la posición (0, 1, 2...)
+    // forEach: recorre cada vehículo del array con su índice
     vehiculos.forEach((ambulancia, index) => {
-        // Creo una fila HTML con los datos de la ambulancia actual
-        // El backtick (`) permite insertar variables usando ${} dentro de strings
+        // fila: string HTML con datos de una ambulancia usando template literals
         const fila = `
             <tr>
-                <!-- Mostro el ID único de la ambulancia -->
                 <td>${ambulancia.idVehiculo}</td>
-                <!-- Mostro la placa de la ambulancia -->
                 <td>${ambulancia.placa}</td>
-                <!-- Mostro el modelo de la ambulancia -->
                 <td>${ambulancia.modelo}</td>
-                <!-- Mostro el número de serie del motor -->
                 <td>${ambulancia.snMotor}</td>
-                <!-- Mostro el número de serie del chasis -->
                 <td>${ambulancia.snChasis}</td>
-                <!-- Mostro el número SOAT (seguro) -->
                 <td>${ambulancia.numeroSoat}</td>
-                <!-- Mostro la fecha de vencimiento del SOAT -->
                 <td>${ambulancia.fechaVencimientoSoat}</td>
-                <!-- Mostro el número de tarjeta de propiedad -->
                 <td>${ambulancia.tarjetaPropiedad}</td>
-                <!-- Mostro la capacidad de pacientes que puede transportar -->
                 <td>${ambulancia.capacidadPacientes}</td>
-                <!-- Mostro el número interno de identificación -->
                 <td>${ambulancia.numeroInterno}</td>
-                <!-- Mostro el ID del dispositivo GPS -->
                 <td>${ambulancia.idGPS}</td>
-                <!-- Columna de acciones con botones de editar y eliminar -->
                 <td>
-                    <!-- Botón Editar con data-index para guardar la posición en el array -->
+                    <!-- btnEditar: botón con clase y atributo data-index que guarda la posición -->
                     <button class="btnEditar" data-index="${index}">Editar</button>
-                    <!-- Botón Eliminar con data-index para guardar la posición en el array -->
+                    <!-- btnEliminar: botón con clase y atributo data-index que guarda la posición -->
                     <button class="btnEliminar" data-index="${index}">Eliminar</button>
                 </td>
             </tr>
         `
-        // Agrego la fila al tbody (+= significa concatenar, no reemplazar)
-        // += añade el contenido nuevo sin borrar lo anterior
+        // concatena: añade fila nueva sin borrar anteriores
         tablaAmbulancias.innerHTML += fila
     })
 
-    // ============ EVENT DELEGATION ============
-    // Event delegation es una técnica que coloca UN solo listener en el elemento padre
-    // En lugar de agregar un listener a cada botón individualmente
-    // El listener se ejecuta cuando se hace click en cualquier elemento dentro del tbody
+    // addEventListener: coloca un listener en el tbody que detecta clicks (event delegation)
     tablaAmbulancias.addEventListener("click", function(e) {
-        // e.target es el elemento exacto donde se hizo click
-        // classList.contains() verifica si el elemento tiene la clase "btnEditar"
+        // classList.contains: verifica si el elemento clickeado tiene clase btnEditar
         if (e.target.classList.contains("btnEditar")) {
-            // getAttribute("data-index") obtiene el valor del atributo data-index
-            // parseInt() convierte el string a número entero
+            // getAttribute: obtiene el valor del atributo data-index
+            // parseInt: convierte el texto a número entero
             const indice = parseInt(e.target.getAttribute("data-index"))
-            // Llama la función cargarEnFormulario con el vehículo y su posición
+            // cargarEnFormulario: llama función pasando el vehículo y su posición
             cargarEnFormulario(vehiculos[indice], indice)
         } else if (e.target.classList.contains("btnEliminar")) {
-            // Si el click fue en un botón con clase "btnEliminar"
+            // similar al anterior pero para botón eliminar
             const indice = parseInt(e.target.getAttribute("data-index"))
-            // Llama la función eliminarVehiculo con la posición del vehículo
             eliminarVehiculo(indice)
         }
     })
@@ -196,106 +173,91 @@ function actualizarTabla() {
 
 // FUNCIÓN: CARGAR DATOS EN EL FORMULARIO PARA EDITAR
 
-// Esta función carga los datos de un vehículo existente en el formulario para editarlo
-// Recibe: ambulancia (objeto con datos) e indice (posición en el array)
+// cargarEnFormulario: carga datos de un vehículo en los inputs para editar
+// recibe: ambulancia con datos y indice de su posición
 function cargarEnFormulario(ambulancia, indice) {
-    // .value establece el contenido del input
-    // Cada línea obtiene un campo del formulario y lo llena con los datos de la ambulancia
-    document.getElementById("placa").value = ambulancia.placa // Lleno el campo placa
-    document.getElementById("modelo").value = ambulancia.modelo // Lleno el campo modelo
-    document.getElementById("snmotor").value = ambulancia.snMotor // Lleno serie del motor
-    document.getElementById("snchasis").value = ambulancia.snChasis // Lleno serie del chasis
-    document.getElementById("numeroSOAT").value = ambulancia.numeroSoat // Lleno número SOAT
-    document.getElementById("fechaVencimientoSOAT").value = ambulancia.fechaVencimientoSoat // Lleno fecha SOAT
-    document.getElementById("tarjetaPropiedad").value = ambulancia.tarjetaPropiedad // Lleno tarjeta propiedad
-    document.getElementById("capacidadPacientes").value = ambulancia.capacidadPacientes // Lleno capacidad
-    document.getElementById("numeroInterno").value = ambulancia.numeroInterno // Lleno número interno
-    document.getElementById("idGPS").value = ambulancia.idGPS // Lleno ID GPS
+    // value: propiedad que asigna contenido a cada input del formulario
+    document.getElementById("placa").value = ambulancia.placa
+    document.getElementById("modelo").value = ambulancia.modelo
+    document.getElementById("snmotor").value = ambulancia.snMotor
+    document.getElementById("snchasis").value = ambulancia.snChasis
+    document.getElementById("numeroSOAT").value = ambulancia.numeroSoat
+    document.getElementById("fechaVencimientoSOAT").value = ambulancia.fechaVencimientoSoat
+    document.getElementById("tarjetaPropiedad").value = ambulancia.tarjetaPropiedad
+    document.getElementById("capacidadPacientes").value = ambulancia.capacidadPacientes
+    document.getElementById("numeroInterno").value = ambulancia.numeroInterno
+    document.getElementById("idGPS").value = ambulancia.idGPS
 
-    // Guardo el índice del vehículo que se está editando
-    // Esto es importante para saber cuál vehículo actualizar cuando se presione Guardar
+    // vehiculoEditable: guarda el índice para saber cuál vehículo actualizar luego
     vehiculoEditable = indice
 
-    // Cambio el texto del botón de "Guardar" a "Actualizar"
-    // Para indicar al usuario que está editando, no creando un nuevo registro
+    // textContent: cambia el texto del botón de Guardar a Actualizar
     document.getElementById("btnGuardar").textContent = "Actualizar"
     
-    // Muestro una notificación toast que dice "Editando..."
+    // mostrarToast: muestra mensaje temporal indicando que se está editando
     mostrarToast("Editando...")
 }
 
 // FUNCIÓN: ELIMINAR VEHÍCULO
 
-// Esta función elimina un vehículo después de confirmar
-// Recibe: indice (posición del vehículo en el array que se quiere eliminar)
+// eliminarVehiculo: elimina un vehículo después de confirmación del usuario
+// recibe: indice de la posición del vehículo a eliminar
 function eliminarVehiculo(indice) {
-    // Obtengo la ambulancia en esa posición para mostrar sus datos en la confirmación
+    // ambulancia: obtiene el vehículo en esa posición para mostrar su placa
     const ambulancia = vehiculos[indice]
     
-    // confirm() muestra un diálogo que pregunta si/no al usuario
-    // Si da click en "Aceptar" retorna true, si da click en "Cancelar" retorna false
-    // Aquí muestro la placa del vehículo para que sepa cuál va a eliminar
+    // confirm: muestra diálogo de confirmación si cancelar, el bloque no se ejecuta
     if (confirm(`¿Eliminar vehículo con placa "${ambulancia.placa}"?`)) {
-        // splice(indice, 1) elimina 1 elemento del array comenzando en la posición 'indice'
-        // Si indice = 2, elimina el elemento en la posición 2
-        vehiculos.splice(indice, 1) // Elimino el vehículo del array
+        // splice: elimina 1 elemento del array empezando en posición indice
+        vehiculos.splice(indice, 1)
         
-        // Actualizo la tabla para que se vea reflejada la eliminación inmediatamente
+        // actualizarTabla: redibuja la tabla sin el vehículo eliminado
         actualizarTabla()
         
-        // Muestro un mensaje de éxito al usuario
+        // mostrarToast: muestra mensaje de éxito con emoji
         mostrarToast("Vehículo eliminado ✅")
     }
-    // Si el usuario da click en "Cancelar", no sucede nada (la función termina)
 }
 
 // FUNCIÓN: MOSTRAR NOTIFICACIÓN
 
-// Esta función muestra un mensaje temporal (toast) al usuario
-// El toast es una notificación que aparece por unos segundos y desaparece
+// mostrarToast: muestra mensaje temporal que desaparece después de 3 segundos
+// recibe: mensaje texto a mostrar al usuario
 function mostrarToast(mensaje) {
-    // Obtengo el elemento del DOM que muestra los toasts
-    // Este elemento debe existir en el HTML principal (index.html)
+    // toast: obtiene elemento del DOM que contiene las notificaciones
     const toast = document.getElementById("toast")
     
-    // Verifico que el elemento toast exista antes de modificarlo
-    // if (toast) = si toast existe
+    // if: verifica que el elemento toast exista antes de modificarlo
     if (toast) {
-        // textContent cambia el texto que se muestra en el elemento
-        toast.textContent = mensaje // Asigno el mensaje a mostrar
+        // textContent: asigna el mensaje al elemento toast
+        toast.textContent = mensaje
         
-        // classList.add("show") agrega la clase CSS "show" al elemento
-        // La clase "show" probablemente tiene estilos que hacen visible el toast
-        toast.classList.add("show") // Hago visible el toast
+        // classList.add: agrega clase CSS show que hace visible el toast
+        toast.classList.add("show")
         
-        // removeAttribute("hidden") elimina el atributo hidden
-        // Algunos elementos pueden estar ocultos con hidden, así los muestro
-        toast.removeAttribute("hidden") // Aseguro que sea visible
+        // removeAttribute: elimina atributo hidden para que sea visible
+        toast.removeAttribute("hidden")
 
-        // setTimeout ejecuta una función después de X milisegundos
-        // 3000 milisegundos = 3 segundos
+        // setTimeout: ejecuta función anónima después de 3000 milisegundos
         setTimeout(() => {
-            // Esta función se ejecutará después de 3 segundos
-            // Remuevo la clase "show" para ocultar el toast
-            toast.classList.remove("show") // Oculto el toast
+            // classList.remove: quita clase show para ocultar el toast
+            toast.classList.remove("show")
             
-            // Agrego el atributo hidden para ocultarlo completamente
-            toast.setAttribute("hidden", "") // Lo oculto del DOM
-        }, 3000) // 3000 ms = 3 segundos
+            // setAttribute: agrega atributo hidden para ocultarlo completamente
+            toast.setAttribute("hidden", "")
+        }, 3000)
     }
 }
 
 // FUNCIÓN: VALIDAR FORMULARIO
 
 
-// Esta función valida que todos los datos ingresados cumplan con el formato correcto
+// validarFormulario: verifica que todos los inputs cumplan con validaciones, retorna true o false
 function validarFormulario() {
-    // Obtengo todos los valores del formulario y los limpio
-    
-    // Placa: convierto a mayúsculas para que sea uniforme
+    // toUpperCase: convierte placa a mayúsculas para uniformidad
     const placa = document.getElementById("placa").value.toUpperCase();
     
-    // trim() elimina espacios en blanco al inicio y final
+    // trim: elimina espacios en blanco del inicio y final de cada campo
     const modelo = document.getElementById("modelo").value.trim();
     const snMotor = document.getElementById("snmotor").value.trim();
     const snChasis = document.getElementById("snchasis").value.trim();
@@ -306,23 +268,18 @@ function validarFormulario() {
     const numeroInterno = document.getElementById("numeroInterno").value.trim();
     const idGPS = document.getElementById("idGPS").value.trim();
 
-    // Array para almacenar los errores encontrados
+    // errores: array que almacena mensajes de error encontrados
     let errores = [];
 
-    // ---- VALIDAR PLACA ----
-    // La placa debe cumplir el patrón ABC123
+    // regexPlaca.test: verifica si placa cumple patrón ABC123
     if (!regexPlaca.test(placa)) {
-        // Si no cumple, agrego el mensaje de error
         errores.push("La placa debe tener formato ABC123 (3 letras mayúsculas + 3 números)");
-        // Muestro el error en el elemento designado
         document.getElementById("errorPlaca").textContent = errores[errores.length - 1];
     } else {
-        // Si es válido, limpio el mensaje de error
         document.getElementById("errorPlaca").textContent = "";
     }
 
-    // ---- VALIDAR MODELO ----
-    // El modelo debe tener al menos 3 caracteres
+    // modelo.length: verifica que modelo tenga mínimo 3 caracteres
     if (modelo.length < 3) {
         errores.push("El modelo debe tener al menos 3 caracteres");
         document.getElementById("errorModelo").textContent = errores[errores.length - 1];
@@ -330,8 +287,7 @@ function validarFormulario() {
         document.getElementById("errorModelo").textContent = "";
     }
 
-    // ---- VALIDAR NÚMERO DE SERIE DEL MOTOR ----
-    // Debe tener al menos 3 caracteres
+    // snMotor.length: verifica mínimo 3 caracteres
     if (snMotor.length < 3) {
         errores.push("El snMotor debe tener al menos 3 caracteres");
         document.getElementById("errorSnMotor").textContent = errores[errores.length - 1];
@@ -339,8 +295,7 @@ function validarFormulario() {
         document.getElementById("errorSnMotor").textContent = "";
     }
 
-    // ---- VALIDAR NÚMERO DE SERIE DEL CHASIS ----
-    // Debe tener al menos 3 caracteres
+    // snChasis.length: verifica mínimo 3 caracteres
     if (snChasis.length < 3) {
         errores.push("El snChasis debe tener al menos 3 caracteres");
         document.getElementById("errorSnChasis").textContent = errores[errores.length - 1];
@@ -348,8 +303,7 @@ function validarFormulario() {
         document.getElementById("errorSnChasis").textContent = "";
     }
 
-    // ---- VALIDAR NÚMERO SOAT ----
-    // Debe ser alfanumérico con mínimo 8 caracteres
+    // regexNumeroSoat.test: verifica alfanuméricos mínimo 8 caracteres
     if (!regexNumeroSoat.test(numeroSoat)) {
         errores.push("El número SOAT debe tener al menos 8 caracteres alfanuméricos");
         document.getElementById("errorNumeroSOAT").textContent = errores[errores.length - 1];
@@ -357,17 +311,15 @@ function validarFormulario() {
         document.getElementById("errorNumeroSOAT").textContent = "";
     }
 
-    // ---- VALIDAR FECHA DE VENCIMIENTO SOAT ----
-    // La fecha debe existir y ser mayor a la fecha actual (fecha futura)
+    // new Date: verifica que fecha sea futura no pasada
     if (!fechaVencimientoSoat || new Date(fechaVencimientoSoat) < new Date()) {
-        errores.push("La fecha de vencimiento debe ser futura (YYYY-MM-DD)");
+        errores.push("La fecha de vencimiento debe ser futura");
         document.getElementById("errorFechaVencimientoSOAT").textContent = errores[errores.length - 1];
     } else {
         document.getElementById("errorFechaVencimientoSOAT").textContent = "";
     }
 
-    // ---- VALIDAR TARJETA DE PROPIEDAD ----
-    // Debe tener al menos 3 caracteres
+    // tarjetaPropiedad.length: verifica mínimo 3 caracteres
     if (tarjetaPropiedad.length < 3) {
         errores.push("La tarjeta de propiedad debe tener al menos 3 caracteres");
         document.getElementById("errorTarjetaPropiedad").textContent = errores[errores.length - 1];
@@ -375,8 +327,7 @@ function validarFormulario() {
         document.getElementById("errorTarjetaPropiedad").textContent = "";
     }
 
-    // ---- VALIDAR CAPACIDAD DE PACIENTES ----
-    // Debe ser un número válido y mayor a 0
+    // regexCapacidad.test: verifica solo números, parseInt: convierte a número entero
     if (!regexCapacidad.test(capacidadPacientes) || parseInt(capacidadPacientes) < 1) {
         errores.push("La capacidad debe ser un número mayor a 0");
         document.getElementById("errorCapacidadPacientes").textContent = errores[errores.length - 1];
@@ -384,8 +335,7 @@ function validarFormulario() {
         document.getElementById("errorCapacidadPacientes").textContent = "";
     }
 
-    // ---- VALIDAR NÚMERO INTERNO ----
-    // Debe tener al menos 3 caracteres
+    // numeroInterno.length: verifica mínimo 3 caracteres
     if (numeroInterno.length < 3) {
         errores.push("El número interno debe tener al menos 3 caracteres");
         document.getElementById("errorNumeroInterno").textContent = errores[errores.length - 1];
@@ -393,8 +343,7 @@ function validarFormulario() {
         document.getElementById("errorNumeroInterno").textContent = "";
     }
 
-    // ---- VALIDAR ID GPS ----
-    // Debe ser alfanumérico con mínimo 3 caracteres
+    // regexIdGPS.test: verifica alfanuméricos mínimo 3 caracteres
     if (!regexIdGPS.test(idGPS)) {
         errores.push("El ID GPS debe tener al menos 3 caracteres alfanuméricos");
         document.getElementById("errorIdGPS").textContent = errores[errores.length - 1];
@@ -402,9 +351,9 @@ function validarFormulario() {
         document.getElementById("errorIdGPS").textContent = "";
     }
 
-    // Si no hay errores, retorno true (formulario válido), si hay errores retorno false
+    // retorna: true si no hay errores, false si hay al menos uno
     return errores.length === 0;
-}
+}}
 
 // FUNCIÓN: MOSTRAR LA VISTA DE VEHÍCULOS
 
@@ -527,8 +476,9 @@ function mostrarVehiculos() {
 }
 
 
-// Espero a que el DOM esté completamente cargado antes de ejecutar la función
+// addEventListener: escucha el evento DOMContentLoaded que dispara cuando carga la página
+// DOMContentLoaded: evento que ocurre cuando todo el HTML se ha cargado completamente
 document.addEventListener("DOMContentLoaded", mostrarVehiculos)
 
-// Exporto la función para que otros archivos puedan usarla si es necesario
+// export: exporta la función para que otros archivos puedan importarla y usarla
 export { mostrarVehiculos }
