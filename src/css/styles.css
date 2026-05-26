@@ -172,7 +172,7 @@
 }
 
 /* Formularios */
-#formCliente {
+#formCliente, #formConductor {
   display: flex;
   flex-direction: column;
   gap: var(--espacio-2);
@@ -182,7 +182,7 @@
   margin-right: auto;
 }
 
-#formCliente label {
+#formCliente label, #formConductor {
   font-weight: bold;
   color: var(--texto);
 }
