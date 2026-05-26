@@ -114,7 +114,7 @@
 
 
 
-/* Estilo para el contenido del sidebar creado finamicamente en menuPrincipal.js*/
+/* Estilo para el contenido del sidebar creado dinamicamente en menuPrincipal.js*/
 #menuPrincipalMount .titleNav {
   font-size: 20px;
   text-align: center;
