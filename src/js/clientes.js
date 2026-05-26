@@ -4,8 +4,6 @@ import { clientes } from "./env.js";
 const vistaClientes =  `
 <section>
 
-  <button id="btnVerJSON" class="btnVerJSON">Ver JSON</button>
-
   <h2>Registrar Cliente</h2>
 
   <form id="formCliente" autocomplete="new-password">
@@ -44,16 +42,6 @@ const vistaClientes =  `
     </thead>
     <tbody id="tablaClientes"></tbody>
   </table>
-
-
-  // <div id="modalJSON" class="modal">
-  //   <div class="modal-contenido">
-  //     <h3>Base de Datos JSON</h3>
-  //     <pre id="jsonClientes"></pre>
-  //     <button id="cerrarModal">Cerrar</button>
-  //   </div>
-  // </div>
-
 </section>
 `;
 
@@ -61,11 +49,6 @@ const vistaClientes =  `
 
 // Variable global 
 let clienteEditable = null;
-
-// Funcion para guardar datos en JSON
-// function guardarClientesJSON() {
-//   localStorage.setItem("clientes", JSON.stringify(clientes));
-// }
 
 
 // Funcion para cargar clientes
@@ -75,7 +58,7 @@ export function cargarClientes() {
 
   renderClientes();
   activarFormulario();
-  // activarModalJSON();
+  activarEventosTabla();
 }
 
 
@@ -101,35 +84,22 @@ function renderClientes() {
     `;
     tabla.appendChild(fila);   
   });
-
- // Uso de event delegation para diferenciar eliminar de editar
-  tabla.addEventListener("click", function(e){
-    if (e.target.classList.contains("btnEditar")){
-        const indice = parseInt(e.target.getAttribute("data-index"));
-        cargarEnFormulario(clientes[indice], indice);
-    } else if (e.target.classList.contains("btnEliminar")){
-      const indice = parseInt(e.target.getAttribute("data-index"));
-      eliminarCliente(indice);
-    }
-  })
 }
 
 
-
-// Funcion para activar ventana modal donde se ve BD JSON
-// function activarModalJSON() {
-//     const btnJSON = document.getElementById("btnVerJSON");
-//     const modal = document.getElementById("modalJSON");
-//     const cerrar = document.getElementById("cerrarModal");
-//     const json = document.getElementById("jsonClientes");
-
-//     btnJSON.addEventListener("click", () => {
-//       json.textContent = JSON.stringify(clientes, null, 2);
-//       modal.classList.add("activo");
-//     });
-//     cerrar.addEventListener("click", () => {
-//       modal.classList.remove("activo");
-// })};
+// Funcion activar eventos tabla
+function activarEventosTabla(){
+  const tabla = document.getElementById("tablaClientes");
+  tabla.addEventListener("click", function(e){
+    if (e.target.classList.contains("btnEditar")) {
+      const indice = parseInt(e.target.getAttribute("data-index"));
+      cargarEnFormulario(clientes[indice], indice);
+    } else if (e.target.classList.contains("btnEliminar")) {
+      const indice = parseInt(e.target.getAttribute("data-index"));
+      eliminarCliente(indice);
+    }
+  });
+}
 
 
 
@@ -211,13 +181,13 @@ function activarFormulario() {
       clientes[clienteEditable].identificacion = identificacion;
       clientes[clienteEditable].email = email;
 
-      // guardarClientesJSON();
-
       mostrarToast("Cliente actualizado con exito✅");
       clienteEditable = null;
     } else {
       const nuevoCliente = {
-        idCliente: clientes.length + 1,
+        idCliente: clientes.length > 0
+          ? Math.max(...clientes.map(c => c.idCliente)) + 1
+          : 1,
         nombres: nombre,
         apellido: apellido,
         identificacion,
@@ -225,7 +195,6 @@ function activarFormulario() {
       };
   
       clientes.push(nuevoCliente);
-      // guardarClientesJSON(); // Se agrego para guardar el registro en BD JSON
       mostrarToast("Cliente registrado con éxito ✅");
     }
 
@@ -243,7 +212,6 @@ function eliminarCliente(indice) {
   
   if (confirm(`¿Eliminar "${cliente.nombres} ${cliente.apellido}"?`)) {
     clientes.splice(indice, 1); 
-    guardarClientesJSON(); 
     renderClientes();            
     mostrarToast("Cliente eliminado ✅");
   }
