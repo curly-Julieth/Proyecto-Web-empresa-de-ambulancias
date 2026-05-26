@@ -1,4 +1,5 @@
-import { clientes } from "./env.js";
+import { clientes, archivosBD } from "./env.js";
+import { abrirArchivoBD, guardarArchivoBD } from "./fileManager.js";
 
 // Vista de clientes
 const vistaClientes =  `
@@ -25,6 +26,8 @@ const vistaClientes =  `
     <p class="error" id="errorEmail"></p>
 
     <button type="submit" id="btnGuardar">Guardar</button>
+    <button type="button" id="btnAbrirBD">Abrir .bd</button>
+    <button type="button" id="btnGuardarBD">Guardar .bd</button>
   </form>
 
 
@@ -50,7 +53,6 @@ const vistaClientes =  `
 // Variable global 
 let clienteEditable = null;
 
-
 // Funcion para cargar clientes
 export function cargarClientes() {
   const main = document.getElementById("main");  
@@ -59,6 +61,7 @@ export function cargarClientes() {
   renderClientes();
   activarFormulario();
   activarEventosTabla();
+  activarEventosArchivo();
 }
 
 
@@ -97,6 +100,52 @@ function activarEventosTabla(){
     } else if (e.target.classList.contains("btnEliminar")) {
       const indice = parseInt(e.target.getAttribute("data-index"));
       eliminarCliente(indice);
+    }
+  });
+}
+
+//Eventos de archivos .bd
+function activarEventosArchivo() {
+  //abrir archivo
+  document.getElementById("btnAbrirBD")
+  .addEventListener("click", async () => {
+
+    try {
+      const resultado = await abrirArchivoBD();
+      archivosBD.clientesHandle = resultado.handle;
+
+      //limpiar array actual
+      clientes.length = 0;
+
+      //insertar datos nuevos
+      resultado.datos.forEach(c => clientes.push(c));
+
+      renderClientes();
+
+      mostrarToast("Archivo .bd cargado correctamente");
+
+    } catch (error) {
+
+      mostrarToast(error.message);
+
+    }
+  });
+
+  // Guardar archivo
+  document.getElementById("btnGuardarBD")
+  .addEventListener("click", async () => {
+
+    try {
+      await guardarArchivoBD(
+        archivosBD.clientesHandle,
+        clientes
+      );
+
+      mostrarToast("Archivo .bd actualizado ✅");
+    } catch (error) {
+
+      mostrarToast(error.message);
+
     }
   });
 }

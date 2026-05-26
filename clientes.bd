@@ -1,0 +1,23 @@
+[
+  {
+    "idCliente": 1,
+    "nombres": "Scarleth",
+    "apellido": "Covos",
+    "identificacion": "12345678",
+    "email": "scarlethcp@gmail.com"
+  },
+  {
+    "idCliente": 2,
+    "nombres": "Julieth",
+    "apellido": "Perez",
+    "identificacion": "837493028",
+    "email": "juliethpz@gmail.com"
+  },
+  {
+    "idCliente": 3,
+    "nombres": "Sara",
+    "apellido": "Rojas",
+    "identificacion": "1110364559",
+    "email": "sararojitas@gmail.com"
+  }
+]
