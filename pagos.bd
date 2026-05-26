@@ -1,0 +1,12 @@
+[
+  {
+    "idReciboCaja": 1,
+    "consecutivo": "RC-001",
+    "fecha": "2026-05-26",
+    "idCliente": 1,
+    "valorPagado": 32000,
+    "concepto": "Servicio especial",
+    "idFormaPago": 1,
+    "idBanco": null
+  }
+]

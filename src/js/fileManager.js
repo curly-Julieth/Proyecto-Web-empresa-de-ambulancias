@@ -3,7 +3,7 @@
 // Abrir archivo .bd
 export async function abrirArchivoBD() {
 
-    //veriicar soporte del navegador
+    //verificar soporte del navegador
     if (!window.showOpenFilePicker) {
         throw new Error("Tu navegador no soporta File System Access API");
     }

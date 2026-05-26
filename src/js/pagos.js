@@ -3,8 +3,12 @@ import {
   recibosCaja, 
   clientes, 
   formasPago, 
-  bancos 
+  bancos,
+  archivosBD
 } from "./env.js";
+
+import { abrirArchivoBD, guardarArchivoBD } from "./fileManager.js";
+
 
 
 // Vista pagos
@@ -40,6 +44,8 @@ const vistaPagos = `
     
 
     <button type="submit" id="btnGuardarPago">Guardar</button>
+    <button type="button" id="btnAbrirBD">Abrir .bd</button>
+    <button type="button" id="btnGuardarBD">Guardar .bd</button>
   </form>
 
 
@@ -80,6 +86,7 @@ export function cargarPagos() {
   activarFormulario();
   activarEventosTabla();
   activarEventosFormulario();
+  activarEventosArchivo();
 }
 
 
@@ -184,6 +191,60 @@ function activarEventosTabla() {
   });
 }
 
+// Eventos archivos .bd
+function activarEventosArchivo() {
+
+  // Abrir archivo
+  document.getElementById("btnAbrirBD")
+  .addEventListener("click", async () => {
+
+    try {
+
+      const resultado = await abrirArchivoBD();
+
+      archivosBD.pagosHandle = resultado.handle;
+
+      // Limpiar array actual
+      recibosCaja.length = 0;
+
+      // Insertar nuevos datos
+      resultado.datos.forEach(p => recibosCaja.push(p));
+
+      renderPagos();
+
+      mostrarToast("Archivo .bd cargado correctamente ✅");
+
+    } catch (error) {
+
+      mostrarToast(error.message);
+
+    }
+
+  });
+
+
+  // Guardar archivo
+  document.getElementById("btnGuardarBD")
+  .addEventListener("click", async () => {
+
+    try {
+
+      await guardarArchivoBD(
+        archivosBD.pagosHandle,
+        recibosCaja
+      );
+
+      mostrarToast("Archivo .bd actualizado ✅");
+
+    } catch (error) {
+
+      mostrarToast(error.message);
+
+    }
+
+  });
+
+}
 
 
 // Cargar en formulario
@@ -262,8 +323,17 @@ function activarFormulario() {
       recibosCaja[pagoEditable].valorPagado = Number(valor);
       recibosCaja[pagoEditable].idFormaPago = Number(formaPago);
       recibosCaja[pagoEditable].idBanco = banco ? Number(banco) : null;
+
+    if (archivosBD.pagosHandle) {
+        guardarArchivoBD(
+            archivosBD.pagosHandle,
+            recibosCaja
+        );
+    }
+
       mostrarToast("Pago actualizado correctamente ✅");
       pagoEditable = null;
+
     } else {
       const maxConsecutivo = recibosCaja.length > 0
           ? Math.max(
@@ -293,6 +363,13 @@ function activarFormulario() {
       };
 
       recibosCaja.push(nuevoPago);
+
+    if (archivosBD.pagosHandle) {
+        guardarArchivoBD(
+            archivosBD.pagosHandle,
+            recibosCaja
+        );
+    }
       mostrarToast("Pago registrado ✅");
     }
 
@@ -309,8 +386,16 @@ function activarFormulario() {
 // Eliminar pago
 function eliminarPago(indice) {
   const pago = recibosCaja[indice];
-  if (confirm(`¿Eliminar recibo ${pago.consecutivo}?`)) {
-    recibosCaja.splice(indice, 1);
+    if (confirm(`¿Eliminar recibo ${pago.consecutivo}?`)) {
+        recibosCaja.splice(indice, 1);
+
+    if (archivosBD.pagosHandle) {   
+        guardarArchivoBD(
+            archivosBD.pagosHandle,
+            recibosCaja
+        );
+    }
+
     renderPagos();
     mostrarToast("Pago eliminado correctamente ✅");
   }

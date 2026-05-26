@@ -1,0 +1,26 @@
+[
+  {
+    "idTraslado": 2,
+    "idCliente": 3,
+    "idConductor": 2,
+    "idVehiculo": 1,
+    "idContrato": 3,
+    "idBeneficiario": 4,
+    "direccionInicial": "Dosquebradas",
+    "direccionFinal": "Hospital Santa Mónica",
+    "fechaTraslado": "2026-05-31",
+    "horaTraslado": "10:00"
+  },
+  {
+    "idTraslado": 2,
+    "idCliente": 1,
+    "idConductor": 5,
+    "idVehiculo": 3,
+    "idContrato": 1,
+    "idBeneficiario": 2,
+    "direccionInicial": "Casa 32 - 44 Canaán",
+    "direccionFinal": "Hospital San Juan",
+    "fechaTraslado": "2026-05-28",
+    "horaTraslado": "15:00"
+  }
+]

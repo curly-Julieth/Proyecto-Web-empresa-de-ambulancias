@@ -82,9 +82,13 @@ export const barrios = [
 
 // ----------------------- SE AGREGO EL SIGUIENTE CODIGO PARA HACER USO DEL LOCAL STORAGE EN CLIENTES. CUANDO SE RECARGUE LA PÁGINA LOS CLIENTES VAN A SEGUIR GUARDADOS. 
 export let clientes = [];
+export let traslados = [];
+export let recibosCaja = [];
 
 export const archivosBD = {
-  clientesHandle: null
+  clientesHandle: null,
+  trasladosHandle: null,
+  pagosHandle: null
 };
 
 
@@ -455,54 +459,6 @@ export const bancos = [
   { idBanco: 4, nombre: "Banco de Bogotá" }
 ];
 
-// Recibos de caja
-
-export let recibosCaja = [
-  {
-    idReciboCaja: 1,
-    consecutivo: "RC-001",
-    fecha: "2026-04-20",
-    idCliente: 1,
-    valorPagado: 50000,
-    concepto: "Mensualidad contrato",
-    idFormaPago: 1,
-    idBanco: null
-  },
-  {
-    idReciboCaja: 2,
-    consecutivo: "RC-002",
-    fecha: "2026-04-21",
-    idCliente: 2,
-    valorPagado: 100000,
-    concepto: "Servicio traslado",
-    idFormaPago: 2,
-    idBanco: null
-  },
-  {
-    idReciboCaja: 3,
-    consecutivo: "RC-003",
-    fecha: "2026-04-22",
-    idCliente: 3,
-    valorPagado: 50000,
-    concepto: "Mensualidad contrato",
-    idFormaPago: 3,
-    idBanco: 1
-  },
-  {
-    idReciboCaja: 4,
-    consecutivo: "RC-004",
-    fecha: "2026-04-22",
-    idCliente: 5,
-    valorPagado: 500000,
-    concepto: "Cobertura evento",
-    idFormaPago: 3,
-    idBanco: 2
-  }
-];
-
-// Traslados
-
-export let traslados = [];
 
 
 /*

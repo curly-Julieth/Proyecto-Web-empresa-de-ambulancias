@@ -5,7 +5,10 @@ import {
     contratos,
     beneficiarios,
     traslados,
-} from "./env.js"
+    archivosBD
+} from "./env.js";
+
+import { abrirArchivoBD, guardarArchivoBD } from "./fileManager.js";
 
 const main = document.getElementById("main");
 
@@ -95,6 +98,13 @@ const vistaTraslados = `
       <button type="submit" id="btnGuardar">
         Guardar
       </button>
+      <button type="button" id="btnAbrirBD">
+        Abrir .bd
+      </button>
+
+      <button type="button" id="btnGuardarBD">
+        Guardar .bd
+      </button>
     </form>
 
   <h3>Traslados registrados</h3>
@@ -136,6 +146,7 @@ export function cargarTraslados() {
   activarFormulario();
   activarEventos();
   activarEventosTabla();
+  activarEventosArchivo();
 }
 
 
@@ -185,6 +196,60 @@ function activarEventosTabla() {
   });
 }
 
+// Eventos archivos .bd
+function activarEventosArchivo() {
+
+  // Abrir archivo
+  document.getElementById("btnAbrirBD")
+  .addEventListener("click", async () => {
+
+    try {
+
+      const resultado = await abrirArchivoBD();
+
+      archivosBD.trasladosHandle = resultado.handle;
+
+      // Limpiar array actual
+      traslados.length = 0;
+
+      // Insertar nuevos datos
+      resultado.datos.forEach(t => traslados.push(t));
+
+      renderTraslados();
+
+      mostrarToast("Archivo .bd cargado correctamente ✅");
+
+    } catch (error) {
+
+      mostrarToast(error.message);
+
+    }
+
+  });
+
+
+  // Guardar archivo
+  document.getElementById("btnGuardarBD")
+  .addEventListener("click", async () => {
+
+    try {
+
+      await guardarArchivoBD(
+        archivosBD.trasladosHandle,
+        traslados
+      );
+
+      mostrarToast("Archivo .bd actualizado ✅");
+
+    } catch (error) {
+
+      mostrarToast(error.message);
+
+    }
+
+  });
+
+}
 
 
 
@@ -401,6 +466,13 @@ function activarFormulario() {
       traslados[trasladoEditable].fechaTraslado = fecha;
       traslados[trasladoEditable].horaTraslado = hora;
 
+      if (archivosBD.trasladosHandle) {
+        guardarArchivoBD(
+          archivosBD.trasladosHandle,
+          traslados
+        );
+      }
+
       mostrarToast("Traslado actualizado ✅");
       trasladoEditable = null;
     } else {
@@ -417,6 +489,14 @@ function activarFormulario() {
         horaTraslado: hora
       };
       traslados.push(nuevoTraslado);
+
+      if (archivosBD.trasladosHandle) {
+        guardarArchivoBD(
+          archivosBD.trasladosHandle,
+          traslados
+        );
+      }
+
       mostrarToast("Traslado registrado con éxito ✅");
     }
 
@@ -434,6 +514,14 @@ function eliminarTraslado(indice){
   const traslado = traslados[indice];
   if(confirm(`¿Eliminar traslado #${traslado.idTraslado}?`)){
     traslados.splice(indice, 1);
+
+    if (archivosBD.trasladosHandle) {
+        guardarArchivoBD(
+          archivosBD.trasladosHandle,
+          traslados
+        );
+      }
+
     renderTraslados();
     mostrarToast("Traslado eliminado ✅");
   }
