@@ -369,6 +369,3 @@ function mostrarToast(mensaje) {
     toast.setAttribute("hidden", "");
   }, 3000);
 }
-
-
-

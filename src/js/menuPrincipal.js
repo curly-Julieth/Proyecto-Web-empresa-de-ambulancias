@@ -3,6 +3,7 @@
 import { cargarResumen } from "./resumen.js";
 import { cargarClientes } from "./clientes.js";
 import { cargarConductores } from "./conductores.js";
+import { cargarVehiculos } from "./vehiculos.js";
 
 document.getElementById("menuPrincipalMount").innerHTML = `
     <div class="titleNav">
@@ -12,7 +13,7 @@ document.getElementById("menuPrincipalMount").innerHTML = `
         <a href="#" class="navItem" id="btnResumen">Resumen</a>
         <a href="#" class="navItem" id="btnClientes">Clientes</a>
         <a href="#" class="navItem" id="btnConductores">Conductores</a>       
-        <a href="#" class="navItem">Vehiculos</a>
+        <a href="#" class="navItem" id="btnVehiculos">Vehiculos</a>
         <a href="#" class="navItem">Traslados</a>
         <a href="#" class="navItem">Pagos</a>
     </nav>
@@ -50,6 +51,11 @@ document.getElementById("btnClientes").addEventListener("click", (e) => {
 document.getElementById("btnConductores").addEventListener("click", (e) => {
   e.preventDefault();
   navegar(cargarConductores, "btnConductores");
+});
+
+document.getElementById("btnVehiculos").addEventListener("click", (e) => {
+  e.preventDefault();
+  navegar(cargarVehiculos, "btnVehiculos");
 });
 
 

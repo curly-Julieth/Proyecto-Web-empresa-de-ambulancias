@@ -173,7 +173,7 @@
 
 
 /* Formularios */
-#formCliente, #formConductor {
+#formCliente {
   display: flex;
   flex-direction: column;
   gap: var(--espacio-2);
