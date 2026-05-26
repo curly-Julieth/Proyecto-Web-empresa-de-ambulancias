@@ -173,7 +173,7 @@
 
 
 /* Formularios */
-#formCliente {
+#formCliente, #formPago {
   display: flex;
   flex-direction: column;
   gap: var(--espacio-2);
@@ -183,7 +183,7 @@
   margin-right: auto;
 }
 
-#formConductor, #formTraslado {
+#formConductor, #formTraslado, #formVehiculos {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--espacio-4);
@@ -201,14 +201,13 @@
 
 
 /* labels */
-#formCliente label, #formConductor label, #formTraslado label {
-  font-weight: bold;
+#formCliente label, #formConductor label, #formTraslado label,  #formVehiculos label, #formPago label {
   color: var(--texto);
 }
 
 
 /* inputs */
-#formCliente input, #formConductor input, #formTraslado input, #formTraslado select{
+#formCliente input, #formConductor input, #formTraslado input, #formVehiculos input, #formPago input{
   padding: var(--espacio-2);
   border: 1px solid var(--borde);
   border-radius: var(--radio-borde);
@@ -217,22 +216,34 @@
   max-width: 100%;  
 }
 
-#formCliente input:focus, #formConductor input:focus, #formTraslado input:focus {
+#formPago select, #formTraslado select, #formVehiculos select{
+  width: 100%;
+  padding: var(--espacio-2);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-borde);
+  font-family: var(--fuente);
+  max-width: 100%;  
+
+}
+
+#formCliente input:focus, #formConductor input:focus, #formTraslado input:focus, #formVehiculos input:focus, #formPago input:focus{
   outline: none;
   border-color: var(--color-secundario);
   box-shadow: 0 0 4px var(--color-secundario);
 }
 
 
+
+
 /* errores */ 
-#formCliente .error, #formConductor .error, #formTraslado .error{
+#formCliente .error, #formConductor .error, #formTraslado .error, #formVehiculos .error, #formPago .error{
   color: var(--color-peligro);
   font-size: 14px;
   margin: 0;
 }
 
 /* Botones */
-#formCliente button, #formConductor button, #formTraslado button{
+#formCliente button, #formConductor button, #formTraslado button, #formVehiculos button, #formPago button{
   background: var(--color-principal);
   color: #fff;
   border: none;
@@ -244,7 +255,7 @@
   width: 100%;
 }
 
-#formCliente button:hover, #formConductor button:hover{
+#formCliente button:hover, #formConductor button:hover, #formVehiculos button:hover, #formPago button:hover{
   background: var(--color-secundario);
 }
 
