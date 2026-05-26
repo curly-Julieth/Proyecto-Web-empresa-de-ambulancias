@@ -183,7 +183,7 @@
   margin-right: auto;
 }
 
-#formConductor {
+#formConductor, #formTraslado {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--espacio-4);
@@ -201,14 +201,14 @@
 
 
 /* labels */
-#formCliente label, #formConductor label {
+#formCliente label, #formConductor label, #formTraslado label {
   font-weight: bold;
   color: var(--texto);
 }
 
 
 /* inputs */
-#formCliente input, #formConductor input {
+#formCliente input, #formConductor input, #formTraslado input, #formTraslado select{
   padding: var(--espacio-2);
   border: 1px solid var(--borde);
   border-radius: var(--radio-borde);
@@ -217,7 +217,7 @@
   max-width: 100%;  
 }
 
-#formCliente input:focus, #formConductor input:focus {
+#formCliente input:focus, #formConductor input:focus, #formTraslado input:focus {
   outline: none;
   border-color: var(--color-secundario);
   box-shadow: 0 0 4px var(--color-secundario);
@@ -225,14 +225,14 @@
 
 
 /* errores */ 
-#formCliente .error, #formConductor .error{
+#formCliente .error, #formConductor .error, #formTraslado .error{
   color: var(--color-peligro);
   font-size: 14px;
   margin: 0;
 }
 
 /* Botones */
-#formCliente button, #formConductor button {
+#formCliente button, #formConductor button, #formTraslado button{
   background: var(--color-principal);
   color: #fff;
   border: none;
