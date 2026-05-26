@@ -105,6 +105,7 @@ export function cargarConductores() {
 
   renderConductores();
   activarFormulario();
+  activarEventosTabla();
 }
 
 
@@ -134,18 +135,23 @@ function renderConductores() {
     `;
     tabla.appendChild(fila);
   });
+}
 
-  // Uso de event delegation para diferenciar eliminar de editar
+
+// Funcion activar eventos tabla
+function activarEventosTabla() {
+  const tabla = document.getElementById("tablaConductores");
   tabla.addEventListener("click", function(e){
     if(e.target.classList.contains("btnEditar")){
       const indice = parseInt(e.target.getAttribute("data-index"));
       cargarEnFormulario(conductores[indice], indice);
-    }else if(e.target.classList.contains("btnEliminar")){
+    } else if(e.target.classList.contains("btnEliminar")){
       const indice = parseInt(e.target.getAttribute("data-index"));
       eliminarConductor(indice);
     }
   });
 }
+
 
 
 

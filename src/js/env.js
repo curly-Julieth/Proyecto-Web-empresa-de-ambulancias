@@ -81,7 +81,7 @@ export const barrios = [
 
 
 // ----------------------- SE AGREGO EL SIGUIENTE CODIGO PARA HACER USO DEL LOCAL STORAGE EN CLIENTES. CUANDO SE RECARGUE LA PÁGINA LOS CLIENTES VAN A SEGUIR GUARDADOS. 
-export let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+export let clientes = [];
 
 
 
