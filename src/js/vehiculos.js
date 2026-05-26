@@ -9,80 +9,93 @@ let vehiculoEditable = null
 
 
 // EXPRESIONES REGULARES PARA VALIDACIONES
-
-
 // regexPlaca: valida formato ABC123 con 3 letras mayúsculas y 3 números
 const regexPlaca = /^[A-Z]{3}[0-9]{3}$/; 
-
 // regexNumeroSoat: valida alfanuméricos con mínimo 8 caracteres
 const regexNumeroSoat = /^[A-Z0-9]{8,}$/; 
-
 // regexCapacidad: valida solo números enteros
 const regexCapacidad = /^[0-9]+$/; 
-
 // regexIdGPS: valida alfanuméricos con mínimo 3 caracteres
 const regexIdGPS = /^[A-Z0-9]{3,}$/;
 
 
 // TEMPLATE HTML DEL FORMULARIO Y TABLA
-
-
 // vistaVehiculos: contiene todo el HTML del formulario y tabla en un string grande
 const vistaVehiculos = `
   <section>
-    <h2>Vehículos</h2>
+    <h2>Registrar vehículos</h2>
 
     <!-- FORMULARIO PARA REGISTRAR NUEVAS AMBULANCIAS -->
     <form id="formVehiculos">
         <!-- CAMPO: PLACA -->
-        <label for="placa">Placa</label>
-        <input type="text" id="placa" name="placa" required>
-        <p id="errorPlaca" class="error"></p>
+        <div class="campo">
+            <label for="placa">Placa</label>
+            <input type="text" id="placa" name="placa" placeholder="Ingrese placa">
+            <p id="errorPlaca" class="error"></p>
+        </div>
 
         <!-- CAMPO: MODELO -->
-        <label for="modelo">Modelo</label>
-        <input type="text" id="modelo" name="modelo" required>
-        <p id="errorModelo" class="error"></p>
+        <div class="campo">
+            <label for="modelo">Modelo</label>
+            <input type="text" id="modelo" name="modelo" placeholder="Ingrese modelo">
+            <p id="errorModelo" class="error"></p>
+        </div>
 
         <!-- CAMPO: NÚMERO DE SERIE DEL MOTOR -->
-        <label for="snmotor">snMotor</label>
-        <input type="text" id="snmotor" name="snmotor" required>
-        <p id="errorSnMotor" class="error"></p>
+        <div class="campo">
+            <label for="snmotor">snMotor</label>
+            <input type="text" id="snmotor" name="snmotor" placeholder="Ingrese número de serie del motor">
+            <p id="errorSnMotor" class="error"></p>
+        </div>
 
         <!-- CAMPO: NÚMERO DE SERIE DEL CHASIS -->
-        <label for="snchasis">snChasis</label>
-        <input type="text" id="snchasis" name="snchasis" required>
-        <p id="errorSnChasis" class="error"></p>
+        <div class="campo">
+            <label for="snchasis">snChasis</label>
+            <input type="text" id="snchasis" name="snchasis" placeholder="Ingrese número de serie del chasis">
+            <p id="errorSnChasis" class="error"></p>
+        </div>
 
         <!-- CAMPO: NÚMERO SOAT (Seguro Obligatorio de Accidentes de Tránsito) -->
-        <label for="numeroSOAT">Número SOAT</label>
-        <input type="text" id="numeroSOAT" name="numeroSOAT" required>
-        <p id="errorNumeroSOAT" class="error"></p>
+        <div class="campo">
+            <label for="numeroSOAT">Número SOAT</label>
+            <input type="text" id="numeroSOAT" name="numeroSOAT" placeholder="Ingrese número SOAT">
+            <p id="errorNumeroSOAT" class="error"></p>
+        </div>
 
         <!-- CAMPO: FECHA DE VENCIMIENTO DEL SOAT -->
-        <label for="fechaVencimientoSOAT">Fecha de Vencimiento SOAT</label>
-        <input type="date" id="fechaVencimientoSOAT" name="fechaVencimientoSOAT" required>
-        <p id="errorFechaVencimientoSOAT" class="error"></p>
+        <div class="campo">
+            <label for="fechaVencimientoSOAT">Fecha de Vencimiento SOAT</label>
+            <input type="date" id="fechaVencimientoSOAT" name="fechaVencimientoSOAT" placeholder="Ingrese fecha de vencimiento del SOAT">
+            <p id="errorFechaVencimientoSOAT" class="error"></p>
+        </div>
 
         <!-- CAMPO: NÚMERO DE TARJETA DE PROPIEDAD -->
-        <label for="tarjetaPropiedad">Número Tarjeta de Propiedad</label>
-        <input type="text" id="tarjetaPropiedad" name="tarjetaPropiedad" required>
-        <p id="errorTarjetaPropiedad" class="error"></p>
+        <div class="campo">
+            <label for="tarjetaPropiedad">Número Tarjeta de Propiedad</label>
+            <input type="text" id="tarjetaPropiedad" name="tarjetaPropiedad" placeholder="Ingrese número de tarjeta de propiedad">
+            <p id="errorTarjetaPropiedad" class="error"></p>
+        </div>
 
         <!-- CAMPO: CAPACIDAD DE PACIENTES QUE TRANSPORTA LA AMBULANCIA -->
-        <label for="capacidadPacientes">Capacidad de Pacientes</label>
-        <input type="text" id="capacidadPacientes" name="capacidadPacientes" required>
-        <p id="errorCapacidadPacientes" class="error"></p>
+        <div class="campo">
+            <label for="capacidadPacientes">Capacidad de Pacientes</label>
+            <input type="text" id="capacidadPacientes" name="capacidadPacientes" placeholder="Ingrese capacidad de pacientes en ambulancia">
+            <p id="errorCapacidadPacientes" class="error"></p>
+        </div>
 
         <!-- CAMPO: NÚMERO INTERNO DE IDENTIFICACIÓN DE LA AMBULANCIA -->
-        <label for="numeroInterno">Número Interno</label>
-        <input type="text" id="numeroInterno" name="numeroInterno" required>
-        <p id="errorNumeroInterno" class="error"></p>
+        <div class="campo">
+            <label for="numeroInterno">Número Interno</label>
+            <input type="text" id="numeroInterno" name="numeroInterno" placeholder="Ingrese número interno de identificación de ambulancia">
+            <p id="errorNumeroInterno" class="error"></p>
+        </div>
 
         <!-- CAMPO: ID DEL DISPOSITIVO GPS DE RASTREO -->
-        <label for="idGPS">ID GPS</label>
-        <input type="text" id="idGPS" name="idGPS" required>
-        <p id="errorIdGPS" class="error"></p>
+        <div class="campo">
+            <label for="idGPS">ID GPS</label>
+            <input type="text" id="idGPS" name="idGPS" placeholder="Ingrese ID del dispositivo GPS de rastreo">
+            <p id="errorIdGPS" class="error"></p>
+        </div>
 
         <!-- BOTÓN PARA GUARDAR EL VEHÍCULO -->
         <button type="submit" id="btnGuardar">Guardar</button>
@@ -115,7 +128,6 @@ const vistaVehiculos = `
 
 
 // FUNCIÓN: ACTUALIZAR LA TABLA
-
 
 // actualizarTabla: función que recorre vehículos, crea filas HTML y maneja clicks en botones
 function actualizarTabla() {
@@ -152,27 +164,38 @@ function actualizarTabla() {
         // concatena: añade fila nueva sin borrar anteriores
         tablaAmbulancias.innerHTML += fila
     })
-
-    // addEventListener: coloca un listener en el tbody que detecta clicks (event delegation)
-    tablaAmbulancias.addEventListener("click", function(e) {
-        // classList.contains: verifica si el elemento clickeado tiene clase btnEditar
-        if (e.target.classList.contains("btnEditar")) {
-            // getAttribute: obtiene el valor del atributo data-index
-            // parseInt: convierte el texto a número entero
-            const indice = parseInt(e.target.getAttribute("data-index"))
-            // cargarEnFormulario: llama función pasando el vehículo y su posición
-            cargarEnFormulario(vehiculos[indice], indice)
-        } else if (e.target.classList.contains("btnEliminar")) {
-            // similar al anterior pero para botón eliminar
-            const indice = parseInt(e.target.getAttribute("data-index"))
-            eliminarVehiculo(indice)
-        }
-    })
 }
 
 
-// FUNCIÓN: CARGAR DATOS EN EL FORMULARIO PARA EDITAR
 
+// FUNCIÓN: ACTIVAR EVENTOS DE LA TABLA
+function activarEventosTabla() {
+    const tablaAmbulancias = document.getElementById("tablaAmbulancias");
+    tablaAmbulancias.addEventListener("click", function(e) {
+        if (e.target.classList.contains("btnEditar")) {
+            const indice = parseInt(
+                e.target.getAttribute("data-index")
+            );
+            cargarEnFormulario(
+                vehiculos[indice],
+                indice
+            );
+        } else if (
+            e.target.classList.contains("btnEliminar")
+        ) {
+            const indice = parseInt(
+                e.target.getAttribute("data-index")
+            );
+            eliminarVehiculo(indice);
+        }
+    });
+}
+
+
+
+
+
+// FUNCIÓN: CARGAR DATOS EN EL FORMULARIO PARA EDITAR
 // cargarEnFormulario: carga datos de un vehículo en los inputs para editar
 // recibe: ambulancia con datos y indice de su posición
 function cargarEnFormulario(ambulancia, indice) {
@@ -195,11 +218,12 @@ function cargarEnFormulario(ambulancia, indice) {
     document.getElementById("btnGuardar").textContent = "Actualizar"
     
     // mostrarToast: muestra mensaje temporal indicando que se está editando
-    mostrarToast("Editando...")
+    mostrarToast("Editando vehiculos...")
 }
 
-// FUNCIÓN: ELIMINAR VEHÍCULO
 
+
+// FUNCIÓN: ELIMINAR VEHÍCULO
 // eliminarVehiculo: elimina un vehículo después de confirmación del usuario
 // recibe: indice de la posición del vehículo a eliminar
 function eliminarVehiculo(indice) {
@@ -219,8 +243,8 @@ function eliminarVehiculo(indice) {
     }
 }
 
-// FUNCIÓN: MOSTRAR NOTIFICACIÓN
 
+// FUNCIÓN: MOSTRAR NOTIFICACIÓN
 // mostrarToast: muestra mensaje temporal que desaparece después de 3 segundos
 // recibe: mensaje texto a mostrar al usuario
 function mostrarToast(mensaje) {
@@ -249,9 +273,9 @@ function mostrarToast(mensaje) {
     }
 }
 
+
+
 // FUNCIÓN: VALIDAR FORMULARIO
-
-
 // validarFormulario: verifica que todos los inputs cumplan con validaciones, retorna true o false
 function validarFormulario() {
     // toUpperCase: convierte placa a mayúsculas para uniformidad
@@ -355,13 +379,15 @@ function validarFormulario() {
     return errores.length === 0;
 }
 
+
+
 // FUNCIÓN: MOSTRAR LA VISTA DE VEHÍCULOS
-
-
 // Esta función inicializa toda la vista: carga el HTML, configura eventos y muestra los datos
 function mostrarVehiculos() {
     // Inyecto el HTML de la plantilla en el contenedor principal
     main.innerHTML = vistaVehiculos
+
+    activarEventosTabla();
     
     // Obtengo referencias al formulario y la tabla después de inyectar el HTML
     const formVehiculos = document.getElementById("formVehiculos")
@@ -474,6 +500,8 @@ function mostrarVehiculos() {
     // Actualizo la tabla inicialmente para mostrar los vehículos que ya existen
     actualizarTabla()
 }
+
+
 
 // cargarVehiculos: función para cargar la vista de vehículos
 export function cargarVehiculos() {

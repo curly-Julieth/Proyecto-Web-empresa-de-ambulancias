@@ -171,8 +171,6 @@ function renderTraslados() {
 }
 
 
-
-
 // Funcion activar eventos tabla
 function activarEventosTabla() {
   const tabla = document.getElementById("tablaTraslados");
