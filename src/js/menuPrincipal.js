@@ -5,6 +5,7 @@ import { cargarClientes } from "./clientes.js";
 import { cargarConductores } from "./conductores.js";
 import { cargarVehiculos } from "./vehiculos.js";
 import { cargarTraslados } from "./traslados.js";
+import { cargarPagos } from "./pagos.js";
 
 
 document.getElementById("menuPrincipalMount").innerHTML = `
@@ -17,7 +18,7 @@ document.getElementById("menuPrincipalMount").innerHTML = `
         <a href="#" class="navItem" id="btnConductores">Conductores</a>       
         <a href="#" class="navItem" id="btnVehiculos">Vehiculos</a>
         <a href="#" class="navItem" id="btnTraslados">Traslados</a>
-        <a href="#" class="navItem">Pagos</a>
+        <a href="#" class="navItem" id="btnPagos">Pagos</a>
     </nav>
     <div class="sideBarActions">
       <button id="btnTheme">Cambiar tema</button>
@@ -63,6 +64,11 @@ document.getElementById("btnVehiculos").addEventListener("click", (e) => {
 document.getElementById("btnTraslados").addEventListener("click", (e) => {
   e.preventDefault();
   navegar(cargarTraslados, "btnTraslados");
+});
+
+document.getElementById("btnPagos").addEventListener("click", (e) => {
+  e.preventDefault();
+  navegar(cargarPagos, "btnPagos");
 });
 
 
