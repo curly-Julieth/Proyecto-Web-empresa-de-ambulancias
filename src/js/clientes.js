@@ -46,13 +46,13 @@ const vistaClientes =  `
   </table>
 
 
-  <div id="modalJSON" class="modal">
-    <div class="modal-contenido">
-      <h3>Base de Datos JSON</h3>
-      <pre id="jsonClientes"></pre>
-      <button id="cerrarModal">Cerrar</button>
-    </div>
-  </div>
+  // <div id="modalJSON" class="modal">
+  //   <div class="modal-contenido">
+  //     <h3>Base de Datos JSON</h3>
+  //     <pre id="jsonClientes"></pre>
+  //     <button id="cerrarModal">Cerrar</button>
+  //   </div>
+  // </div>
 
 </section>
 `;
@@ -63,9 +63,9 @@ const vistaClientes =  `
 let clienteEditable = null;
 
 // Funcion para guardar datos en JSON
-function guardarClientesJSON() {
-  localStorage.setItem("clientes", JSON.stringify(clientes));
-}
+// function guardarClientesJSON() {
+//   localStorage.setItem("clientes", JSON.stringify(clientes));
+// }
 
 
 // Funcion para cargar clientes
@@ -75,7 +75,7 @@ export function cargarClientes() {
 
   renderClientes();
   activarFormulario();
-  activarModalJSON();
+  // activarModalJSON();
 }
 
 
@@ -117,19 +117,19 @@ function renderClientes() {
 
 
 // Funcion para activar ventana modal donde se ve BD JSON
-function activarModalJSON() {
-    const btnJSON = document.getElementById("btnVerJSON");
-    const modal = document.getElementById("modalJSON");
-    const cerrar = document.getElementById("cerrarModal");
-    const json = document.getElementById("jsonClientes");
+// function activarModalJSON() {
+//     const btnJSON = document.getElementById("btnVerJSON");
+//     const modal = document.getElementById("modalJSON");
+//     const cerrar = document.getElementById("cerrarModal");
+//     const json = document.getElementById("jsonClientes");
 
-    btnJSON.addEventListener("click", () => {
-      json.textContent = JSON.stringify(clientes, null, 2);
-      modal.classList.add("activo");
-    });
-    cerrar.addEventListener("click", () => {
-      modal.classList.remove("activo");
-})};
+//     btnJSON.addEventListener("click", () => {
+//       json.textContent = JSON.stringify(clientes, null, 2);
+//       modal.classList.add("activo");
+//     });
+//     cerrar.addEventListener("click", () => {
+//       modal.classList.remove("activo");
+// })};
 
 
 
@@ -211,7 +211,7 @@ function activarFormulario() {
       clientes[clienteEditable].identificacion = identificacion;
       clientes[clienteEditable].email = email;
 
-      guardarClientesJSON();
+      // guardarClientesJSON();
 
       mostrarToast("Cliente actualizado con exito✅");
       clienteEditable = null;
@@ -225,7 +225,7 @@ function activarFormulario() {
       };
   
       clientes.push(nuevoCliente);
-      guardarClientesJSON(); // Se agrego para guardar el registro en BD JSON
+      // guardarClientesJSON(); // Se agrego para guardar el registro en BD JSON
       mostrarToast("Cliente registrado con éxito ✅");
     }
 
