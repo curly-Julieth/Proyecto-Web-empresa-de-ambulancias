@@ -1,6 +1,6 @@
 import { conductores } from "./env.js";
 
-const main = document.getElementById("main");
+// const main = document.getElementById("main");
 
 // Vista conductores
 const vistaConductores = `
@@ -79,8 +79,9 @@ const vistaConductores = `
         <tr>
           <th>ID</th>
           <th>Nombre</th>
-           <th>Apellido</th>
+          <th>Apellido</th>
           <th>Cédula</th>
+          <th>Departamento</th>
           <th>Municipio</th>
           <th>Barrio</th>
           <th>Direccion</th>
@@ -124,6 +125,7 @@ function renderConductores() {
       <td>${c.nombre}</td>
       <td>${c.apellido}</td>
       <td>${c.cedula}</td>
+      <td>${c.idDepartamento}</td>
       <td>${c.idMunicipio}</td>
       <td>${c.idBarrio}</td>
       <td>${c.direccion}</td>
@@ -162,6 +164,7 @@ function cargarEnFormulario(conductor, indice){
   document.getElementById("nombre").value = conductor.nombre;
   document.getElementById("apellido").value = conductor.apellido;
   document.getElementById("cedula").value = conductor.cedula;
+  document.getElementById("idDepartamento").value = conductor.idDepartamento;
   document.getElementById("idMunicipio").value = conductor.idMunicipio;
   document.getElementById("idBarrio").value = conductor.idBarrio;
   document.getElementById("direccion").value = conductor.direccion;
@@ -189,6 +192,7 @@ function activarFormulario() {
     const nombre = document.getElementById("nombre").value.trim();
     const apellido = document.getElementById("apellido").value.trim();
     const cedula = document.getElementById("cedula").value.trim();
+    const departamento = document.getElementById("idDepartamento").value.trim();
     const municipio = document.getElementById("idMunicipio").value.trim();
     const barrio = document.getElementById("idBarrio").value.trim();
     const direccion = document.getElementById("direccion").value.trim();
@@ -217,6 +221,12 @@ function activarFormulario() {
     if (!cedula || !validarCedula(cedula)) {
       document.getElementById("errorCedula").textContent =
         "Identificación inválida (solo números, 7-15 dígitos)";
+      hayError = true;
+    }
+
+    if (!municipio) {
+      document.getElementById("errorDireccionMunicipio").textContent =
+        "Municipio requerido";
       hayError = true;
     }
 

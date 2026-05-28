@@ -2,7 +2,7 @@
 import { vehiculos } from "./env.js"
 
 // main: obtiene elemento HTML donde inyectaremos todo el contenido
-const main = document.getElementById("main")
+
 
 // vehiculoEditable: guarda indice del vehículo que se está modificando, null si es nuevo
 let vehiculoEditable = null

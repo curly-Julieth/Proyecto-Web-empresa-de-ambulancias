@@ -4,7 +4,8 @@ import {
   clientes, 
   formasPago, 
   bancos,
-  archivosBD
+  archivosBD,
+  estadoPago
 } from "./env.js";
 
 import { abrirArchivoBD, guardarArchivoBD } from "./fileManager.js";
@@ -24,6 +25,10 @@ const vistaPagos = `
     <label>Concepto</label>
     <input type="text" id="concepto" placeholder="Ingrese concepto">
     <p class="error" id="errorConcepto"></p>
+
+    <label>Estado</label>
+    <select id="estado"></select>
+    <p class="error" id="errorEstado"></p>
 
 
     <label>Valor</label>
@@ -56,6 +61,7 @@ const vistaPagos = `
         <th>Consecutivo</th>
         <th>Cliente</th>
         <th>Concepto</th>
+        <th>Estado</th>
         <th>Valor</th>
         <th>Forma Pago</th>
         <th>Banco</th>
@@ -80,6 +86,7 @@ export function cargarPagos() {
   const main = document.getElementById("main");
   main.innerHTML = vistaPagos;
   cargarSelectClientes();
+  cargarSelectEstadoPago();
   cargarSelectFormasPago();
   cargarSelectBancos();
   renderPagos();
@@ -104,6 +111,18 @@ function cargarSelectClientes() {
   });
 }
 
+
+function cargarSelectEstadoPago(){
+  const selectEstado = document.getElementById("estado");
+  selectEstado.innerHTML = `<option value="">Seleccione estado</option>`;
+
+  estadoPago.forEach(estado => {
+    const option = document.createElement("option");
+    option.value = estado.idEstadoPago;
+    option.textContent = estado.nombre;
+    selectEstado.appendChild(option);
+  })
+}
 
 
 // Cargar formas de pago
@@ -146,14 +165,22 @@ function renderPagos() {
     const cliente = clientes.find(
       c => c.idCliente == pago.idCliente
     );
+
     // Buscar forma pago
     const formaPago = formasPago.find(
       fp => fp.idFormaPago == pago.idFormaPago
     );
+
     // Buscar banco
     const banco = bancos.find(
       b => b.idBanco == pago.idBanco
     );
+
+    // Buscar estado
+    const estado = estadoPago.find(
+      e => e.idEstadoPago == pago.estado
+    );
+
 
     const fila = document.createElement("tr");
     fila.innerHTML = `
@@ -164,6 +191,7 @@ function renderPagos() {
           : "No encontrado"}
       </td>
       <td>${pago.concepto}</td>
+      <td>${estado?.nombre || "No definido"}</td>
       <td>${pago.valorPagado.toLocaleString("es-CO")}</td>
       <td>${formaPago?.nombre || "No definido"}</td>
       <td>${banco?.nombre || "No aplica"}</td>
@@ -209,17 +237,12 @@ function activarEventosArchivo() {
 
       // Insertar nuevos datos
       resultado.datos.forEach(p => recibosCaja.push(p));
-
       renderPagos();
-
       mostrarToast("Archivo .bd cargado correctamente ✅");
-
     } catch (error) {
-
       mostrarToast(error.message);
 
     }
-
   });
 
 
@@ -228,22 +251,15 @@ function activarEventosArchivo() {
   .addEventListener("click", async () => {
 
     try {
-
       await guardarArchivoBD(
         archivosBD.pagosHandle,
         recibosCaja
       );
-
       mostrarToast("Archivo .bd actualizado ✅");
-
     } catch (error) {
-
       mostrarToast(error.message);
-
     }
-
   });
-
 }
 
 
@@ -251,6 +267,7 @@ function activarEventosArchivo() {
 function cargarEnFormulario(pago, indice) {
   document.getElementById("cliente").value = pago.idCliente;
   document.getElementById("concepto").value = pago.concepto;
+  document.getElementById("estado").value = pago.estado;
   document.getElementById("valor").value = pago.valorPagado;
   document.getElementById("formaPago").value = pago.idFormaPago;
   document.getElementById("banco").value = pago.idBanco || "";
@@ -270,6 +287,7 @@ function activarFormulario() {
     // Capturar valores
     const cliente = document.getElementById("cliente").value;
     const concepto = document.getElementById("concepto").value.trim();
+    const estado = document.getElementById("estado").value;
     const valor = Number(document.getElementById("valor").value);
     const formaPago = document.getElementById("formaPago").value;
     const banco = document.getElementById("banco").value;
@@ -287,6 +305,12 @@ function activarFormulario() {
     if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s]{5,100}$/.test(concepto)) {
       document.getElementById("errorConcepto")
         .textContent = "Concepto inválido";
+      hayError = true;
+    }
+
+    if (!estado) {
+      document.getElementById("errorEstado")
+        .textContent = "Seleccione un estado de pago";
       hayError = true;
     }
 
@@ -320,6 +344,7 @@ function activarFormulario() {
     if (pagoEditable !== null) {
       recibosCaja[pagoEditable].idCliente = Number(cliente);
       recibosCaja[pagoEditable].concepto = concepto;
+      recibosCaja[pagoEditable].estado = estado;
       recibosCaja[pagoEditable].valorPagado = Number(valor);
       recibosCaja[pagoEditable].idFormaPago = Number(formaPago);
       recibosCaja[pagoEditable].idBanco = banco ? Number(banco) : null;
@@ -356,6 +381,7 @@ function activarFormulario() {
         idCliente: Number(cliente),
         valorPagado: Number(valor),
         concepto: concepto,
+        estado: estado,
         idFormaPago: Number(formaPago),
         idBanco: banco
           ? Number(banco)
@@ -406,6 +432,7 @@ function limpiarErrores() {
   [
     "errorCliente",
     "errorConcepto",
+     "errorEstado",
     "errorValor",
     "errorFormaPago",
     "errorBanco"

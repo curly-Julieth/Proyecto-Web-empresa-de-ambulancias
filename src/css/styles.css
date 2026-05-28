@@ -172,6 +172,46 @@
 }
 
 
+/* Estilos para resumen tipo dashboard */
+
+.resumen h2{
+  padding-bottom: 50px;
+}
+
+#cards_container {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 1.5rem;
+}
+
+.cards {
+  background: var(--fondo);
+  border-radius: 18px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 160px;
+}
+
+
+.cards:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+.resumen-cards {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+
+
 /* Formularios */
 #formCliente, #formPago {
   display: flex;
@@ -361,7 +401,17 @@
   width: 200px;
 }
 
-.btnEditar, .btnEliminar, .btnVerJSON{
+/* Estilos diferentes para los botones de la funcionalidad bd */
+#btnAbrirBD, #btnGuardarBD{
+  background-color: var(--color-secundario) !important;
+}
+
+#btnAbrirBD:hover{
+  background-color: #3162eb !important;
+}
+
+
+.btnEditar, .btnEliminar{
   padding: var(--espacio-1) var(--espacio-2);
   margin: 2px;
   border: none;
@@ -394,17 +444,6 @@
   box-shadow: 0 2px 4px rgba(220, 53, 69, 0.4);
 }
 
-
-.btnVerJSON {
-  background: var(--color-principal);
-  color: #fff;
-}
-
-.btnVerJSON:hover {
-  background: var(--color-peligro);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.4);
-}
 
 
 
