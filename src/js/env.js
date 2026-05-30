@@ -96,8 +96,6 @@ export const archivosBD = {
 
 
 
-
-
 // Array vehículos
 
 export let vehiculos = [{
@@ -448,6 +446,14 @@ export const formasPago = [
   { idFormaPago: 1, codigo: "EF", nombre: "Efectivo" },
   { idFormaPago: 2, codigo: "DA", nombre: "Datafono" },
   { idFormaPago: 3, codigo: "TR", nombre: "Transferencia" }
+];
+
+
+// Estado de pago 
+
+export const estadoPago = [
+  { idEstadoPago: 1, nombre: "Pagado" },
+  { idEstadoPago: 2, nombre: "Pendiente" }
 ];
 
 // Bancos

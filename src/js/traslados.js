@@ -10,7 +10,7 @@ import {
 
 import { abrirArchivoBD, guardarArchivoBD } from "./fileManager.js";
 
-const main = document.getElementById("main");
+
 
 // Vista traslados
 const vistaTraslados = `
