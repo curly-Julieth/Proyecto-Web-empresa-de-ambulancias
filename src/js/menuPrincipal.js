@@ -6,6 +6,7 @@ import { cargarConductores } from "./conductores.js";
 import { cargarVehiculos } from "./vehiculos.js";
 import { cargarTraslados } from "./traslados.js";
 import { cargarPagos } from "./pagos.js";
+import { cargarChatIA } from "./chatIA.js";
 
 
 document.getElementById("menuPrincipalMount").innerHTML = `
@@ -19,6 +20,7 @@ document.getElementById("menuPrincipalMount").innerHTML = `
         <a href="#" class="navItem" id="btnVehiculos">Vehiculos</a>
         <a href="#" class="navItem" id="btnTraslados">Traslados</a>
         <a href="#" class="navItem" id="btnPagos">Pagos</a>
+        <a href="#" class="navItem" id="btnChatIA">ChatIA</a>
     </nav>
     <div class="sideBarActions">
       <button id="btnTheme">Cambiar tema</button>
@@ -69,6 +71,11 @@ document.getElementById("btnTraslados").addEventListener("click", (e) => {
 document.getElementById("btnPagos").addEventListener("click", (e) => {
   e.preventDefault();
   navegar(cargarPagos, "btnPagos");
+});
+
+document.getElementById("btnChatIA").addEventListener("click", (e) => {
+  e.preventDefault();
+  navegar(cargarChatIA, "btnChatIA");
 });
 
 

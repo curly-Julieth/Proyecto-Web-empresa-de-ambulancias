@@ -7,6 +7,7 @@
     "valorPagado": 32000,
     "concepto": "Servicio especial",
     "idFormaPago": 1,
-    "idBanco": null
+    "idBanco": null,
+    "estado": "1"
   }
 ]
