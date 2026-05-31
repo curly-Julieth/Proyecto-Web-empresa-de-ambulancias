@@ -1,12 +1,5 @@
 [
   {
-    "idCliente": 1,
-    "nombres": "Scarleth",
-    "apellido": "Covos",
-    "identificacion": "12345678",
-    "email": "scarlethcp@gmail.com"
-  },
-  {
     "idCliente": 2,
     "nombres": "Julieth",
     "apellido": "Perez",
@@ -14,10 +7,10 @@
     "email": "juliethpz@gmail.com"
   },
   {
-    "idCliente": 3,
-    "nombres": "Sara",
-    "apellido": "Rojas",
-    "identificacion": "1110364559",
-    "email": "sararojitas@gmail.com"
+    "idCliente": 4,
+    "nombres": "sara",
+    "apellido": "rojas",
+    "identificacion": "3657435685",
+    "email": "sara@gmail.com"
   }
 ]

@@ -7,6 +7,7 @@ import { cargarVehiculos } from "./vehiculos.js";
 import { cargarTraslados } from "./traslados.js";
 import { cargarPagos } from "./pagos.js";
 import { cargarChatIA } from "./chatIA.js";
+import { cerrarSesion } from "./cerrarSesion.js";
 
 
 document.getElementById("menuPrincipalMount").innerHTML = `
@@ -77,6 +78,10 @@ document.getElementById("btnChatIA").addEventListener("click", (e) => {
   e.preventDefault();
   navegar(cargarChatIA, "btnChatIA");
 });
+
+document
+  .getElementById("btnLogout")
+  .addEventListener("click", cerrarSesion);
 
 
 // Cambiar tema (claro/oscuro)

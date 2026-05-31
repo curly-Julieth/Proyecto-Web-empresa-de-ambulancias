@@ -168,7 +168,8 @@ export let vehiculos = [{
 export let conductores = [{
     idConductor: 1,
     cedula: "123456789",
-    nombre: "Carlos Pérez",
+    nombre: "Carlos",
+    apellido: "Perez",
     idDepartamento: 66,
     idMunicipio: 66001,
     idBarrio: 1,
@@ -181,7 +182,8 @@ export let conductores = [{
     {
     idConductor: 2,
     cedula: "122894490",
-    nombre: "David Hernandez",
+    nombre: "David",
+    apellido: "Perez",
     idDepartamento: 66,
     idMunicipio: 66088,
     idBarrio: 24,
@@ -194,7 +196,8 @@ export let conductores = [{
     {
     idConductor: 3,
     cedula: "178352683",
-    nombre: "Mario Rojas",
+    nombre: "Mario",
+    apellido: "Rojas",
     idDepartamento: 66,
     idMunicipio: 66170,
     idBarrio: 3,
@@ -207,7 +210,8 @@ export let conductores = [{
     {
     idConductor: 4,
     cedula: "167293629",
-    nombre: "Andrea Cruz",
+    nombre: "Andrea",
+    apellido: "Cruz",
     idDepartamento: 66,
     idMunicipio: 66001,
     idBarrio: 4,
@@ -220,7 +224,8 @@ export let conductores = [{
     {
     idConductor: 5,
     cedula: "123953840",
-    nombre: "José Mejía",
+    nombre: "José",
+    apellido: "Mejia",
     idDepartamento: 66,
     idMunicipio: 66400,
     idBarrio: 20,
