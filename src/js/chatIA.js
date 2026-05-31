@@ -13,7 +13,7 @@ const vistaChatIA = `
       placeholder="Escribe tu pregunta"
     >
 
-    <button id="btnEnviar">
+    <button id="btnEnviar" class=>
       Enviar
     </button>
 

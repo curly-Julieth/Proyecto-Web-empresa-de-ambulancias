@@ -1,6 +1,6 @@
 import { conductores } from "./env.js";
+import { departamentos, municipios, barrios } from "./env.js";
 
-// const main = document.getElementById("main");
 
 // Vista conductores
 const vistaConductores = `
@@ -23,26 +23,32 @@ const vistaConductores = `
 
       <div class="campo">
         <label>Cedula</label>
-        <input type="text" id="cedula" pattern="[0-9]*" autocomplete="off" placeholder="Ingrese cédula">
+        <input type="text" id="cedula" autocomplete="off"  maxlength="10" placeholder="Ingrese cédula">
         <p class="error" id="errorCedula"></p>
       </div>
 
       <div class="campo">
         <label>Departamento</label>
-        <input type="text" id="idDepartamento" autocomplete="off" placeholder="Ingrese departamento" maxlength="50">
+        <select id="idDepartamento">
+          <option value="">Seleccione departamento</option>
+        </select>
         <p class="error" id="errorDepartamento"></p>
       </div>
 
       <div class="campo">
         <label>Municipio</label>
-        <input type="text" id="idMunicipio" autocomplete="off" placeholder="Ingrese municipio" maxlength="50">
-        <p class="error" id="errorDireccionMunicipio"></p>
+        <select id="idMunicipio" disabled>
+          <option value="">Seleccione municipio</option>
+        </select>
+        <p class="error" id="errorMunicipio"></p>
       </div>
 
       <div class="campo">
         <label>Barrio</label>
-        <input type="text" id="idBarrio" autocomplete="off" placeholder="Ingrese barrio" maxlength="50">
-        <p class="error" id="errorDireccionBarrio"></p>
+        <select id="idBarrio" disabled>
+          <option value="">Seleccione barrio</option>
+        </select>
+        <p class="error" id="errorBarrio"></p>
       </div>
 
       <div class="campo">
@@ -53,7 +59,7 @@ const vistaConductores = `
 
       <div class="campo">
         <label>WhatsApp</label>
-        <input type="text" id="whatsapp" autocomplete="off" placeholder="Ingrese Whatsapp">
+        <input type="text" id="whatsapp" autocomplete="off" maxlength="10"  placeholder="Ingrese Whatsapp">
         <p class="error" id="errorWhatsapp"></p>
       </div>
 
@@ -85,6 +91,8 @@ const vistaConductores = `
           <th>Municipio</th>
           <th>Barrio</th>
           <th>Direccion</th>
+          <th>WhatsApp</th>
+          <th>Email</th>
           <th>Número de Licencia</th>
           <th>Acciones</th>
         </tr>
@@ -104,10 +112,93 @@ export function cargarConductores() {
   const main = document.getElementById("main");
   main.innerHTML = vistaConductores;
 
-  renderConductores();
-  activarFormulario();
-  activarEventosTabla();
+  cargarSelectDepartamentos(); // Carga departamentos al inicio
+  eventoCambiosSelects(); // Escucha los cambios en los selects y desabilita como corresponda
+
+  renderConductores(); // Renderiza tabla
+  activarFormulario(); // Activa el formulario
+  activarEventosTabla(); // Eventos de los botones en la tabla
 }
+
+
+
+// Funcion cargar select de departamentos
+function cargarSelectDepartamentos() {
+  const select = document.getElementById("idDepartamento");
+  select.innerHTML = '<option value="">Seleccione departamento</option>';
+
+  departamentos.forEach(d => {
+    const option = document.createElement("option");
+    option.value = d.idDepartamento;
+    option.textContent = d.nombre;
+    select.appendChild(option);
+  });
+}
+
+
+// Evento cambios en los selects 
+function eventoCambiosSelects() {
+  const selectDepto = document.getElementById("idDepartamento");
+  const selectMun = document.getElementById("idMunicipio");
+  const selectBarrio = document.getElementById("idBarrio");
+
+  // Cambio Departamento -> Carga Municipios
+  selectDepto.addEventListener("change", (e) => {
+    const idDepto = Number(e.target.value);
+    
+    // Resetear hijos
+    selectMun.innerHTML = '<option value="">Seleccione municipio</option>';
+    selectBarrio.innerHTML = '<option value="">Seleccione barrio</option>';
+    selectMun.disabled = true;
+    selectBarrio.disabled = true;
+
+    if (idDepto) {
+      selectMun.disabled = false;
+      const listaMunicipios = municipios.filter(m => m.idDepartamento === idDepto);
+      
+      listaMunicipios.forEach(m => {
+        const option = document.createElement("option");
+        option.value = m.idMunicipio;
+        option.textContent = m.nombre;
+        selectMun.appendChild(option);
+      });
+    }
+  });
+
+  // Cambio Municipio -> Carga Barrios
+  selectMun.addEventListener("change", (e) => {
+  const idMun = Number(e.target.value);
+
+  selectBarrio.innerHTML = '<option value="">Seleccione barrio</option>';
+  selectBarrio.disabled = true;
+
+  if (idMun) {
+
+    const listaBarrios = barrios.filter(
+      b => b.idMunicipio === idMun
+    );
+
+    // Si no hay barrios registrados
+    if (listaBarrios.length === 0) {
+      selectBarrio.innerHTML =
+        '<option value="">Sin barrios registrados</option>';
+
+      selectBarrio.disabled = true;
+      return;
+    }
+
+    selectBarrio.disabled = false;
+
+    listaBarrios.forEach(b => {
+      const option = document.createElement("option");
+      option.value = b.idBarrio;
+      option.textContent = b.nombre;
+      selectBarrio.appendChild(option);
+    });
+  }
+});
+}
+
 
 
 
@@ -120,15 +211,29 @@ function renderConductores() {
   conductores.forEach((c, index) => {
     const fila = document.createElement("tr");
 
+    const departamento = departamentos.find(
+      d => d.idDepartamento == c.idDepartamento
+    );
+
+    const municipio = municipios.find(
+      m => m.idMunicipio == c.idMunicipio
+    );
+
+    const barrio = barrios.find(
+      b => b.idBarrio == c.idBarrio
+    );
+
     fila.innerHTML = `
       <td>${c.idConductor}</td>
       <td>${c.nombre}</td>
       <td>${c.apellido}</td>
       <td>${c.cedula}</td>
-      <td>${c.idDepartamento}</td>
-      <td>${c.idMunicipio}</td>
-      <td>${c.idBarrio}</td>
+      <td>${departamento?.nombre || ""}</td>
+      <td>${municipio?.nombre || ""}</td>
+      <td>${barrio?.nombre || ""}</td>
       <td>${c.direccion}</td>
+      <td>${c.whatsapp}</td>
+      <td>${c.email}</td>
       <td>${c.numeroLicenciaConduccion}</td>
       <td>
         <button class="btnEditar" data-index="${index}">Editar</button>
@@ -165,7 +270,15 @@ function cargarEnFormulario(conductor, indice){
   document.getElementById("apellido").value = conductor.apellido;
   document.getElementById("cedula").value = conductor.cedula;
   document.getElementById("idDepartamento").value = conductor.idDepartamento;
+
+  document.getElementById("idDepartamento")
+  .dispatchEvent(new Event("change"));
+
   document.getElementById("idMunicipio").value = conductor.idMunicipio;
+
+  document.getElementById("idMunicipio")
+  .dispatchEvent(new Event("change"));
+
   document.getElementById("idBarrio").value = conductor.idBarrio;
   document.getElementById("direccion").value = conductor.direccion;
   document.getElementById("whatsapp").value = conductor.whatsapp;
@@ -212,7 +325,7 @@ function activarFormulario() {
       hayError = true;
     }
 
-     if (!apellido || !validarNombre(apellido)) {
+     if (!apellido || !validarApellido(apellido)) {
       document.getElementById("errorApellido").textContent =
         "Apellido inválido (solo letras, 4-50 caracteres)";
       hayError = true;
@@ -220,27 +333,31 @@ function activarFormulario() {
 
     if (!cedula || !validarCedula(cedula)) {
       document.getElementById("errorCedula").textContent =
-        "Identificación inválida (solo números, 7-15 dígitos)";
+        "Identificación inválida (solo números, 7-10 dígitos)";
+      hayError = true;
+    }
+
+    if (!departamento) {
+      document.getElementById("errorDepartamento").textContent =
+        "Departamento requerido";
       hayError = true;
     }
 
     if (!municipio) {
-      document.getElementById("errorDireccionMunicipio").textContent =
+      document.getElementById("errorMunicipio").textContent =
         "Municipio requerido";
       hayError = true;
     }
 
-    if (!municipio) {
-      document.getElementById("errorDireccionMunicipio").textContent =
-        "Municipio requerido";
-      hayError = true;
-    }
 
-    if (!barrio) {
-      document.getElementById("errorDireccionBarrio").textContent =
+    const listaBarriosMunicipio =
+      barrios.filter(b => b.idMunicipio == municipio);
+    if (listaBarriosMunicipio.length > 0 && !barrio) {
+      document.getElementById("errorBarrio").textContent =
         "Barrio requerido";
       hayError = true;
     }
+
 
     if (!direccion) {
       document.getElementById("errorDireccion").textContent =
@@ -248,9 +365,11 @@ function activarFormulario() {
       hayError = true;
     }
 
+    console.log("WhatsApp:", whatsapp);
+    console.log("Longitud:", whatsapp.length);
     if (!whatsapp || !validarWhatsapp(whatsapp)) {
       document.getElementById("errorWhatsapp").textContent =
-        "WhatsApp inválido (solo números, 10-15 dígitos)";
+        "WhatsApp inválido (solo números, 10 dígitos)";
       hayError = true;
     }
 
@@ -289,6 +408,7 @@ function activarFormulario() {
       conductores[conductorEditable].nombre = nombre;
       conductores[conductorEditable].apellido = apellido;
       conductores[conductorEditable].cedula = cedula;
+      conductores[conductorEditable].idDepartamento = departamento;
       conductores[conductorEditable].idMunicipio = municipio;
       conductores[conductorEditable].idBarrio = barrio;
       conductores[conductorEditable].direccion = direccion;
@@ -300,10 +420,14 @@ function activarFormulario() {
       conductorEditable = null;
     } else {
       const nuevoConductor = {
-        idConductor: conductores.length + 1,
+        idConductor:
+          conductores.length > 0
+            ? Math.max(...conductores.map(c => c.idConductor)) + 1
+            : 1,
         nombre,
         apellido,
         cedula,
+        idDepartamento: departamento,
         idMunicipio: municipio,
         idBarrio: barrio,
         direccion,
@@ -318,6 +442,18 @@ function activarFormulario() {
 
     renderConductores();
     form.reset();
+
+    // Sirve para deshabilitar municipio y barraio desde de guardar los datos
+    document.getElementById("idMunicipio").innerHTML =
+      '<option value="">Seleccione municipio</option>';
+
+    document.getElementById("idBarrio").innerHTML =
+      '<option value="">Seleccione barrio</option>';
+
+    document.getElementById("idMunicipio").disabled = true;
+    document.getElementById("idBarrio").disabled = true;
+
+
     document.getElementById("btnGuardar").textContent = "Guardar";
   });
 }
@@ -352,7 +488,7 @@ function validarCedula(Cedula) {
 }
 
 function validarWhatsapp(whatsapp) {
-  return /^\d{10,15}$/.test(whatsapp);
+  return /^\d{9,10}$/.test(whatsapp);
 }
 
 function validarEmail(email) {
@@ -368,7 +504,7 @@ function validarLicencia(licencia) {
 
 // Funcion limpiar errores
 function limpiarErrores() {
-  ['errorNombre', 'errorApellido', 'errorCedula', 'errorDepartamento', 'errorDireccionMunicipio', 'errorDireccionBarrio', 'errorDireccion', 'errorWhatsapp', 'errorEmail', 'errorLicencia'].forEach(id => {
+  ['errorNombre', 'errorApellido', 'errorCedula', 'errorDepartamento', 'errorMunicipio', 'errorBarrio', 'errorDireccion', 'errorWhatsapp', 'errorEmail', 'errorLicencia'].forEach(id => {
     document.getElementById(id).textContent = "";
   });
 }
