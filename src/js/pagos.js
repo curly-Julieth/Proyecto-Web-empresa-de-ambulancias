@@ -1,4 +1,29 @@
-// Importaciones desde env.js
+/*
+ * FILE: pagos.js
+ *
+ * RESPONSIBILITY:
+ * - Manage payment registration and administration.
+ * - Validate user input before processing payments.
+ * - Display payment information in a dynamic table.
+ * - Allow editing and deletion of payment records.
+ * - Handle loading and saving of payment data using .bd files.
+ * - Synchronize the user interface with the application's data.
+ *
+ * DEPENDENCIES:
+ * - env.js:
+ *   recibosCaja, clientes, formasPago, bancos,
+ *   estadoPago, archivosBD.
+ *
+ * - fileManager.js:
+ *   abrirArchivoBD(), guardarArchivoBD().
+ *
+ * NOTES:
+ * - Payment data is stored in memory using the recibosCaja array.
+ * - The interface updates dynamically without refreshing the page.
+ * - File operations use the File System Access API through fileManager.js.
+ */
+
+
 import { 
   recibosCaja, 
   clientes, 
@@ -12,7 +37,7 @@ import { abrirArchivoBD, guardarArchivoBD } from "./fileManager.js";
 
 
 
-// Vista pagos
+// Payments view
 const vistaPagos = `
 <section>
   <h2>Registrar Pago</h2>
@@ -76,12 +101,12 @@ const vistaPagos = `
 
 
 
-// Variable global
-// Guarda el indice del pago que se esta editando
+// Global variable
+// Stores the index of the payment currently being edited
 let pagoEditable = null;
 
 
-// Funcion cargar pagos
+// Load payments function
 export function cargarPagos() {
   const main = document.getElementById("main");
   main.innerHTML = vistaPagos;
@@ -98,7 +123,7 @@ export function cargarPagos() {
 
 
 
-// Cargar clientes
+// Load customers
 function cargarSelectClientes() {
   const selectCliente = document.getElementById("cliente");
   selectCliente.innerHTML = `<option value="">Seleccione cliente</option>`;
@@ -125,7 +150,7 @@ function cargarSelectEstadoPago(){
 }
 
 
-// Cargar formas de pago
+// Load payment methods
 function cargarSelectFormasPago() {
   const selectFormaPago = document.getElementById("formaPago");
   selectFormaPago.innerHTML = `<option value="">Seleccione forma pago</option>`;
@@ -140,7 +165,7 @@ function cargarSelectFormasPago() {
 
 
 
-// Cargar bancos
+// Load banks
 function cargarSelectBancos() {
   const selectBanco = document.getElementById("banco");
   selectBanco.innerHTML = ` <option value="">Seleccione banco</option>`;
@@ -155,28 +180,28 @@ function cargarSelectBancos() {
 
 
 
-// Renderizar pagos
+// Render payments
 function renderPagos() {
   const tabla = document.getElementById("tablaPagos");
   tabla.innerHTML = "";
 
   recibosCaja.forEach((pago, index) => {
-    // Buscar cliente
+    // Search for a customer
     const cliente = clientes.find(
       c => c.idCliente == pago.idCliente
     );
 
-    // Buscar forma pago
+    // Search for a payment method
     const formaPago = formasPago.find(
       fp => fp.idFormaPago == pago.idFormaPago
     );
 
-    // Buscar banco
+    // Search for a bank
     const banco = bancos.find(
       b => b.idBanco == pago.idBanco
     );
 
-    // Buscar estado
+    // Search for a status
     const estado = estadoPago.find(
       e => e.idEstadoPago == pago.estado
     );
@@ -205,7 +230,7 @@ function renderPagos() {
 }
 
 
-// Activar eventos tabla
+// Activate table events
 function activarEventosTabla() {
   const tabla = document.getElementById("tablaPagos");
   tabla.addEventListener("click", function(e) {
@@ -219,10 +244,10 @@ function activarEventosTabla() {
   });
 }
 
-// Eventos archivos .bd
+// .bd file events
 function activarEventosArchivo() {
 
-  // Abrir archivo
+  // Open file
   document.getElementById("btnAbrirBD")
   .addEventListener("click", async () => {
 
@@ -232,10 +257,10 @@ function activarEventosArchivo() {
 
       archivosBD.pagosHandle = resultado.handle;
 
-      // Limpiar array actual
+      // Clear the current array
       recibosCaja.length = 0;
 
-      // Insertar nuevos datos
+      // Insert new data
       resultado.datos.forEach(p => recibosCaja.push(p));
       renderPagos();
       mostrarToast("Archivo .bd cargado correctamente ✅");
@@ -246,7 +271,7 @@ function activarEventosArchivo() {
   });
 
 
-  // Guardar archivo
+  // Save file
   document.getElementById("btnGuardarBD")
   .addEventListener("click", async () => {
 
@@ -263,7 +288,7 @@ function activarEventosArchivo() {
 }
 
 
-// Cargar en formulario
+// Load into form
 function cargarEnFormulario(pago, indice) {
   document.getElementById("cliente").value = pago.idCliente;
   document.getElementById("concepto").value = pago.concepto;
@@ -278,13 +303,13 @@ function cargarEnFormulario(pago, indice) {
 }
 
 
-// Activar formulario
+// Activate form
 function activarFormulario() {
   const form = document.getElementById("formPago");
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    // Capturar valores
+    // Capture values
     const cliente = document.getElementById("cliente").value;
     const concepto = document.getElementById("concepto").value.trim();
     const estado = document.getElementById("estado").value;
@@ -294,8 +319,8 @@ function activarFormulario() {
 
     let hayError = false;
     limpiarErrores();
-    
-    // Validaciones basicas
+
+    // Basic validations
     if (!cliente) {
       document.getElementById("errorCliente")
         .textContent = "Seleccione un cliente";
@@ -333,14 +358,14 @@ function activarFormulario() {
       hayError = true;
     }
 
-    
-    // Mostrar error
+
+    // Show error
     if (hayError) {
       mostrarToast("⚠️ Corrige los errores antes de guardar");
       return;
     }
 
-    // Para editar
+    // For editing
     if (pagoEditable !== null) {
       recibosCaja[pagoEditable].idCliente = Number(cliente);
       recibosCaja[pagoEditable].concepto = concepto;
@@ -399,9 +424,9 @@ function activarFormulario() {
       mostrarToast("Pago registrado ✅");
     }
 
-    // Actualizar tabla
+    // Update table
     renderPagos();
-    // Reiniciar formulario
+    // Reset form
     form.reset();
     document.getElementById("banco").disabled = true;
     document.getElementById("btnGuardarPago").textContent = "Guardar";
@@ -409,7 +434,7 @@ function activarFormulario() {
 }
 
 
-// Eliminar pago
+// Delete payment
 function eliminarPago(indice) {
   const pago = recibosCaja[indice];
     if (confirm(`¿Eliminar recibo ${pago.consecutivo}?`)) {
@@ -427,7 +452,7 @@ function eliminarPago(indice) {
   }
 }
 
-// Limpiar errores
+// Clear errors
 function limpiarErrores() {
   [
     "errorCliente",
@@ -451,7 +476,7 @@ function bancoRequerido() {
 }
 
 
-// Si se elige efectivo, desabilitar banco
+// If cash is selected, disable bank
 function activarEventosFormulario() {
   const selectFormaPago = document.getElementById("formaPago");
   const selectBanco = document.getElementById("banco");
@@ -474,7 +499,7 @@ function activarEventosFormulario() {
 
 
 
-// Mensaje toast
+// Toast message
 function mostrarToast(mensaje) {
   const toast = document.getElementById("toast");
   toast.textContent = mensaje;

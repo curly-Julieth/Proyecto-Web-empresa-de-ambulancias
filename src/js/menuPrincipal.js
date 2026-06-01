@@ -1,4 +1,27 @@
-// Menu principal (sidebar)
+/**
+ * RESPONSIBILITY:
+ * This module manages the application's sidebar navigation.
+ *
+ * FEATURES:
+ * - Renders the main navigation menu.
+ * - Loads system modules dynamically.
+ * - Controls active menu states.
+ * - Handles theme switching (Light/Dark Mode).
+ * - Handles user logout functionality.
+ *
+ * MODULES AVAILABLE:
+ * - Dashboard
+ * - Clients
+ * - Drivers
+ * - Vehicles
+ * - Transfers
+ * - Payments
+ * - AI Assistant
+ *
+ * The application follows a Single Page Application (SPA)
+ * architecture where each view is dynamically rendered
+ * inside the main container without reloading the page.
+ */
 
 import { cargarResumen } from "./resumen.js";
 import { cargarClientes } from "./clientes.js";
@@ -30,9 +53,9 @@ document.getElementById("menuPrincipalMount").innerHTML = `
 `
 
 
-// Funcion centralizada de navegación
+// Centralized navigation function
 function navegar(vistaFn, btnId) {
-  // Remover active de TODOS los botones
+  // Remove the “active” state from ALL buttons
   document.querySelectorAll(".navItem").forEach(btn => {
     btn.classList.remove("active");
   });
@@ -43,7 +66,7 @@ function navegar(vistaFn, btnId) {
 
 
 
-// Events listeners de navegación 
+// Navigation event listeners 
 document.getElementById("btnResumen").addEventListener("click", (e) => {
   e.preventDefault();
   navegar(cargarResumen, "btnResumen");
@@ -84,7 +107,7 @@ document
   .addEventListener("click", cerrarSesion);
 
 
-// Cambiar tema (claro/oscuro)
+// Change theme (light/dark)
 document.getElementById("btnTheme").addEventListener("click", () => {
   const app = document.getElementById("app");
   const currentTheme = app.getAttribute("data-theme");

@@ -1,26 +1,49 @@
-// Importo array vehículos: trae datos desde archivo env.js
+/**
+ * RESPONSIBILITY:
+ * - Display the vehicle management interface.
+ * - Register new ambulance vehicles.
+ * - Edit existing vehicle information.
+ * - Delete vehicles from the system.
+ * - Validate vehicle data using regular expressions.
+ * - Render vehicle records dynamically in the table.
+ * - Manage ambulance-related information such as plate number,
+ *   SOAT, engine serial number, chassis serial number,
+ *   passenger capacity, internal number, and GPS identifier.
+ *
+ * DEPENDENCIES:
+ * - env.js
+ *
+ * MAIN FEATURES:
+ * - CRUD operations for vehicles.
+ * - Form validation using regular expressions.
+ * - Dynamic DOM manipulation.
+ * - Table rendering and updates.
+ * - Ambulance fleet management.
+ */
+
+
 import { vehiculos } from "./env.js"
 
-// main: obtiene elemento HTML donde inyectaremos todo el contenido
+// main: retrieves the HTML element where we will inject all the content
 
 
-// vehiculoEditable: guarda indice del vehículo que se está modificando, null si es nuevo
+// editableVehicle: stores the index of the vehicle being edited; null if it is new
 let vehiculoEditable = null
 
 
-// EXPRESIONES REGULARES PARA VALIDACIONES
-// regexPlaca: valida formato ABC123 con 3 letras mayúsculas y 3 números
+// REGULAR EXPRESSIONS FOR VALIDATION
+// regexPlaca: validates the ABC123 format with 3 uppercase letters and 3 numbers
 const regexPlaca = /^[A-Z]{3}[0-9]{3}$/; 
-// regexNumeroSoat: valida alfanuméricos con mínimo 8 caracteres
+// regexNumeroSoat: validates alphanumeric characters with a minimum of 8 characters
 const regexNumeroSoat = /^[A-Z0-9]{8,}$/; 
-// regexCapacidad: valida solo números enteros
+// regexCapacity: validates only integers
 const regexCapacidad = /^[0-9]+$/; 
-// regexIdGPS: valida alfanuméricos con mínimo 3 caracteres
+// regexIdGPS: validates alphanumeric strings with at least 3 characters
 const regexIdGPS = /^[A-Z0-9]{3,}$/;
 
 
-// TEMPLATE HTML DEL FORMULARIO Y TABLA
-// vistaVehiculos: contiene todo el HTML del formulario y tabla en un string grande
+// TEMPLATE HTML FOR THE FORM AND TABLE
+// vistaVehiculos: contains all the HTML for the form and table as a large string
 const vistaVehiculos = `
   <section>
     <h2>Registrar vehículos</h2>
@@ -127,19 +150,18 @@ const vistaVehiculos = `
 `
 
 
-// FUNCIÓN: ACTUALIZAR LA TABLA
-
-// actualizarTabla: función que recorre vehículos, crea filas HTML y maneja clicks en botones
+// FUNCTION: UPDATE THE TABLE
+// actualizarTabla: function that iterates over vehicles, creates HTML rows, and handles button clicks
 function actualizarTabla() {
-    // tablaAmbulancias: obtiene elemento tbody donde irán todas las filas
+    // ambulancesTable: retrieves the tbody element that will contain all the rows
     const tablaAmbulancias = document.getElementById("tablaAmbulancias")
     
-    // limpia tabla: borra contenido anterior para evitar duplicados
+    // Clear table: Delete previous content to avoid duplicates
     tablaAmbulancias.innerHTML = ""
     
-    // forEach: recorre cada vehículo del array con su índice
+    // forEach: loop through each vehicle in the array using its index
     vehiculos.forEach((ambulancia, index) => {
-        // fila: string HTML con datos de una ambulancia usando template literals
+        // fila: HTML string containing data about an ambulance using template literals
         const fila = `
             <tr>
                 <td>${ambulancia.idVehiculo}</td>
@@ -161,14 +183,14 @@ function actualizarTabla() {
                 </td>
             </tr>
         `
-        // concatena: añade fila nueva sin borrar anteriores
+        // concatenate: adds a new row without deleting the previous ones
         tablaAmbulancias.innerHTML += fila
     })
 }
 
 
 
-// FUNCIÓN: ACTIVAR EVENTOS DE LA TABLA
+// FUNCTION: ACTIVATE TABLE EVENTS
 function activarEventosTabla() {
     const tablaAmbulancias = document.getElementById("tablaAmbulancias");
     tablaAmbulancias.addEventListener("click", function(e) {
@@ -192,14 +214,11 @@ function activarEventosTabla() {
 }
 
 
-
-
-
-// FUNCIÓN: CARGAR DATOS EN EL FORMULARIO PARA EDITAR
-// cargarEnFormulario: carga datos de un vehículo en los inputs para editar
-// recibe: ambulancia con datos y indice de su posición
+// FUNCTION: LOAD DATA INTO THE FORM FOR EDITING
+// cargarEnFormulario: loads vehicle data into the inputs for editing
+// receives: ambulance with data and index of its position
 function cargarEnFormulario(ambulancia, indice) {
-    // value: propiedad que asigna contenido a cada input del formulario
+    // value: property that assigns content to each input of the form
     document.getElementById("placa").value = ambulancia.placa
     document.getElementById("modelo").value = ambulancia.modelo
     document.getElementById("snmotor").value = ambulancia.snMotor
@@ -211,63 +230,63 @@ function cargarEnFormulario(ambulancia, indice) {
     document.getElementById("numeroInterno").value = ambulancia.numeroInterno
     document.getElementById("idGPS").value = ambulancia.idGPS
 
-    // vehiculoEditable: guarda el índice para saber cuál vehículo actualizar luego
+    // vehiculoEditable: stores the index to know which vehicle to update later
     vehiculoEditable = indice
 
-    // textContent: cambia el texto del botón de Guardar a Actualizar
+    // textContent: changes the button text from Save to Update
     document.getElementById("btnGuardar").textContent = "Actualizar"
     
-    // mostrarToast: muestra mensaje temporal indicando que se está editando
+    // showToast: displays a temporary message indicating that editing is in progress
     mostrarToast("Editando vehiculos...")
 }
 
 
 
-// FUNCIÓN: ELIMINAR VEHÍCULO
-// eliminarVehiculo: elimina un vehículo después de confirmación del usuario
-// recibe: indice de la posición del vehículo a eliminar
+// FUNCTION: DELETE VEHICLE
+// eliminarVehiculo: removes a vehicle after user confirmation
+// receives: index of the vehicle's position to delete
 function eliminarVehiculo(indice) {
-    // ambulancia: obtiene el vehículo en esa posición para mostrar su placa
+    // ambulancia: gets the vehicle at that position to display its plate
     const ambulancia = vehiculos[indice]
     
-    // confirm: muestra diálogo de confirmación si cancelar, el bloque no se ejecuta
+    // confirm: Displays a confirmation dialog; if canceled, the block is not executed
     if (confirm(`¿Eliminar vehículo con placa "${ambulancia.placa}"?`)) {
-        // splice: elimina 1 elemento del array empezando en posición indice
+        // splice: removes 1 element from the array starting at position index
         vehiculos.splice(indice, 1)
-        
-        // actualizarTabla: redibuja la tabla sin el vehículo eliminado
+
+        // actualizarTabla: redraws the table without the deleted vehicle
         actualizarTabla()
-        
-        // mostrarToast: muestra mensaje de éxito con emoji
+
+        // mostrarToast: displays a success message with emoji
         mostrarToast("Vehículo eliminado ✅")
     }
 }
 
 
-// FUNCIÓN: MOSTRAR NOTIFICACIÓN
-// mostrarToast: muestra mensaje temporal que desaparece después de 3 segundos
-// recibe: mensaje texto a mostrar al usuario
+// FUNCTION: SHOW NOTIFICATION
+// mostrarToast: shows a temporary message that disappears after 3 seconds
+// receives: message text to display to the user
 function mostrarToast(mensaje) {
-    // toast: obtiene elemento del DOM que contiene las notificaciones
+    // toast: retrieves the DOM element that contains the notifications
     const toast = document.getElementById("toast")
-    
-    // if: verifica que el elemento toast exista antes de modificarlo
+
+    // if: checks that the toast element exists before modifying it
     if (toast) {
-        // textContent: asigna el mensaje al elemento toast
+        // textContent: assigns the message to the toast element
         toast.textContent = mensaje
-        
-        // classList.add: agrega clase CSS show que hace visible el toast
+
+        // classList.add: adds CSS class show that makes the toast visible
         toast.classList.add("show")
-        
-        // removeAttribute: elimina atributo hidden para que sea visible
+
+        // removeAttribute: removes hidden attribute to make it visible
         toast.removeAttribute("hidden")
 
-        // setTimeout: ejecuta función anónima después de 3000 milisegundos
+        // setTimeout: executes anonymous function after 3000 milliseconds
         setTimeout(() => {
-            // classList.remove: quita clase show para ocultar el toast
+            // classList.remove: removes class show to hide the toast
             toast.classList.remove("show")
-            
-            // setAttribute: agrega atributo hidden para ocultarlo completamente
+
+            // setAttribute: adds hidden attribute to completely hide it
             toast.setAttribute("hidden", "")
         }, 3000)
     }
@@ -275,13 +294,13 @@ function mostrarToast(mensaje) {
 
 
 
-// FUNCIÓN: VALIDAR FORMULARIO
-// validarFormulario: verifica que todos los inputs cumplan con validaciones, retorna true o false
+// FUNCTION: VALIDATE FORM
+// validarFormulario: verifies that all inputs meet validations, returns true or false
 function validarFormulario() {
-    // toUpperCase: convierte placa a mayúsculas para uniformidad
+    // toUpperCase: converts plate to uppercase for uniformity
     const placa = document.getElementById("placa").value.toUpperCase();
-    
-    // trim: elimina espacios en blanco del inicio y final de cada campo
+
+    // trim: removes whitespace from the beginning and end of each field
     const modelo = document.getElementById("modelo").value.trim();
     const snMotor = document.getElementById("snmotor").value.trim();
     const snChasis = document.getElementById("snchasis").value.trim();
@@ -292,10 +311,10 @@ function validarFormulario() {
     const numeroInterno = document.getElementById("numeroInterno").value.trim();
     const idGPS = document.getElementById("idGPS").value.trim();
 
-    // errores: array que almacena mensajes de error encontrados
+    // errors: array that stores error messages found
     let errores = [];
 
-    // regexPlaca.test: verifica si placa cumple patrón ABC123
+    // regexPlaca.test: checks if plate matches ABC123 pattern
     if (!regexPlaca.test(placa)) {
         errores.push("La placa debe tener formato ABC123 (3 letras mayúsculas + 3 números)");
         document.getElementById("errorPlaca").textContent = errores[errores.length - 1];
@@ -303,7 +322,7 @@ function validarFormulario() {
         document.getElementById("errorPlaca").textContent = "";
     }
 
-    // modelo.length: verifica que modelo tenga mínimo 3 caracteres
+    // modelo.length: Check that the model has at least 3 characters
     if (modelo.length < 3) {
         errores.push("El modelo debe tener al menos 3 caracteres");
         document.getElementById("errorModelo").textContent = errores[errores.length - 1];
@@ -311,7 +330,7 @@ function validarFormulario() {
         document.getElementById("errorModelo").textContent = "";
     }
 
-    // snMotor.length: verifica mínimo 3 caracteres
+    // snMotor.length: Check that snMotor has at least 3 characters
     if (snMotor.length < 3) {
         errores.push("El snMotor debe tener al menos 3 caracteres");
         document.getElementById("errorSnMotor").textContent = errores[errores.length - 1];
@@ -319,7 +338,7 @@ function validarFormulario() {
         document.getElementById("errorSnMotor").textContent = "";
     }
 
-    // snChasis.length: verifica mínimo 3 caracteres
+    // snChasis.length: Check that snChasis has at least 3 characters
     if (snChasis.length < 3) {
         errores.push("El snChasis debe tener al menos 3 caracteres");
         document.getElementById("errorSnChasis").textContent = errores[errores.length - 1];
@@ -327,7 +346,7 @@ function validarFormulario() {
         document.getElementById("errorSnChasis").textContent = "";
     }
 
-    // regexNumeroSoat.test: verifica alfanuméricos mínimo 8 caracteres
+    // regexNumeroSoat.test: verifies alphanumeric minimum 8 characters
     if (!regexNumeroSoat.test(numeroSoat)) {
         errores.push("El número SOAT debe tener al menos 8 caracteres alfanuméricos");
         document.getElementById("errorNumeroSOAT").textContent = errores[errores.length - 1];
@@ -335,7 +354,7 @@ function validarFormulario() {
         document.getElementById("errorNumeroSOAT").textContent = "";
     }
 
-    // new Date: verifica que fecha sea futura no pasada
+    // new Date: verifies that the date is future not past
     if (!fechaVencimientoSoat || new Date(fechaVencimientoSoat) < new Date()) {
         errores.push("La fecha de vencimiento debe ser futura");
         document.getElementById("errorFechaVencimientoSOAT").textContent = errores[errores.length - 1];
@@ -343,7 +362,7 @@ function validarFormulario() {
         document.getElementById("errorFechaVencimientoSOAT").textContent = "";
     }
 
-    // tarjetaPropiedad.length: verifica mínimo 3 caracteres
+    // tarjetaPropiedad.length: verifies minimum 3 characters
     if (tarjetaPropiedad.length < 3) {
         errores.push("La tarjeta de propiedad debe tener al menos 3 caracteres");
         document.getElementById("errorTarjetaPropiedad").textContent = errores[errores.length - 1];
@@ -351,7 +370,7 @@ function validarFormulario() {
         document.getElementById("errorTarjetaPropiedad").textContent = "";
     }
 
-    // regexCapacidad.test: verifica solo números, parseInt: convierte a número entero
+    // regexCapacidad.test: verifies only numbers, parseInt: converts to integer
     if (!regexCapacidad.test(capacidadPacientes) || parseInt(capacidadPacientes) < 1) {
         errores.push("La capacidad debe ser un número mayor a 0");
         document.getElementById("errorCapacidadPacientes").textContent = errores[errores.length - 1];
@@ -359,7 +378,7 @@ function validarFormulario() {
         document.getElementById("errorCapacidadPacientes").textContent = "";
     }
 
-    // numeroInterno.length: verifica mínimo 3 caracteres
+    // numeroInterno.length: verifies minimum 3 characters
     if (numeroInterno.length < 3) {
         errores.push("El número interno debe tener al menos 3 caracteres");
         document.getElementById("errorNumeroInterno").textContent = errores[errores.length - 1];
@@ -367,7 +386,7 @@ function validarFormulario() {
         document.getElementById("errorNumeroInterno").textContent = "";
     }
 
-    // regexIdGPS.test: verifica alfanuméricos mínimo 3 caracteres
+    // regexIdGPS.test: verifies alphanumeric minimum 3 characters      
     if (!regexIdGPS.test(idGPS)) {
         errores.push("El ID GPS debe tener al menos 3 caracteres alfanuméricos");
         document.getElementById("errorIdGPS").textContent = errores[errores.length - 1];
@@ -375,47 +394,45 @@ function validarFormulario() {
         document.getElementById("errorIdGPS").textContent = "";
     }
 
-    // retorna: true si no hay errores, false si hay al menos uno
+    // retorna: true if there are no errors, false if there is at least one
     return errores.length === 0;
 }
 
 
 
-// FUNCIÓN: MOSTRAR LA VISTA DE VEHÍCULOS
-// Esta función inicializa toda la vista: carga el HTML, configura eventos y muestra los datos
+// FUNCTION: SHOW VEHICLES VIEW
+// This function initializes the entire view: loads the HTML, sets up events, and displays the data
 function mostrarVehiculos() {
-    // Inyecto el HTML de la plantilla en el contenedor principal
+    // Inject the template HTML into the main container
     main.innerHTML = vistaVehiculos
 
     activarEventosTabla();
     
-    // Obtengo referencias al formulario y la tabla después de inyectar el HTML
+    // I get references to the form and the table after injecting the HTML
     const formVehiculos = document.getElementById("formVehiculos")
     const tablaAmbulancias = document.getElementById("tablaAmbulancias")
-    
-    // Configuro el evento al hacer submit del formulario (al hacer click en Guardar)
+
+    // I set up the event when submitting the form (when clicking Save)
     formVehiculos.addEventListener("submit", function(event) {
-        // Prevengo el comportamiento por defecto (recargar página)
+        // I prevent the default behavior (page reload)
         event.preventDefault()
 
-        // Valido que todos los datos sean correctos antes de guardar
-        // validarFormulario() retorna true si no hay errores, false si hay errores
-        if (!validarFormulario()) { // ! significa NOT (negación)
-            // Si hay errores (validarFormulario retorna false), entro aquí
-            // console.log() muestra un mensaje en la consola del navegador (F12)
+        // I validate that all data is correct before saving
+        // validarFormulario() returns true if there are no errors, false if there are errors
+        if (!validarFormulario()) { 
             console.log("Formulario contiene errores");
-            
-            // Muestro un toast con un mensaje de advertencia al usuario
+
+            // I show a toast with a warning message to the user
             mostrarToast("⚠️ Corrige los errores antes de guardar");
-            
-            // return; detiene la ejecución de la función
-            // No continúa con el resto del código
+
+            // return; stops the execution of the function
+            // Does not continue with the rest of the code
             return;
         }
 
-        // Si estamos editando un vehículo existente
-        // vehiculoEditable !== null significa que el valor no es null (es diferente de null)
-        // Si vehiculoEditable tiene un índice (0, 1, 2...), estamos editando
+        // If we are editing an existing vehicle
+        // vehiculoEditable !== null means the value is not null (it's different from null)
+        // If vehiculoEditable has an index (0, 1, 2...), we are editing
         if (vehiculoEditable !== null) {
             vehiculos[vehiculoEditable].placa = document.getElementById("placa").value.toUpperCase()
             vehiculos[vehiculoEditable].modelo = document.getElementById("modelo").value.trim()
@@ -431,79 +448,75 @@ function mostrarVehiculos() {
             mostrarToast("Vehículo actualizado con éxito ✅")
             vehiculoEditable = null
         } else {
-            // Else = si la condición anterior (vehiculoEditable !== null) es falsa
-            // Llegamos aquí cuando vehiculoEditable === null (es decir, NO estamos editando)
-            // Esto significa que vamos a CREAR un nuevo vehículo
-            
-            // Calculo el siguiente ID automáticamente (el máximo actual + 1)
-            // vehiculos.length > 0 verifica si hay vehículos en el array
-            const maxId = vehiculos.length > 0 
-                ? Math.max(...vehiculos.map(v => v.idVehiculo))  // Si hay vehículos, busco el ID máximo
-                // El operador ? : es ternario (si_es_true ? si_es_true : si_es_false)
-                // map() crea un array solo con los IDs: [1, 2, 3, 4...]
-                // Math.max(...) busca el número más grande en el array
-                : 0  // Si no hay vehículos, empiezo con ID = 0
-            
-            // Creo un objeto con los datos del nuevo vehículo
-            // {} crea un objeto vacío, dentro agrego propiedades
+            // Else = if the previous condition (vehiculoEditable !== null) is false
+            // We reach here when vehiculoEditable === null (that is, we are NOT editing)
+            // This means we are going to CREATE a new vehicle
+
+            // I calculate the next ID automatically (the current max + 1)
+            // vehiculos.length > 0 checks if there are vehicles in the array
+            const maxId = vehiculos.length > 0
+                ? Math.max(...vehiculos.map(v => v.idVehiculo))
+                : 0  // If there are no vehicles, I start with ID = 0
+
+            // I create an object with the data of the new vehicle
+            // {} creates an empty object, I add properties inside
             const nuevaAmbulancia = {
-                // idVehiculo será el ID máximo + 1 (autoincremental)
-                // Ejemplo: si el máximo es 3, el nuevo será 4
-                idVehiculo: maxId + 1,  // ID autoincremental
-                
-                // toUpperCase() convierte a mayúsculas (ABC123)
-                placa: document.getElementById("placa").value.toUpperCase(),  // Placa en mayúsculas
-                
-                // trim() elimina espacios del inicio y final
-                modelo: document.getElementById("modelo").value.trim(),  // Modelo sin espacios
-                snMotor: document.getElementById("snmotor").value.trim(), // Serie motor sin espacios
-                snChasis: document.getElementById("snchasis").value.trim(), // Serie chasis sin espacios
-                numeroSoat: document.getElementById("numeroSOAT").value.trim(), // SOAT sin espacios
-                
-                // La fecha se guarda tal como viene del input type="date"
-                fechaVencimientoSoat: document.getElementById("fechaVencimientoSOAT").value,  // Fecha sin cambios
-                
-                tarjetaPropiedad: document.getElementById("tarjetaPropiedad").value.trim(), // Tarjeta sin espacios
-                
-                // parseInt() convierte el texto a número entero
-                // "5" -> 5 (string a número)
-                capacidadPacientes: parseInt(document.getElementById("capacidadPacientes").value),  // Capacidad como número
-                
-                numeroInterno: document.getElementById("numeroInterno").value.trim(), // Número interno sin espacios
-                idGPS: document.getElementById("idGPS").value.trim() // ID GPS sin espacios
+                // VehicleID will be the maximum ID + 1 (auto-increment)
+                idVehiculo: maxId + 1,  // Auto-incrementing ID
+
+                // toUpperCase() converts to uppercase (ABC123)
+                placa: document.getElementById("placa").value.toUpperCase(),  // License plate in uppercase
+
+                // trim() removes spaces from the beginning and end
+                modelo: document.getElementById("modelo").value.trim(),  // Model without spaces
+                snMotor: document.getElementById("snmotor").value.trim(), // Engine serial without spaces
+                snChasis: document.getElementById("snchasis").value.trim(), // Chassis serial without spaces
+                numeroSoat: document.getElementById("numeroSOAT").value.trim(), // SOAT without spaces
+
+                // The date is saved as it comes from the input type="date"
+                fechaVencimientoSoat: document.getElementById("fechaVencimientoSOAT").value,  // Date without changes
+
+                tarjetaPropiedad: document.getElementById("tarjetaPropiedad").value.trim(), // Card without spaces
+
+                // parseInt() converts the text to an integer
+                // "5" -> 5 (string to number)
+                capacidadPacientes: parseInt(document.getElementById("capacidadPacientes").value),  // Capacity as a number
+
+                numeroInterno: document.getElementById("numeroInterno").value.trim(), // Internal number without spaces
+                idGPS: document.getElementById("idGPS").value.trim() // GPS ID without spaces
             }
 
-            // push() agrega un elemento al final del array
-            // vehiculos.push(nuevaAmbulancia) añade el nuevo objeto al array
-            vehiculos.push(nuevaAmbulancia) // Agrego la nueva ambulancia al array
-            
-            // Muestro un toast de éxito al usuario
-            mostrarToast("Vehículo registrado con éxito ✅")
+            // push() adds an element to the end of the array
+            // vehicles.push(newAmbulance) adds the new object to the array
+            vehiculos.push(nuevaAmbulancia) // Add the new ambulance to the array
+
+            // Show a success toast to the user
+            mostrarToast("Vehiculo registrado correctamente ✅")
         }
         
-        // Limpio el formulario (borro todos los campos)
-        // .reset() es un método especial de los formularios que limpia todos sus inputs
-        // Todos los campos vuelven a estar vacíos después de guardar
-        formVehiculos.reset() // Borro todos los campos del formulario
+        // Clear the form (erase all fields)
+        // .reset() is a special method of forms that clears all its inputs
+        // All fields will be empty after saving
+        formVehiculos.reset() 
         
-        // Actualizo la tabla para mostrar el cambio
-        // Si creé un nuevo vehículo, aparecerá en la tabla
-        // Si edité un vehículo, la tabla mostrará los datos actualizados
-        actualizarTabla() // Llamo la función para actualizar la tabla
+        // Update the table to reflect the change
+        // If a new vehicle was created, it will appear in the table
+        // If a vehicle was edited, the table will show the updated data
+        actualizarTabla() 
         
-        // Restablezco el botón a su estado inicial
-        // Si estábamos editando, el botón decía "Actualizar"
-        // Ahora lo cambio de vuelta a "Guardar" para nuevos registros
-        document.getElementById("btnGuardar").textContent = "Guardar" // Restauro el texto del botón
+        // Restore the button to its initial state
+        // If we were editing, the button read "Actualizar"
+        // Now change it back to "Guardar" for new records
+        document.getElementById("btnGuardar").textContent = "Guardar" 
     })
-    
-    // Actualizo la tabla inicialmente para mostrar los vehículos que ya existen
+
+    // Update the table initially to show existing vehicles
     actualizarTabla()
 }
 
 
 
-// cargarVehiculos: función para cargar la vista de vehículos
+// loadVehicles: function to load the vehicle view
 export function cargarVehiculos() {
     mostrarVehiculos()
 };

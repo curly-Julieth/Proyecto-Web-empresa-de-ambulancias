@@ -1,8 +1,30 @@
+/**
+ * RESPONSIBILITY:
+ * - Display the driver management interface.
+ * - Register new drivers.
+ * - Edit existing driver information.
+ * - Delete drivers from the system.
+ * - Validate form inputs.
+ * - Manage location hierarchy (Department, Municipality, and Neighborhood).
+ * - Dynamically update dependent select elements.
+ * - Render driver records in the table.
+ *
+ * DEPENDENCIES:
+ * - env.js
+ *
+ * MAIN FEATURES:
+ * - CRUD operations for drivers.
+ * - Dynamic DOM manipulation.
+ * - Cascading select menus.
+ * - Form validation.
+ * - Table rendering and updates.
+ */
+
 import { conductores } from "./env.js";
 import { departamentos, municipios, barrios } from "./env.js";
 
 
-// Vista conductores
+// Drivers view
 const vistaConductores = `
     <section>
       <h2>Registrar Conductor</h2>
@@ -103,26 +125,26 @@ const vistaConductores = `
 </section>
 `;
 
-// Variable global 
+// Global variable 
 let conductorEditable = null;
 
 
-// Funcion cargar conductores
+// Load drivers function
 export function cargarConductores() {
   const main = document.getElementById("main");
   main.innerHTML = vistaConductores;
 
-  cargarSelectDepartamentos(); // Carga departamentos al inicio
-  eventoCambiosSelects(); // Escucha los cambios en los selects y desabilita como corresponda
+  cargarSelectDepartamentos(); // Load apartments at startup
+  eventoCambiosSelects(); // Listen for changes in the select elements and disable them accordingly
 
-  renderConductores(); // Renderiza tabla
-  activarFormulario(); // Activa el formulario
-  activarEventosTabla(); // Eventos de los botones en la tabla
+  renderConductores(); 
+  activarFormulario(); 
+  activarEventosTabla(); // Button events in the table
 }
 
 
 
-// Funcion cargar select de departamentos
+// Function to load the “Departments” dropdown
 function cargarSelectDepartamentos() {
   const select = document.getElementById("idDepartamento");
   select.innerHTML = '<option value="">Seleccione departamento</option>';
@@ -136,17 +158,17 @@ function cargarSelectDepartamentos() {
 }
 
 
-// Evento cambios en los selects 
+// Event for changes in the dropdown menus 
 function eventoCambiosSelects() {
   const selectDepto = document.getElementById("idDepartamento");
   const selectMun = document.getElementById("idMunicipio");
   const selectBarrio = document.getElementById("idBarrio");
 
-  // Cambio Departamento -> Carga Municipios
+  // Change Department -> Load Municipalities
   selectDepto.addEventListener("change", (e) => {
     const idDepto = Number(e.target.value);
     
-    // Resetear hijos
+    // Reset children
     selectMun.innerHTML = '<option value="">Seleccione municipio</option>';
     selectBarrio.innerHTML = '<option value="">Seleccione barrio</option>';
     selectMun.disabled = true;
@@ -165,7 +187,7 @@ function eventoCambiosSelects() {
     }
   });
 
-  // Cambio Municipio -> Carga Barrios
+  // Switch from “Municipality” to “Neighborhoods”
   selectMun.addEventListener("change", (e) => {
   const idMun = Number(e.target.value);
 
@@ -178,7 +200,6 @@ function eventoCambiosSelects() {
       b => b.idMunicipio === idMun
     );
 
-    // Si no hay barrios registrados
     if (listaBarrios.length === 0) {
       selectBarrio.innerHTML =
         '<option value="">Sin barrios registrados</option>';
@@ -203,7 +224,7 @@ function eventoCambiosSelects() {
 
 
 
-// Funcion renderizar conductores
+// Function to render drivers
 function renderConductores() {
   const tabla = document.getElementById("tablaConductores");
   tabla.innerHTML = "";
@@ -245,7 +266,7 @@ function renderConductores() {
 }
 
 
-// Funcion activar eventos tabla
+// Function to trigger table events
 function activarEventosTabla() {
   const tabla = document.getElementById("tablaConductores");
   tabla.addEventListener("click", function(e){
@@ -260,10 +281,7 @@ function activarEventosTabla() {
 }
 
 
-
-
-
-// Funcion cargar en formulario (editar)
+// Function to load the form (edit)
 function cargarEnFormulario(conductor, indice){
 
   document.getElementById("nombre").value = conductor.nombre;
@@ -294,14 +312,14 @@ function cargarEnFormulario(conductor, indice){
 
 
 
-// Funcion activar formulario
+// Function to submit the form
 function activarFormulario() {
   const form = document.getElementById("formConductor");
   form.addEventListener("submit", (e) => {
 
     e.preventDefault();
 
-     // Se capturan los valores de los inputs
+    // The values of the input fields are captured
     const nombre = document.getElementById("nombre").value.trim();
     const apellido = document.getElementById("apellido").value.trim();
     const cedula = document.getElementById("cedula").value.trim();
@@ -318,7 +336,7 @@ function activarFormulario() {
 
     
 
-    // Validaciones basicas
+    // Basic validations
     if (!nombre || !validarNombre(nombre)) {
       document.getElementById("errorNombre").textContent =
         "Nombre inválido (solo letras, 4-50 caracteres)";
@@ -386,7 +404,7 @@ function activarFormulario() {
     }
 
 
-    // Verificar duplicaciones
+    // Check for duplicates
     if (!hayError && conductorEditable === null) {
       const existe = conductores.some(c => c.cedula === cedula);
       if (existe) {
@@ -395,7 +413,7 @@ function activarFormulario() {
       }
     }
 
-    // Mensaje error antes de guardar
+    // Error message before saving
     if (hayError) {
       mostrarToast("⚠️ Corrige los errores antes de guardar");
       return;
@@ -403,7 +421,7 @@ function activarFormulario() {
 
 
 
-    // Guardar y editar 
+    // Save and edit 
     if(conductorEditable !== null){
       conductores[conductorEditable].nombre = nombre;
       conductores[conductorEditable].apellido = apellido;
@@ -443,7 +461,7 @@ function activarFormulario() {
     renderConductores();
     form.reset();
 
-    // Sirve para deshabilitar municipio y barraio desde de guardar los datos
+    // This disables the “municipality” and “neighborhood” fields when saving data
     document.getElementById("idMunicipio").innerHTML =
       '<option value="">Seleccione municipio</option>';
 
@@ -461,7 +479,7 @@ function activarFormulario() {
 
 
 
-// Funcion eliminar conductor
+// Function to remove a conductor
 function eliminarConductor(indice) {
   const conductor = conductores[indice];
   
@@ -474,7 +492,7 @@ function eliminarConductor(indice) {
 
 
 
-// Funciones de validacion complementarias
+// Additional validation functions
 function validarNombre(nombre) {
   return /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{4,50}$/.test(nombre);
 }
@@ -502,7 +520,7 @@ function validarLicencia(licencia) {
 
 
 
-// Funcion limpiar errores
+// Error-cleaning function
 function limpiarErrores() {
   ['errorNombre', 'errorApellido', 'errorCedula', 'errorDepartamento', 'errorMunicipio', 'errorBarrio', 'errorDireccion', 'errorWhatsapp', 'errorEmail', 'errorLicencia'].forEach(id => {
     document.getElementById(id).textContent = "";

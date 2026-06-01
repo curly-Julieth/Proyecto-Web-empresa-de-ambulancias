@@ -1,3 +1,21 @@
+/*
+chatIA.js
+
+This module provides the Artificial Intelligence assistant interface for the ambulance management system.
+
+It is responsible for rendering the chat view, handling user interactions, sending questions to an external AI service through a webhook, and displaying responses inside the application.
+
+Main responsibilities:
+- Render the AI assistant interface dynamically.
+- Capture user questions from the input field.
+- Send requests to an external n8n webhook using the Fetch API.
+- Display user and AI messages in the conversation area.
+- Handle connection errors and notify the user when communication fails.
+- Manage chat event listeners and message rendering.
+
+The module allows users to interact with an AI-powered assistant directly from the application without leaving the system.
+*/
+
 const vistaChatIA = `
 <section id="chatIA">
 
@@ -22,6 +40,18 @@ const vistaChatIA = `
 </section>
 `;
 
+
+/**
+ * Loads the AI Assistant view into the main application container.
+ *
+ * This function renders the chat interface and initializes
+ * all required event listeners for user interaction.
+ *
+ * @function cargarChatIA
+ * @returns {void}
+ */
+
+
 export function cargarChatIA() {
   const main = document.getElementById("main");
 
@@ -42,8 +72,22 @@ function activarChat() {
 }
 
 
-// Enviar mensaje al webhook
-async function enviarMensaje() {
+/**
+ * Sends the user's message to the AI webhook and displays the response.
+ *
+ * The function:
+ * - Reads the user's question from the input field.
+ * - Displays the message in the chat window.
+ * - Sends a POST request to the configured webhook.
+ * - Receives and displays the AI response.
+ * - Handles connection or request errors.
+ *
+ * @async
+ * @function enviarMensaje
+ * @returns {Promise<void>}
+ */
+
+  async function enviarMensaje() {
 
   const input =
     document.getElementById("inputMensaje");

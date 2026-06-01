@@ -1,5 +1,19 @@
+/*
+Main stylesheet of the Ambulance Management System.
 
-/* --------- Variables globales*/
+Contains all visual styles for:
+- Layout
+- Navigation
+- Forms
+- Tables
+- Buttons
+- Modals
+- Notifications
+- Themes
+*/
+
+
+/* --------- Global variables */
 :root {
   --altura-barra-superior: 56px;
   --ancho-barra-lateral: 280px;
@@ -13,8 +27,8 @@
 }
 
 
-/* ----------- Definición de las paletas de colores segun data-theme */
-/* Tema claro */
+/* ----------- Definition of color palettes based on data-theme */
+/* Light theme */
 #app[data-theme="light"] {
   --fondo: #f9fbfd;
   --superficie: #eef4ff;
@@ -30,7 +44,7 @@
 }
 
 
-/* Tema oscuro */
+/* Dark theme */
 #app[data-theme="dark"] {
   --fondo: #0a0f1a;
   --superficie: #121a2b;
@@ -46,8 +60,8 @@
 }
 
 
-/*-------------- Estilos para los elementos del HTML */
-/* ------------- Estilo para el contenedor .app */
+/*-------------- Styles for HTML elements */
+/* ------------- Style for the .app container */
 #app {
   display: grid;
   grid-template-rows: var(--altura-barra-superior) 1fr;
@@ -63,7 +77,7 @@
 }
 
 
-/* ------------ Estilos para el header */
+/* ------------ Styles for the header */
 #topbar {
   grid-area: barra-superior;
   background: var(--superficie);
@@ -79,7 +93,7 @@
 
 
 
-/* ----------- Estilos para el menuprincipal o sidebar */
+/* ----------- Styles for the main menu or sidebar */
 #menuPrincipalMount {
   grid-area: barra-lateral;
   background: var(--superficie-2);
@@ -90,9 +104,9 @@
   border-radius: var(--radio-borde);
 }
 
-/* Estilos para botones de cerrar sesion y cambiar tema */
+/* Styles for logout and theme-switch buttons */
 .sideBarActions {
-  margin-top: auto; /* empuja los botones al fondo del sidebar */
+  margin-top: auto; 
   display: flex;
   flex-direction: column;
   gap: var(--espacio-2);
@@ -116,7 +130,7 @@
 
 
 
-/* Estilo para el contenido del sidebar creado dinamicamente en menuPrincipal.js*/
+/* Style for the sidebar content dynamically created in menuPrincipal.js */
 #menuPrincipalMount .titleNav {
   font-size: 20px;
   text-align: center;
@@ -144,7 +158,7 @@
 
 
 
-/* ------------- Estilos para el main */
+/* ------------- Styles for the main */
 #main {
   grid-area: principal;
   background: var(--superficie);
@@ -153,7 +167,7 @@
 }
 
 
-/* Estilos retutilizables para todas las vistas */
+/* Reusable styles for all views */
 /* Main */
 #main section {
   background: var(--superficie-2);
@@ -174,7 +188,7 @@
 }
 
 
-/* Estilos para resumen tipo dashboard */
+/* Styles for dashboard-style summary */
 
 .resumen h2{
   padding-bottom: 50px;
@@ -214,7 +228,7 @@
 
 
 
-/* Formularios */
+/* Forms */
 #formCliente, #formPago {
   display: flex;
   flex-direction: column;
@@ -234,7 +248,7 @@
 }
 
 
-/* Campos (opcional en formularios grandes) */
+/* Fields (optional for large forms) */
 .campo {
   display: flex;
   flex-direction: column;
@@ -277,14 +291,14 @@
 
 
 
-/* errores */ 
+/* errors */ 
 #formCliente .error, #formConductor .error, #formTraslado .error, #formVehiculos .error, #formPago .error{
   color: var(--color-peligro);
   font-size: 14px;
   margin: 0;
 }
 
-/* Botones */
+/* Buttons */
 #formCliente button, #formConductor button, #formTraslado button, #formVehiculos button, #formPago button{
   background: var(--color-principal);
   color: #fff;
@@ -303,7 +317,7 @@
 
 
 
-/* Tablas */
+/* Tables */
 #main table {
   width: 100%;
   border-collapse: collapse;
@@ -396,14 +410,14 @@
 
 
 
-/* Botones Crear, Editar y Eliminar de la tabla */
+/* Create, Edit, and Delete buttons for the table */
 #btnGuardar {
   grid-column: span 2;
   justify-self: center;
   width: 200px;
 }
 
-/* Estilos diferentes para los botones de la funcionalidad bd */
+/* Different styles for the buttons in the bd feature */
 #btnAbrirBD, #btnGuardarBD{
   background-color: var(--color-secundario) !important;
 }
@@ -447,7 +461,7 @@
 }
 
 
-/* Estilos para la parte de chat AI */
+/* Styles for the AI chat section */
 
 #chatIA{
     max-width: 900px;
@@ -473,7 +487,7 @@
   font-weight: 100;
 }
 
-/* Caja de mensajes */
+/* Message box */
 
 #mensajes{
     height: 450px;
@@ -485,7 +499,7 @@
     margin-bottom: 15px;
 }
 
-/* Mensajes */
+/* Messages */
 
 .mensajeUsuario{
     background: #4ea5ff;
@@ -515,7 +529,7 @@
     max-width: 75%;
 }
 
-/* Zona inferior */
+/* Bottom section */
 
 .chatControles{
     display: flex;
@@ -548,7 +562,7 @@
 
 
 
-/* ----------- Estilos para hacer los mensajes tipo toast */
+/* ----------- Styles for toast messages */
 /* Toast messages */
 .toast {
   position: fixed;
@@ -563,12 +577,7 @@
   z-index: 1000;
 }
 
-/* Estado visible del toast */
+/* Visibility status of the toast */
 .toast.show {
   opacity: 1;
 }
-
-
-
-
-

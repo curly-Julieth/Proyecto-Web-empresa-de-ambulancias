@@ -1,7 +1,29 @@
+/**
+ * RESPONSIBILITY:
+ * - Display the client management interface.
+ * - Register new clients.
+ * - Edit existing client information.
+ * - Delete clients from the system.
+ * - Validate form inputs.
+ * - Load client data from .bd files.
+ * - Save client data to .bd files.
+ * - Render client records dynamically in the table.
+ *
+ * DEPENDENCIES:
+ * - env.js
+ * - fileManager.js
+ *
+ * MAIN FEATURES:
+ * - CRUD operations for clients.
+ * - Dynamic DOM manipulation.
+ * - Form validation.
+ * - Local file persistence using File System Access API.
+ */
+
 import { clientes, archivosBD } from "./env.js";
 import { abrirArchivoBD, guardarArchivoBD } from "./fileManager.js";
 
-// Vista de clientes
+// Customer View
 const vistaClientes =  `
 <section>
 
@@ -50,10 +72,10 @@ const vistaClientes =  `
 
 
 
-// Variable global 
+// Global variable 
 let clienteEditable = null;
 
-// Funcion para cargar clientes
+// Function to load customers
 export function cargarClientes() {
   const main = document.getElementById("main");  
   main.innerHTML = vistaClientes;
@@ -66,7 +88,7 @@ export function cargarClientes() {
 
 
 
-// Funcion para renderizar clientes
+// Function to render clients
 function renderClientes() {
   const tabla = document.getElementById("tablaClientes");
   tabla.innerHTML = "";  
@@ -90,7 +112,7 @@ function renderClientes() {
 }
 
 
-// Funcion activar eventos tabla
+// Function to trigger table events
 function activarEventosTabla(){
   const tabla = document.getElementById("tablaClientes");
   tabla.addEventListener("click", function(e){
@@ -104,9 +126,9 @@ function activarEventosTabla(){
   });
 }
 
-//Eventos de archivos .bd
+//.bd file events
 function activarEventosArchivo() {
-  //abrir archivo
+  //open file
   document.getElementById("btnAbrirBD")
   .addEventListener("click", async () => {
 
@@ -114,10 +136,10 @@ function activarEventosArchivo() {
       const resultado = await abrirArchivoBD();
       archivosBD.clientesHandle = resultado.handle;
 
-      //limpiar array actual
+      //clear the current array
       clientes.length = 0;
 
-      //insertar datos nuevos
+      //insert new data
       resultado.datos.forEach(c => clientes.push(c));
 
       renderClientes();
@@ -131,7 +153,7 @@ function activarEventosArchivo() {
     }
   });
 
-  // Guardar archivo
+  // Save file
   document.getElementById("btnGuardarBD")
   .addEventListener("click", async () => {
 
@@ -153,7 +175,7 @@ function activarEventosArchivo() {
 
 
 
-// Funcion cargar en formulario (editar)
+// Function to load the form (edit)
 function cargarEnFormulario(cliente, indice){
   document.getElementById("nombre").value = cliente.nombres;
   document.getElementById("apellido").value = cliente.apellido;
@@ -169,14 +191,14 @@ function cargarEnFormulario(cliente, indice){
 
 
 
-// Formulario activar formulario
+// Form: Activate form
 function activarFormulario() {
   const form = document.getElementById("formCliente");
 
-  form.addEventListener("submit", (e) => {  // se usa para detectar cuando se envía el formulario
-    e.preventDefault(); //evita que se recargue la página y se pierda información
+  form.addEventListener("submit", (e) => {  // Used to detect when the form is submitted
+    e.preventDefault(); // Prevents the page from reloading and data from being lost
 
-    // Se capturan los valores de los inputs
+    // The values of the input fields are captured
     const nombre = document.getElementById("nombre").value.trim();
     const apellido = document.getElementById("apellido").value.trim();
     const identificacion = document.getElementById("identificacion").value.trim();
@@ -185,7 +207,7 @@ function activarFormulario() {
     let hayError = false;
     limpiarErrores();
 
-    // Validaciones basicas
+    // Basic validations
     if (!nombre || !validarNombre(nombre)) {
       document.getElementById("errorNombre").textContent = "Nombre inválido (solo letras, 4-50 caracteres)";
       hayError = true;
@@ -207,7 +229,7 @@ function activarFormulario() {
     }
 
 
-    // Verificar duplicaciones
+    // Check for duplicates
     if (!hayError && clienteEditable === null) {
       const existe = clientes.some(c => c.identificacion === identificacion);
       if (existe) {
@@ -216,14 +238,14 @@ function activarFormulario() {
       }
     }
 
-    // Mensaje error antes de guardar
+    // Error message before saving
     if (hayError) {
       mostrarToast("⚠️ Corrige los errores antes de guardar");
       return;
     }
 
 
-    // Guardar y editar 
+    // Save and edit 
     if (clienteEditable !== null) {
       clientes[clienteEditable].nombres = nombre;
       clientes[clienteEditable].apellido = apellido;
@@ -247,7 +269,7 @@ function activarFormulario() {
       mostrarToast("Cliente registrado con éxito ✅");
     }
 
-    renderClientes();  //se ejecuta para actualizar la tabla en pantalla
+    renderClientes();  //Runs to update the table on the screen
     form.reset();
     document.getElementById("btnGuardar").textContent = "Guardar";
   });
@@ -255,7 +277,7 @@ function activarFormulario() {
 
 
 
-// Funcion eliminar cliente
+// Function to delete a customer
 function eliminarCliente(indice) {
   const cliente = clientes[indice];
   
@@ -268,7 +290,7 @@ function eliminarCliente(indice) {
 
 
 
-// Funciones de validacion complementarias
+// Additional validation functions
 function validarNombre(nombre) {
   return /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{4,50}$/.test(nombre);
 }
@@ -286,7 +308,7 @@ function validarEmail(email) {
 }
 
 
-// Funcion limpiar errores
+// Error-cleaning function
 function limpiarErrores() {
   ['errorNombre', 'errorApellido', 'errorId', 'errorEmail'].forEach(id => {
     document.getElementById(id).textContent = "";
@@ -295,7 +317,7 @@ function limpiarErrores() {
 
 
 
-// Funcion para mostrar los mensajes
+// Function to display messages
 function mostrarToast(mensaje) {
   const toast = document.getElementById("toast");
   toast.textContent = mensaje;

@@ -1,23 +1,24 @@
 /*
-  ARCHIVO TIPO .ENV (ENTORNO DE LA APLICACIÓN)
+  .ENV FILE (APPLICATION ENVIRONMENT)
 
-  Propósito:
-  - Centralizar la declaración e inicialización de variables, constantes y arrays globales del proyecto.
-  - Mantener el proyecto simple, legible y mantenible para estudiantes.
+  Purpose:
+  - To centralize the declaration and initialization of global variables, constants, and arrays for the project.
+  - To keep the project simple, readable, and maintainable for students.
 
-  Reglas de este archivo:
-  - NO contiene funciones (estricto).
-  - Define únicamente datos globales (arrays/variables/constantes) que serán usados por el resto del sistema.
-  - El resto del código NO debe redeclarar estos identificadores globales.
+  Rules for this file:
+  - It does NOT contain functions (strictly speaking).
+  - It defines only global data (arrays/variables/constants) that will be used by the rest of the system.
+  - The rest of the code must NOT redeclare these global identifiers.
 */
 
-/* Versión de la aplicación (requisito: 1.1 Crear Clientes) */
+
+/* Application version (requirement: 1.1 Create Clients) */
 export const appVersion = "1.1";
 
-/* Array Departamentos: debe contener el registro 66 Risaralda */
+/* Departments array: must contain record 66 (Risaralda) */
 export const departamentos = [{ idDepartamento: 66, nombre: "Risaralda" }];
 
-// Array municipios
+// Array of municipalities
 
 export const municipios = [
   { idMunicipio: 66001, nombre: "Pereira", idDepartamento: 66 },
@@ -36,7 +37,7 @@ export const municipios = [
   { idMunicipio: 66687, nombre: "Santuario", idDepartamento: 66 },
 ];
 
-// Array barrios 
+// Neighborhoods array 
 
 export const barrios = [
   { idBarrio: 1, nombre: "Belalcázar", idMunicipio: 66001 },
@@ -72,15 +73,15 @@ export const barrios = [
 ];
 
 /*
-  Array Cliente (tabla transaccional):
-  - Se llena al crear clientes.
-  - idCliente es consecutivo automático (se calcula en el guardado).
+  Customer Array (transactional table):
+  - Populated when customers are created.
+  - customerId is automatically incremented (calculated upon saving).
 */
 
 
 
 
-// ----------------------- SE AGREGO EL SIGUIENTE CODIGO PARA HACER USO DEL LOCAL STORAGE EN CLIENTES. CUANDO SE RECARGUE LA PÁGINA LOS CLIENTES VAN A SEGUIR GUARDADOS. 
+// -The following code has been added to use local storage for customers. When the page reloads, customer data will remain saved. 
 export let clientes = [];
 export let traslados = [];
 export let recibosCaja = [];
@@ -96,7 +97,7 @@ export const archivosBD = {
 
 
 
-// Array vehículos
+// Vehicles array
 
 export let vehiculos = [{
     idVehiculo: 1,
@@ -165,6 +166,7 @@ export let vehiculos = [{
     }
 ];
 
+// Drivers array
 export let conductores = [{
     idConductor: 1,
     cedula: "123456789",
@@ -237,8 +239,7 @@ export let conductores = [{
     }
 ];
 
-// Arrays contratos
-
+// Contract arrays
 export let contratos = [
   {
     idContrato: 1,
@@ -313,7 +314,7 @@ export let contratos = [
 
 ];
 
-// Array parentesco
+// Kinship array
 
 export const parentescos = [
   { idParentesco: 1, codigo: "HI", nombre: "Hijo" },
@@ -322,7 +323,7 @@ export const parentescos = [
   { idParentesco: 4, codigo: "HE", nombre: "Hermano/a" }
 ];
 
-// Array beneficiarios
+// Array of beneficiaries
 
 export let beneficiarios = [
     {
@@ -445,7 +446,7 @@ export let beneficiarios = [
   }
 ];
 
-// Formas de pago
+// Payment methods
 
 export const formasPago = [
   { idFormaPago: 1, codigo: "EF", nombre: "Efectivo" },
@@ -454,14 +455,14 @@ export const formasPago = [
 ];
 
 
-// Estado de pago 
+// Payment status 
 
 export const estadoPago = [
   { idEstadoPago: 1, nombre: "Pagado" },
   { idEstadoPago: 2, nombre: "Pendiente" }
 ];
 
-// Bancos
+// Banks
 
 export const bancos = [
   { idBanco: 1, nombre: "Bancolombia" },
@@ -473,45 +474,45 @@ export const bancos = [
 
 
 /*
-  Variables globales de selección (listas dependientes)
-  - Se actualizan al seleccionar en los <select>.
+  Global selection variables (dependent lists)
+  - These are updated when a selection is made in the <select>.
 */
 let selectedDepartamentoId = null;
 let selectedMunicipioId = null;
 let selectedBarrioId = null;
 
 /*
-  Configuración global de UI
+  Global UI settings
 */
 const uiToastDurationMs = 5000;
 let toastTimeoutId = null;
 
 /*
-  Estado global de UI
-  - Se declara aquí para que exista un único punto de verdad y no se redeclare en otros archivos.
-  - Se inicializa en null y se asigna desde librerias.js al arrancar.
+  Global UI state
+  - Declared here to ensure there is a single source of truth and to prevent it from being re-declared in other files.
+  - Initialized to null and assigned from librerias.js on startup.
 */
 let appUiContext = null;
 let createClientUiContext = null;
 let listClientsUiContext = null;
 
 /*
-  URLs de objeto (Object URL) para vistas previas de imágenes.
-  - Se almacenan para poder revocarlas y evitar fugas de memoria.
+  Object URLs for image previews.
+  - These are stored so they can be revoked and to prevent memory leaks.
 */
 let corporateLogoObjectUrl = null;
 let userAvatarObjectUrl = null;
 
 /*
-  Bandera de interacción del formulario Crear Cliente
-  - Permite mostrar errores solo después del primer intento de guardado o cuando el usuario ya escribió.
+  Interaction flag for the “Create Customer” form
+  - Allows errors to be displayed only after the first attempt to save or when the user has already entered text.
 */
 let createClientHasAttemptedSubmit = false;
 let createClientIdentificacionDuplicated = false;
 
 /*
-  Expresiones regulares globales (validaciones de entradas)
-  - Se mantienen simples para evitar ReDoS (Regular Expression Denial of Service).
+  Global regular expressions (input validation)
+  - Kept simple to prevent ReDoS (Regular Expression Denial of Service).
 */
 const regexIdentificacion = /^[0-9]{5,15}$/;
 const regexNombres = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ ]{3,80}$/;

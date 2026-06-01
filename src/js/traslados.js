@@ -1,3 +1,26 @@
+/**
+ * TRANSFERS MODULE
+ *
+ * RESPONSIBILITY:
+ * - Display and manage transfer records.
+ * - Register new transfers.
+ * - Edit existing transfers.
+ * - Validate form fields before saving.
+ * - Update the transfers table dynamically.
+ * - Save transfer data into .bd files when available.
+ *
+ * DEPENDENCIES:
+ * - env.js
+ * - fileManager.js
+ *
+ * MAIN FEATURES:
+ * - CRUD operations for transfers.
+ * - Form validation.
+ * - Dynamic DOM manipulation.
+ * - Client, driver, vehicle, contract, and beneficiary assignment.
+ * - Local file persistence using File System Access API.
+ */
+
 import {
     clientes,
     vehiculos,
@@ -12,7 +35,7 @@ import { abrirArchivoBD, guardarArchivoBD } from "./fileManager.js";
 
 
 
-// Vista traslados
+// Transfers view
 const vistaTraslados = `
   <section>
     <h2>Registrar Traslado</h2>
@@ -131,11 +154,11 @@ const vistaTraslados = `
 
 
 
-// Variable global
+// Global variable
 let trasladoEditable = null;
 
 
-// Funcion cargar traslados
+// Function to load transfers
 export function cargarTraslados() {
   main.innerHTML = vistaTraslados;
 
@@ -151,7 +174,7 @@ export function cargarTraslados() {
 
 
 
-// Funcion renderizar traslados
+// Function to render transfers
 function renderTraslados() {
   const tabla = document.getElementById("tablaTraslados");
   tabla.innerHTML = "";
@@ -182,7 +205,7 @@ function renderTraslados() {
 }
 
 
-// Funcion activar eventos tabla
+// Function to activate table events
 function activarEventosTabla() {
   const tabla = document.getElementById("tablaTraslados");
   tabla.addEventListener("click", function(e){
@@ -196,10 +219,10 @@ function activarEventosTabla() {
   });
 }
 
-// Eventos archivos .bd
+// .bd file events
 function activarEventosArchivo() {
 
-  // Abrir archivo
+  // Open file
   document.getElementById("btnAbrirBD")
   .addEventListener("click", async () => {
 
@@ -209,10 +232,10 @@ function activarEventosArchivo() {
 
       archivosBD.trasladosHandle = resultado.handle;
 
-      // Limpiar array actual
+      // Clear the current array
       traslados.length = 0;
 
-      // Insertar nuevos datos
+      // Insert new data
       resultado.datos.forEach(t => traslados.push(t));
 
       renderTraslados();
@@ -228,7 +251,7 @@ function activarEventosArchivo() {
   });
 
 
-  // Guardar archivo
+  // Save file
   document.getElementById("btnGuardarBD")
   .addEventListener("click", async () => {
 
@@ -253,8 +276,7 @@ function activarEventosArchivo() {
 
 
 
-
-// Funcion cargar traslado en formulario
+// Function to load transfer into form
 function cargarEnFormulario(traslado, indice){
   document.getElementById("cliente").value = traslado.idCliente;
   llenarContratos(traslado.idCliente);
@@ -276,7 +298,7 @@ function cargarEnFormulario(traslado, indice){
 
 
 
-// Funcion llenar clientes
+// Function to fill clients
 function llenarClientes() {
   const selectCliente = document.getElementById("cliente");
   selectCliente.innerHTML = `<option value="">Seleccione cliente</option>`;
@@ -290,7 +312,7 @@ function llenarClientes() {
 }
 
 
-// Funcion llenar conductores
+// Function to fill drivers
 function llenarConductores() {
   const selectConductor = document.getElementById("conductor");
   selectConductor.innerHTML = `<option value="">Seleccione conductor</option>`;
@@ -305,7 +327,7 @@ function llenarConductores() {
 
 
 
-// Funcion llenar vehiculos
+// Function to fill vehicles
 function llenarVehiculos() {
   const selectVehiculo = document.getElementById("vehiculo");
   selectVehiculo.innerHTML = `<option value="">Seleccione vehículo</option>`;
@@ -319,7 +341,7 @@ function llenarVehiculos() {
 
 
 
-// Funcion activar eventos
+// Function to activate events
 function activarEventos() {
   const selectCliente = document.getElementById("cliente");
   selectCliente.addEventListener("change", () => {
@@ -337,7 +359,7 @@ function activarEventos() {
 
 
 
-// Funcion llenar contratos
+// Function to fill contracts
 function llenarContratos(clienteId) {
   const selectContrato = document.getElementById("contrato");
   selectContrato.innerHTML = `<option value="">Seleccione contrato</option>`;
@@ -353,7 +375,7 @@ function llenarContratos(clienteId) {
 
 
 
-// Funcion llenar beneficiarios
+// Function to fill beneficiaries
 function llenarBeneficiarios(contratoId) {
   const selectBeneficiario = document.getElementById("beneficiario");
   selectBeneficiario.innerHTML = `<option value="">Seleccione beneficiario</option>`;
@@ -369,9 +391,21 @@ function llenarBeneficiarios(contratoId) {
 
 
 
+/**
+ * Form submission function
+ * Activates the transfer form behavior.
+ *
+ * FEATURES:
+ * - Captures form data.
+ * - Validates required fields.
+ * - Creates new transfers.
+ * - Updates existing transfers.
+ * - Saves data when a .bd file is loaded.
+ * - Refreshes the table and user interface.
+ *
+ * @returns {void}
+ */
 
-
-// Funcion activar formulario
 function activarFormulario() {
   const form = document.getElementById("formTraslado");
 
@@ -393,7 +427,7 @@ function activarFormulario() {
     limpiarErrores();
 
 
-    // Validaciones basicas
+    // Basic validations
     if (!cliente) {
       document.getElementById("errorCliente").textContent =
         "Seleccione un cliente";
@@ -454,7 +488,7 @@ function activarFormulario() {
       return;
     }
 
-    // Editar traslado
+    // Edit transfer
     if(trasladoEditable !== null){
       traslados[trasladoEditable].idCliente = cliente;
       traslados[trasladoEditable].idConductor = conductor;
@@ -509,7 +543,7 @@ function activarFormulario() {
 
 
 
-// Funcion eliminar traslado
+// Function to delete transfer
 function eliminarTraslado(indice){
   const traslado = traslados[indice];
   if(confirm(`¿Eliminar traslado #${traslado.idTraslado}?`)){
@@ -529,7 +563,7 @@ function eliminarTraslado(indice){
 
 
 
-// Funcion limpiar errores
+// Function to clear errors
 function limpiarErrores() {
 
   [
@@ -551,7 +585,7 @@ function limpiarErrores() {
 
 
 
-// Funcion mostrar toast
+// Function to show toast
 function mostrarToast(mensaje) {
   const toast = document.getElementById("toast");
   toast.textContent = mensaje;

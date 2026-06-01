@@ -1,3 +1,29 @@
+/*
+ * FILE: cerrarSesion.js
+ *
+ * RESPONSIBILITY:
+ * - Manage the logout process of the application.
+ * - Ask the user for confirmation before closing the session.
+ * - Save all modified data into the corresponding .bd files.
+ * - Ensure clients, transfers, and payments are stored
+ *   before leaving the system.
+ * - Reload the application after a successful logout.
+ *
+ * DEPENDENCIES:
+ * - env.js:
+ *   clientes, traslados, recibosCaja, archivosBD.
+ *
+ * - fileManager.js:
+ *   guardarArchivoBD().
+ *
+ * NOTES:
+ * - Data is only saved if a valid file handle exists.
+ * - The user must confirm the logout action.
+ * - If an error occurs during the save process, an
+ *   error message is displayed and the session remains active.
+ */
+
+
 import {
   clientes,
   traslados,
@@ -21,7 +47,7 @@ export async function cerrarSesion() {
 
   try {
 
-    // Clientes
+    // Save customers data
     if (archivosBD.clientesHandle) {
 
       await guardarArchivoBD(
@@ -31,7 +57,7 @@ export async function cerrarSesion() {
 
     }
 
-    // Traslados
+    // Save transfers data
     if (archivosBD.trasladosHandle) {
 
       await guardarArchivoBD(
@@ -41,7 +67,7 @@ export async function cerrarSesion() {
 
     }
 
-    // Pagos
+    // Save payments data
     if (archivosBD.pagosHandle) {
 
       await guardarArchivoBD(
